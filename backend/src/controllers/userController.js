@@ -19,6 +19,103 @@ const getOfficers = async (req, res) => {
     }
 };
 
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find().select("-password").sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            users
+        });
+    }
+    catch (error) {
+        console.error("Get all users error:", error);
+
+        return res.status(500).json({
+            message: "Server error while fetching users"
+        })
+    }
+}
+
+
+const updateUserRole = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { role } = req.body;
+
+        const allowedRoles = [
+            "citizen",
+            "officer",
+            "worker",
+            "admin"
+        ];
+
+        if (!allowedRoles.includes(role)) {
+            return res.status(400).json({
+                message: "Invalid role"
+            });
+        }
+
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        user.role = role;
+        await user.save();
+        return res.status(200).json({
+            message: "User role updated successfully",
+            user
+        });
+
+    } catch (error) {
+        console.error("Update user role error:", error);
+
+        return res.status(500).json({
+            message: "Server error while updating user role"
+        });
+    }
+};
+
+const updateUserStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { isActive } = req.body;
+
+        if (typeof isActive !== "boolean") {
+            return res.status(400).json({ message: "isActive must be a boolean" });
+        }
+
+        const user = await User.findById(id);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        user.isActive = isActive;
+
+        await user.save();
+
+        return res.status(200).json({
+            message: `User ${isActive ? "activated" : "deactivated"} successfully`,
+            user
+        });
+
+    } catch (error) {
+        console.error("Update user status error:", error);
+
+        return res.status(500).json({
+            message: "Server error while updating user status"
+        });
+    }
+};
+
 module.exports = {
-    getOfficers
+    getOfficers,
+    getAllUsers,
+    updateUserRole,
+    updateUserStatus
 };

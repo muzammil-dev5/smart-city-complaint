@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema(
                 "admin"
             ],
             default: "officer"
+        },
+        isActive: {
+            type: Boolean,
+            default: true
         }
     },
     {
