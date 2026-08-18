@@ -83,18 +83,19 @@ export const assignComplaint = async (
 };
 
 export const updateComplaintStatus = async (
-    complaintId: string,
+    id: string,
     status: string
 ) => {
-    const response = await api.put(
-        `/complaints/${complaintId}/status`,
-        { status },
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-        }
+    const response = await api.patch(
+        `/complaints/${id}/status`,
+        { status }
     );
 
+    return response.data;
+};
+
+
+export const getAssignedComplaintById = async (id: string) => {
+    const response = await api.get(`/complaints/assigned/${id}`);
     return response.data;
 };

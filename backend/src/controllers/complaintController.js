@@ -300,19 +300,6 @@ const updateComplaintStatus = async (req, res) => {
         const { id } = req.params;
         const { status } = req.body;
 
-        const allowedStatuses = [
-            "pending",
-            "in_progress",
-            "resolved"
-        ];
-
-        if (!allowedStatuses.includes(status)) {
-            return res.status(400).json({
-                message: "Invalid status"
-            });
-        }
-
-        // Find complaint first
         const complaint = await Complaint.findById(id);
 
         if (!complaint) {
@@ -333,7 +320,18 @@ const updateComplaintStatus = async (req, res) => {
             }
         }
 
-        // Valid status transitions
+        const allowedStatuses = [
+            "pending",
+            "in_progress",
+            "resolved"
+        ];
+
+        if (!allowedStatuses.includes(status)) {
+            return res.status(400).json({
+                message: "Invalid status"
+            });
+        }
+
         const validTransitions = {
             pending: ["in_progress"],
             in_progress: ["resolved"],
@@ -342,11 +340,13 @@ const updateComplaintStatus = async (req, res) => {
 
         if (!validTransitions[complaint.status].includes(status)) {
             return res.status(400).json({
-                message: `Cannot change status from ${complaint.status} to ${status}`
+                message:
+                    `Cannot change status from ${complaint.status} to ${status}`
             });
         }
 
         complaint.status = status;
+
         complaint.statusHistory.push({
             status: status,
             changedAt: new Date()
@@ -372,6 +372,36 @@ const updateComplaintStatus = async (req, res) => {
 };
 
 
+const getAssignedComplaintById = async (req, res) => {
+    try {
+        const complaint = await Complaint.findOne({
+            _id: req.params.id,
+            assignedOfficer: req.user.id
+        }).populate("citizen", "name email");
+
+        if (!complaint) {
+            return res.status(404).json({
+                message: "Complaint not found"
+            });
+        }
+
+        return res.status(200).json({
+            complaint
+        });
+
+    } catch (error) {
+        console.error(
+            "Get assigned complaint error:",
+            error
+        );
+
+        return res.status(500).json({
+            message: "Server error"
+        });
+    }
+};
+
+
 module.exports = {
     createComplaint,
     getMyComplaints,
@@ -381,5 +411,6 @@ module.exports = {
     getAssignedComplaints,
     assignComplaint,
     getAllComplaints,
-    updateComplaintStatus
+    updateComplaintStatus,
+    getAssignedComplaintById
 };

@@ -14,7 +14,8 @@ const {
     getAssignedComplaints,
     assignComplaint,
     getAllComplaints,
-    updateComplaintStatus
+    updateComplaintStatus,
+    getAssignedComplaintById
 } = require("../controllers/complaintController");
 
 router.post(
@@ -58,6 +59,14 @@ router.put(
     updateComplaint
 );
 
+
+router.get(
+    "/assigned/:id",
+    authMiddleware,
+    roleMiddleware("officer"),
+    getAssignedComplaintById
+);
+
 router.put(
     "/:id/assign",
     authMiddleware,
@@ -65,9 +74,10 @@ router.put(
     assignComplaint
 );
 
-router.put(
+router.patch(
     "/:id/status",
     authMiddleware,
+    roleMiddleware("officer"),
     updateComplaintStatus
 );
 

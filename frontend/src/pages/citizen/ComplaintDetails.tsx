@@ -112,6 +112,7 @@ const ComplaintDetails = () => {
 
                 <Paper elevation={3} sx={{ p: 3 }}>
                     <Typography sx={{ mt: 2 }}>
+                        <strong>Title: </strong>{" "}
                         {complaint.title}
                     </Typography>
 

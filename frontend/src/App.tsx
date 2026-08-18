@@ -16,6 +16,7 @@ import MyComplaints from "./pages/citizen/MyComplaints";
 import ComplaintDetails from "./pages/citizen/ComplaintDetails";
 import EditComplaint from "./pages/citizen/EditComplaint";
 import AdminComplaints from "./pages/admin/AdminComplaints";
+import OfficerComplaintDetails from "./pages/officer/OfficerComplaintDetails";
 
 function App() {
   return (
@@ -76,7 +77,7 @@ function App() {
 
               <Route
                 path="/officer/complaints/:id"
-                element={<ComplaintDetails />}
+                element={<OfficerComplaintDetails />}
               />
 
             </Route>

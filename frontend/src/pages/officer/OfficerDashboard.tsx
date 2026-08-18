@@ -86,20 +86,32 @@ const OfficerDashboard = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {complaints.map((complaint) => (
-                            <TableRow key={complaint._id}>
-                                <TableCell>{complaint.title}</TableCell>
-                                <TableCell>{complaint.category}</TableCell>
-                                <TableCell>{complaint.status}</TableCell>
-                                <TableCell>
-                                    <Button
-                                        onClick={() => navigate(`/officer/complaints/${complaint._id}`)}
-                                        variant="outlined"
-
-                                    >View</Button></TableCell>
-
-                            </TableRow>
-                        ))}
+                        {
+                            complaints.length === 0 ? (
+                                (
+                                    <TableRow>
+                                        <TableCell colSpan={4} align="center">
+                                            <Typography sx={{ py: 3 }}>
+                                                No complaints assigned to you.
+                                            </Typography>
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            ) : (
+                                complaints.map((complaint) => (
+                                    <TableRow key={complaint._id}>
+                                        <TableCell>{complaint.title}</TableCell>
+                                        <TableCell>{complaint.category}</TableCell>
+                                        <TableCell>{complaint.status}</TableCell>
+                                        <TableCell>
+                                            <Button
+                                                onClick={() => navigate(`/officer/complaints/${complaint._id}`)}
+                                                variant="outlined">View</Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            )
+                        }
                     </TableBody>
                 </Table>
             </TableContainer >
