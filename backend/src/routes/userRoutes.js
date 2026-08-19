@@ -4,7 +4,7 @@ const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
 const roleMiddleware = require("../middleware/roleMiddleware");
 
-const { getOfficers, getAllUsers, updateUserRole, updateUserStatus } = require("../controllers/userController.js");
+const { getOfficers, getAllUsers, updateUserRole, updateUserStatus, getWorkers } = require("../controllers/userController.js");
 
 
 router.get(
@@ -21,6 +21,13 @@ router.get(
     getOfficers
 )
 
+router.get(
+    "/workers",
+    authMiddleware,
+    roleMiddleware("admin"),
+    getWorkers
+);
+
 router.put(
     "/:id/role",
     authMiddleware,
@@ -34,6 +41,8 @@ router.put(
     roleMiddleware("admin"),
     updateUserStatus
 )
+
+
 
 
 module.exports = router;

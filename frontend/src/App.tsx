@@ -17,6 +17,8 @@ import ComplaintDetails from "./pages/citizen/ComplaintDetails";
 import EditComplaint from "./pages/citizen/EditComplaint";
 import AdminComplaints from "./pages/admin/AdminComplaints";
 import OfficerComplaintDetails from "./pages/officer/OfficerComplaintDetails";
+import WorkerComplaints from "./pages/worker/WorkerComplaints";
+import WorkerComplaintDetails from "./pages/worker/WorkerComplaintDetails";
 
 function App() {
   return (
@@ -89,6 +91,14 @@ function App() {
               <Route
                 path="/worker/dashboard"
                 element={<WorkerDashboard />}
+              />
+              <Route
+                path="/worker/complaints"
+                element={<WorkerComplaints />}
+              />
+              <Route
+                path="/worker/complaint/:id"
+                element={<WorkerComplaintDetails />}
               />
             </Route>
           </Route>

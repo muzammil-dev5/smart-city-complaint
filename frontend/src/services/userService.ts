@@ -27,3 +27,7 @@ export const updateUserStatus = async (userId: string, isActive: boolean) => {
     return response.data;
 }
 
+export const getWorkers = async () => {
+    const response = await api.get("/users/workers");
+    return response.data;
+};

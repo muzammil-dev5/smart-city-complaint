@@ -113,9 +113,29 @@ const updateUserStatus = async (req, res) => {
     }
 };
 
+const getWorkers = async (req, res) => {
+    try {
+        const workers = await User.find({
+            role: "worker"
+        }).select("_id name email");
+
+        return res.status(200).json({
+            workers
+        });
+
+    } catch (error) {
+        console.error("Get workers error:", error);
+
+        return res.status(500).json({
+            message: "Server error while fetching workers"
+        });
+    }
+};
+
 module.exports = {
     getOfficers,
     getAllUsers,
     updateUserRole,
-    updateUserStatus
+    updateUserStatus,
+    getWorkers
 };

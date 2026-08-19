@@ -2,15 +2,7 @@ import { Box, Chip, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typ
 import { useEffect, useState } from "react";
 import { getMyComplaints } from "../../services/complaintService";
 import { useNavigate } from "react-router-dom";
-
-type Complaint = {
-    _id: string;
-    title: string;
-    description: string;
-    category: string;
-    status: string;
-    createdAt: string;
-};
+import type { Complaint } from "../../types/user";
 
 const MyComplaints = () => {
     const [complaints, setComplaints] = useState<Complaint[]>([]);

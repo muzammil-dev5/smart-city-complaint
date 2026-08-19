@@ -401,6 +401,163 @@ const getAssignedComplaintById = async (req, res) => {
     }
 };
 
+const getWorkerComplaints = async (req, res) => {
+    try {
+        const complaints = await Complaint.find({
+            worker: req.user.id
+        }).sort({
+            createdAt: -1
+        });
+
+        return res.status(200).json({
+            complaints
+        });
+
+    } catch (error) {
+        console.error("Get worker complaints error:", error);
+
+        return res.status(500).json({
+            message: "Server error while fetching worker complaints"
+        });
+    }
+};
+
+const assignWorker = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { workerId } = req.body;
+
+        const worker = await User.findOne({
+            _id: workerId,
+            role: "worker"
+        });
+
+        if (!worker) {
+            return res.status(404).json({
+                message: "Worker not found"
+            });
+        }
+
+        const complaint = await Complaint.findById(id);
+
+        if (!complaint) {
+            return res.status(404).json({
+                message: "Complaint not found"
+            });
+        }
+
+        complaint.worker = workerId;
+
+        await complaint.save();
+
+        return res.status(200).json({
+            message: "Worker assigned successfully",
+            complaint
+        });
+
+    } catch (error) {
+        console.error("Assign worker error:", error);
+
+        return res.status(500).json({
+            message: "Server error while assigning worker"
+        });
+    }
+};
+
+const getWorkerComplaintById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const complaint = await Complaint.findOne({
+            _id: id,
+            worker: req.user.id
+        });
+
+        if (!complaint) {
+            return res.status(404).json({
+                message: "Complaint not found or not assigned to you"
+            });
+        }
+
+        return res.status(200).json({
+            complaint
+        });
+
+    } catch (error) {
+        console.error("Get worker complaint error:", error);
+
+        return res.status(500).json({
+            message: "Server error while fetching complaint"
+        });
+    }
+};
+
+const updateWorkerComplaintStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        const complaint = await Complaint.findOne({
+            _id: id,
+            worker: req.user.id
+        });
+
+        if (!complaint) {
+            return res.status(404).json({
+                message: "Complaint not found or not assigned to you"
+            });
+        }
+
+        const allowedStatuses = [
+            "in_progress",
+            "resolved"
+        ];
+
+        if (!allowedStatuses.includes(status)) {
+            return res.status(400).json({
+                message: "Invalid status"
+            });
+        }
+
+        const validTransitions = {
+            pending: ["in_progress"],
+            assigned: ["in_progress"],
+            in_progress: ["resolved"],
+            resolved: [],
+            rejected: []
+        };
+
+        if (!validTransitions[complaint.status].includes(status)) {
+            return res.status(400).json({
+                message:
+                    `Cannot change status from ${complaint.status} to ${status}`
+            });
+        }
+
+        complaint.status = status;
+
+        complaint.statusHistory.push({
+            status
+        });
+
+        await complaint.save();
+
+        return res.status(200).json({
+            message: "Complaint status updated successfully",
+            complaint
+        });
+
+    } catch (error) {
+        console.error(
+            "Worker status update error:",
+            error
+        );
+
+        return res.status(500).json({
+            message: "Server error while updating complaint status"
+        });
+    }
+};
 
 module.exports = {
     createComplaint,
@@ -412,5 +569,9 @@ module.exports = {
     assignComplaint,
     getAllComplaints,
     updateComplaintStatus,
-    getAssignedComplaintById
+    getAssignedComplaintById,
+    getWorkerComplaints,
+    assignWorker,
+    getWorkerComplaintById,
+    updateWorkerComplaintStatus
 };

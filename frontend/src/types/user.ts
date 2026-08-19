@@ -8,7 +8,18 @@ export type User = {
     isActive: boolean;
 };
 
+export type RoleFilter =
+    | "all"
+    | "citizen"
+    | "officer"
+    | "worker"
+    | "admin";
 
+
+export type StatusHistory = {
+    status: "pending" | "in_progress" | "resolved" | "rejected";
+    changedAt: string
+};
 
 export type Complaint = {
     _id: string;
@@ -16,12 +27,34 @@ export type Complaint = {
     description: string;
     category: string;
     status: "pending" | "in_progress" | "resolved" | "rejected";
-    assignedOfficer?: string;
+    createdAt: string;
+    statusHistory: StatusHistory[];
+    citizen?: {
+        _id: string;
+        name: string;
+        email: string;
+    };
+    assignedOfficer?: {
+        _id: string;
+        name: string;
+        email: string;
+    } | null;
+    worker?: {
+        _id: string;
+        name: string;
+        email: string;
+    } | null;
+
 };
 
-export type RoleFilter =
-    | "all"
-    | "citizen"
-    | "officer"
-    | "worker"
-    | "admin";
+export type Worker = {
+    _id: string;
+    name: string;
+    email: string;
+};
+
+export type Officer = {
+    _id: string;
+    name: string;
+    email: string;
+};

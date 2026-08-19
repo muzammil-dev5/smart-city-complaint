@@ -2,14 +2,7 @@ import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableH
 import { getAssignedComplaints } from '../../services/complaintService';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-type Complaint = {
-    _id: string;
-    title: string;
-    description: string;
-    category: string;
-    status: "pending" | "in_progress" | "resolved" | "rejected";
-    assignedOfficer?: string;
-};
+import type { Complaint } from '../../types/user';
 
 const OfficerDashboard = () => {
     const [complaints, setComplaints] = useState<Complaint[]>([]);

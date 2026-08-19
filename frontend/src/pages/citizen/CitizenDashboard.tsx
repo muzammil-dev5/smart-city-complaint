@@ -2,15 +2,7 @@ import { Box, Button, Paper, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getMyComplaints } from "../../services/complaintService";
-
-type Complaint = {
-    _id: string;
-    title: string;
-    description: string;
-    category: string;
-    status: "pending" | "in_progress" | "resolved" | "rejected";
-    assignedOfficer?: string;
-};
+import type { Complaint } from "../../types/user";
 
 const CitizenDashboard = () => {
     const navigate = useNavigate();

@@ -13,21 +13,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getComplaintById, deleteComplaint, updateComplaintStatus } from "../../services/complaintService";
 import { useNavigate } from "react-router-dom";
-
-type StatusHistory = {
-    status: "pending" | "in_progress" | "resolved" | "rejected";
-    changedAt: string
-};
-
-type Complaint = {
-    _id: string;
-    title: string;
-    description: string;
-    category: string;
-    status: string;
-    createdAt: string;
-    statusHistory: StatusHistory[];
-}
+import type { Complaint } from "../../types/user";
 
 const ComplaintDetails = () => {
     const [complaint, setComplaint] = useState<Complaint | null>(null);

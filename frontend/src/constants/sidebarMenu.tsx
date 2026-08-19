@@ -95,7 +95,7 @@ export const officerMenu: MenuItem[] = [
 export const workerMenu: MenuItem[] = [
     {
         label: "Worker Dashboard",
-        path: "/dashboard",
+        path: "/worker/dashboard",
         icon: <HomeIcon />
     },
     {
@@ -103,19 +103,19 @@ export const workerMenu: MenuItem[] = [
         path: "/users",
         icon: <GroupIcon />
     },
+    // {
+    //     label: "Departments",
+    //     path: "/departments",
+    //     icon: <SettingsIcon />
+    // },
     {
-        label: "Departments",
-        path: "/departments",
-        icon: <SettingsIcon />
-    },
-    {
-        label: "Complaints",
-        path: "/complaints",
+        label: "Assigned Complaints",
+        path: "/worker/complaints",
         icon: <NoteAltIcon />
     },
-    {
-        label: "Reports",
-        path: "/reports",
-        icon: <DescriptionIcon />
-    }
+    // {
+    //     label: "Reports",
+    //     path: "/reports",
+    //     icon: <DescriptionIcon />
+    // }
 ];

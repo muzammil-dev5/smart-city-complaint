@@ -99,3 +99,37 @@ export const getAssignedComplaintById = async (id: string) => {
     const response = await api.get(`/complaints/assigned/${id}`);
     return response.data;
 };
+
+export const getWorkerComplaints = async () => {
+    const response = await api.get("/complaints/worker");
+    return response.data;
+};
+
+export const assignWorker = async (
+    complaintId: string,
+    workerId: string
+) => {
+    const response = await api.put(
+        `/complaints/${complaintId}/assign-worker`,
+        {
+            workerId
+        }
+    );
+
+    return response.data;
+};
+
+export const getWorkerComplaintById = async (id: string) => {
+    const response = await api.get(`/complaints/worker/${id}`);
+
+    return response.data;
+};
+
+export const updateWorkerComplaintStatus = async (id: string, status: string) => {
+    const response = await api.patch(
+        `/complaints/worker/${id}/status`,
+        { status }
+    );
+
+    return response.data;
+};
