@@ -83,7 +83,7 @@ const AdminDashboard = () => {
     return (
         <>
             {loading ? (<Typography>Loading... </Typography>) : (
-                <Box>
+                <Box className="AdminDashboard">
                     <Typography variant="h4" gutterBottom>Admin Dashboard</Typography>
                     <Typography variant="body1" sx={{ mb: 3 }}> Manage the Smart City Complaint Management System.</Typography>
 
@@ -93,107 +93,103 @@ const AdminDashboard = () => {
                         </Paper> */}
 
                     {/* complaints Analytics Cards */}
-                    <Box
-                        sx={{
-                            display: "grid",
-                            gridTemplateColumns: {
-                                xs: "1fr",
-                                sm: "repeat(2, 1fr)",
-                                md: "repeat(3, 1fr)"
-                            },
-                            gap: 2
-                        }}>
+                    <Box className="complaint-dashboard-card" >
 
-                        <Paper sx={{ p: 3 }} elevation={3}>
-                            <Typography variant="h6">
+                        <div className='complaint-card'>
+                            <Typography className='complaint-title'>
                                 Total Complaints
                             </Typography>
-                            <Box
-                                sx={{
-                                    width: 100, height: 100, borderRadius: 1, color: "#fff", bgcolor: 'primary.main',
-                                    '&:hover': {
-                                        bgcolor: 'primary.dark',
-                                    },
-                                }}
-                            >{analytics.total}</Box>
-                        </Paper>
+                            <div className='complaint-count'>{analytics.total}</div>
+                        </div>
 
-                        <Paper sx={{ p: 3 }} elevation={3}>
-                            <Typography variant="h6">
+                        <div className='complaint-card'>
+                            <Typography className='complaint-title'>
                                 Pending Complaints
                             </Typography>
-                            <Box
-                                sx={{
-                                    width: 100, height: 100, borderRadius: 1, color: "#fff", bgcolor: 'primary.main',
-                                    '&:hover': {
-                                        bgcolor: 'primary.dark',
-                                    },
-                                }}
-                            >{analytics.pending}</Box>
-                        </Paper>
+                            <div className='complaint-count'>{analytics.pending}</div>
+                        </div>
 
-                        <Paper sx={{ p: 3 }} elevation={3}>
-                            <Typography variant="h6">
+                        <div className='complaint-card'>
+                            <Typography className='complaint-title'>
                                 Assigned Complaints
                             </Typography>
-                            <Box
-                                sx={{
-                                    width: 100, height: 100, borderRadius: 1, color: "#fff", bgcolor: 'primary.main',
-                                    '&:hover': {
-                                        bgcolor: 'primary.dark',
-                                    },
-                                }}
-                            >{analytics.assigned}</Box>
-                        </Paper>
+                            <div className='complaint-count'>{analytics.assigned}</div>
+                        </div>
 
-                        <Paper sx={{ p: 3 }} elevation={3}>
-                            <Typography variant="h6">
+                        <div className='complaint-card'>
+                            <Typography className='complaint-title'>
                                 In Progress Complaints
                             </Typography>
-                            <Box
-                                sx={{
-                                    width: 100, height: 100, borderRadius: 1, color: "#fff", bgcolor: 'primary.main',
-                                    '&:hover': {
-                                        bgcolor: 'primary.dark',
-                                    },
-                                }}
-                            >{analytics.inProgress}</Box>
-                        </Paper>
+                            <div className='complaint-count'>{analytics.inProgress}</div>
+                        </div>
 
-                        <Paper sx={{ p: 3 }} elevation={3}>
-                            <Typography variant="h6">
+                        <div className='complaint-card'>
+                            <Typography className='complaint-title'>
                                 Resolved Complaints
                             </Typography>
-                            <Box
-                                sx={{
-                                    width: 100, height: 100, borderRadius: 1, color: "#fff", bgcolor: 'primary.main',
-                                    '&:hover': {
-                                        bgcolor: 'primary.dark',
-                                    },
-                                }}
-                            >{analytics.resolved}</Box>
-                        </Paper>
+                            <div className='complaint-count'>{analytics.resolved}</div>
+                        </div>
 
-                        <Paper sx={{ p: 3 }} elevation={3}>
-                            <Typography variant="h6">
+                        <div className='complaint-card'>
+                            <Typography className='complaint-title'>
                                 Rejected Complaints
                             </Typography>
-                            <Box
-                                sx={{
-                                    width: 100, height: 100, borderRadius: 1, color: "#fff", bgcolor: 'primary.main',
-                                    '&:hover': {
-                                        bgcolor: 'primary.dark',
-                                    },
-                                }}
-                            >{analytics.rejected}</Box>
-
-                        </Paper>
+                            <div className='complaint-count'>{analytics.rejected}</div>
+                        </div>
                     </Box >
+
+                    < Box sx={{
+                        display: "grid",
+                        marginTop: "20px",
+                        gridTemplateColumns: {
+                            xs: "1fr",
+                            sm: "repeat(2, 1fr)",
+                            md: "repeat(2, 1fr)"
+                        }, gap: 2
+                    }}>
+                        <Paper sx={{ p: 3 }}>
+                            <Typography
+                                variant="h5"
+                                sx={{ mt: 4, mb: 2 }}>
+                                User Management
+                            </Typography>
+                        </Paper>
+
+                        <Paper sx={{ p: 3 }}>
+                            <TextField
+                                fullWidth
+                                value={search}
+                                label="Search Users"
+                                placeholder="Search by name or email..."
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                        </Paper>
+
+
+                        <FormControl sx={{ minWidth: 200, mb: 2 }}>
+                            <InputLabel id="role-filter-label">
+                                Role
+                            </InputLabel>
+                            <Select labelId="role-filter-label" value={roleFilter} label="Select Role Filter" onChange={(e) => setRoleFilter(e.target.value)}>
+                                <MenuItem value="all">All Roles</MenuItem>
+                                <MenuItem value="citizen">Citizen</MenuItem>
+                                <MenuItem value="officer">Officer</MenuItem>
+                                <MenuItem value="worker">Worker</MenuItem>
+                                <MenuItem value="admin">Admin</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box >
+
+                    <UserTable
+                        users={filteredUsers}
+                        onRoleUpdated={handleRoleUpdated}
+                        onStatusUpdated={handleStatusUpdated}
+                        currentUserId={currentUser?.id}
+                    />
 
                     {/* complaints By Ctaegory Bar chart */}
 
-                    < Paper sx={{ p: 3, mt: 3 }
-                    }>
+                    < Paper sx={{ p: 3, mt: 3 }}>
                         <Typography variant="h6" gutterBottom>
                             Complaints by Category
                         </Typography>
@@ -411,53 +407,9 @@ const AdminDashboard = () => {
 
                     {/* User Management */}
 
-                    < Box sx={{
-                        display: "grid",
-                        gridTemplateColumns: {
-                            xs: "1fr",
-                            sm: "repeat(2, 1fr)",
-                            md: "repeat(2, 1fr)"
-                        }, gap: 2
-                    }}>
-                        <Paper sx={{ p: 3 }}>
-                            <Typography
-                                variant="h5"
-                                sx={{ mt: 4, mb: 2 }}>
-                                User Management
-                            </Typography>
-                        </Paper>
-
-                        <Paper sx={{ p: 3 }}>
-                            <TextField
-                                fullWidth
-                                value={search}
-                                label="Search Users"
-                                placeholder="Search by name or email..."
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
-                        </Paper>
 
 
-                        <FormControl sx={{ minWidth: 200, mb: 2 }}>
-                            <InputLabel id="role-filter-label">
-                                Role
-                            </InputLabel>
-                            <Select labelId="role-filter-label" value={roleFilter} label="Select Role Filter" onChange={(e) => setRoleFilter(e.target.value)}>
-                                <MenuItem value="all">All Roles</MenuItem>
-                                <MenuItem value="citizen">Citizen</MenuItem>
-                                <MenuItem value="officer">Officer</MenuItem>
-                                <MenuItem value="worker">Worker</MenuItem>
-                                <MenuItem value="admin">Admin</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box >
 
-                    <UserTable
-                        users={filteredUsers}
-                        onRoleUpdated={handleRoleUpdated}
-                        onStatusUpdated={handleStatusUpdated}
-                        currentUserId={currentUser?.id}
-                    />
 
 
                     {/* <Box

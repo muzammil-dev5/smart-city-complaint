@@ -1,6 +1,10 @@
 .sidebar {
-    width: 25%;
-    height: 100%;
+    width: 350px;
+    height: calc(100vh - 140px);
+    border: 1px solid #000;
+    padding: 16px;
+    border-radius: 4px;
+
 
     .sidebar-item {
         margin-bottom: 12px;

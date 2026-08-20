@@ -1,5 +1,6 @@
 import { Button, Typography, Box, Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import "./Navbar.scss";
 
 interface User {
     name: string;
@@ -22,14 +23,7 @@ const Navbar = () => {
         : null;
 
     return (
-        <Box
-            sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                p: 2,
-            }}
-        >
+        <Box className="Navbar">
             <Typography variant="h5">Smart City</Typography>
 
             <Box style={{ display: "flex", alignItems: "center", gap: "2px" }}>
