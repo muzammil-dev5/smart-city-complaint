@@ -133,3 +133,9 @@ export const updateWorkerComplaintStatus = async (id: string, status: string) =>
 
     return response.data;
 };
+
+export const getComplaintAnalytics = async () => {
+    const response = await api.get("/complaints/analytics");
+
+    return response.data;
+};

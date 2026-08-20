@@ -559,6 +559,33 @@ const updateWorkerComplaintStatus = async (req, res) => {
     }
 };
 
+const getComplaintAnalytics = async (req, res) => {
+    try {
+        const total = await Complaint.countDocuments();
+        const pending = await Complaint.countDocuments({ status: "pending" });
+        const assigned = await Complaint.countDocuments({ status: "assigned" });
+        const inProgress = await Complaint.countDocuments({ status: "in_progress" });
+        const resolved = await Complaint.countDocuments({ status: "resolved" });
+        const rejected = await Complaint.countDocuments({ status: "rejected" });
+
+        const roadDamage = await Complaint.countDocuments({ category: "road_damage" });
+        const streetLight = await Complaint.countDocuments({ category: "street_light" });
+        const garbageCollection = await Complaint.countDocuments({ category: "garbage_collection" });
+
+        return res.status(200).json({
+            analytics: {
+                total, pending, assigned, inProgress, resolved, rejected, categories: { roadDamage, streetLight, garbageCollection }
+            }
+        });
+    }
+    catch (error) {
+        console.error("Get complaint analytics error:", error)
+        return res.status(500).json({
+            message: "Server error while fetching complaint analytics"
+        });
+    }
+}
+
 module.exports = {
     createComplaint,
     getMyComplaints,
@@ -573,5 +600,6 @@ module.exports = {
     getWorkerComplaints,
     assignWorker,
     getWorkerComplaintById,
-    updateWorkerComplaintStatus
+    updateWorkerComplaintStatus,
+    getComplaintAnalytics
 };

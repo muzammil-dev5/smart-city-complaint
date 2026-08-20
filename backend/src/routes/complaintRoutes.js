@@ -19,7 +19,8 @@ const {
     getWorkerComplaints,
     assignWorker,
     getWorkerComplaintById,
-    updateWorkerComplaintStatus
+    updateWorkerComplaintStatus,
+    getComplaintAnalytics
 } = require("../controllers/complaintController");
 
 router.post(
@@ -56,6 +57,13 @@ router.get(
     roleMiddleware("admin"),
     getAllComplaints
 )
+
+router.get(
+    "/analytics",
+    authMiddleware,
+    roleMiddleware("admin"),
+    getComplaintAnalytics
+);
 
 router.get(
     "/:id",
