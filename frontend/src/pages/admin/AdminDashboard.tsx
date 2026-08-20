@@ -104,64 +104,96 @@ const AdminDashboard = () => {
                             gap: 2
                         }}>
 
-                        <Paper sx={{ p: 3 }}>
+                        <Paper sx={{ p: 3 }} elevation={3}>
                             <Typography variant="h6">
                                 Total Complaints
                             </Typography>
-                            <Typography variant="h4">
-                                {analytics.total}
-                            </Typography>
+                            <Box
+                                sx={{
+                                    width: 100, height: 100, borderRadius: 1, color: "#fff", bgcolor: 'primary.main',
+                                    '&:hover': {
+                                        bgcolor: 'primary.dark',
+                                    },
+                                }}
+                            >{analytics.total}</Box>
                         </Paper>
 
-                        <Paper sx={{ p: 3 }}>
+                        <Paper sx={{ p: 3 }} elevation={3}>
                             <Typography variant="h6">
                                 Pending Complaints
                             </Typography>
-                            <Typography variant="h4">
-                                {analytics.pending}
-                            </Typography>
+                            <Box
+                                sx={{
+                                    width: 100, height: 100, borderRadius: 1, color: "#fff", bgcolor: 'primary.main',
+                                    '&:hover': {
+                                        bgcolor: 'primary.dark',
+                                    },
+                                }}
+                            >{analytics.pending}</Box>
                         </Paper>
 
-                        <Paper sx={{ p: 3 }}>
+                        <Paper sx={{ p: 3 }} elevation={3}>
                             <Typography variant="h6">
                                 Assigned Complaints
                             </Typography>
-                            <Typography variant="h4">
-                                {analytics.assigned}
-                            </Typography>
+                            <Box
+                                sx={{
+                                    width: 100, height: 100, borderRadius: 1, color: "#fff", bgcolor: 'primary.main',
+                                    '&:hover': {
+                                        bgcolor: 'primary.dark',
+                                    },
+                                }}
+                            >{analytics.assigned}</Box>
                         </Paper>
 
-                        <Paper sx={{ p: 3 }}>
+                        <Paper sx={{ p: 3 }} elevation={3}>
                             <Typography variant="h6">
                                 In Progress Complaints
                             </Typography>
-                            <Typography variant="h4">
-                                {analytics.inProgress}
-                            </Typography>
+                            <Box
+                                sx={{
+                                    width: 100, height: 100, borderRadius: 1, color: "#fff", bgcolor: 'primary.main',
+                                    '&:hover': {
+                                        bgcolor: 'primary.dark',
+                                    },
+                                }}
+                            >{analytics.inProgress}</Box>
                         </Paper>
 
-                        <Paper sx={{ p: 3 }}>
+                        <Paper sx={{ p: 3 }} elevation={3}>
                             <Typography variant="h6">
                                 Resolved Complaints
                             </Typography>
-                            <Typography variant="h4">
-                                {analytics.resolved}
-                            </Typography>
+                            <Box
+                                sx={{
+                                    width: 100, height: 100, borderRadius: 1, color: "#fff", bgcolor: 'primary.main',
+                                    '&:hover': {
+                                        bgcolor: 'primary.dark',
+                                    },
+                                }}
+                            >{analytics.resolved}</Box>
                         </Paper>
 
-                        <Paper sx={{ p: 3 }}>
+                        <Paper sx={{ p: 3 }} elevation={3}>
                             <Typography variant="h6">
                                 Rejected Complaints
                             </Typography>
-                            <Typography variant="h4">
-                                {analytics.rejected}
-                            </Typography>
+                            <Box
+                                sx={{
+                                    width: 100, height: 100, borderRadius: 1, color: "#fff", bgcolor: 'primary.main',
+                                    '&:hover': {
+                                        bgcolor: 'primary.dark',
+                                    },
+                                }}
+                            >{analytics.rejected}</Box>
+
                         </Paper>
-                    </Box>
+                    </Box >
 
                     {/* complaints By Ctaegory Bar chart */}
 
-                    <Paper sx={{ p: 3, mt: 3 }}>
+                    < Paper sx={{ p: 3, mt: 3 }
+                    }>
                         <Typography variant="h6" gutterBottom>
                             Complaints by Category
                         </Typography>
@@ -195,11 +227,11 @@ const AdminDashboard = () => {
                                 }}
                             />
                         </Box>
-                    </Paper>
+                    </ Paper>
 
                     {/* complaints by status Pie Chart */}
 
-                    <Paper sx={{ p: 3, mt: 3 }}>
+                    < Paper sx={{ p: 3, mt: 3 }}>
                         <Typography variant="h6" gutterBottom>
                             Complaints by Status
                         </Typography>
@@ -254,10 +286,10 @@ const AdminDashboard = () => {
                                 }}
                             />
                         </Box>
-                    </Paper>
+                    </Paper >
 
                     {/* Basic Reports Complain Status and Complain Summary */}
-                    <Box
+                    < Box
                         sx={{
                             display: "grid",
                             gridTemplateColumns: {
@@ -268,7 +300,7 @@ const AdminDashboard = () => {
                             mt: 3
                         }}>
                         {/* Complaint Statistics */}
-                        <Paper sx={{ p: 3 }}>
+                        < Paper sx={{ p: 3 }}>
                             <Typography variant="h6" gutterBottom>
                                 Complaint Statistics
                             </Typography>
@@ -338,10 +370,10 @@ const AdminDashboard = () => {
                                     </Typography>
                                 </Box>
                             </Box>
-                        </Paper>
+                        </Paper >
 
                         {/* Category Summary */}
-                        <Paper sx={{ p: 3 }}>
+                        < Paper sx={{ p: 3 }}>
                             <Typography variant="h6" gutterBottom>
                                 Category Summary
                             </Typography>
@@ -374,12 +406,12 @@ const AdminDashboard = () => {
                                     </Typography>
                                 </Box>
                             </Box>
-                        </Paper>
-                    </Box>
+                        </Paper >
+                    </Box >
 
                     {/* User Management */}
 
-                    <Box sx={{
+                    < Box sx={{
                         display: "grid",
                         gridTemplateColumns: {
                             xs: "1fr",
@@ -418,7 +450,7 @@ const AdminDashboard = () => {
                                 <MenuItem value="admin">Admin</MenuItem>
                             </Select>
                         </FormControl>
-                    </Box>
+                    </Box >
 
                     <UserTable
                         users={filteredUsers}
@@ -460,7 +492,7 @@ const AdminDashboard = () => {
                         </Paper>
 
                     </Box> */}
-                </Box>
+                </Box >
 
             )}
         </>

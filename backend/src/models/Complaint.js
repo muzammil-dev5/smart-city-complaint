@@ -90,7 +90,8 @@ const complaintSchema = new mongoose.Schema(
         },
 
         department: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Department",
             default: null
         },
 

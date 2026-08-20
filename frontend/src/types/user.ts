@@ -58,3 +58,12 @@ export type Officer = {
     name: string;
     email: string;
 };
+
+export type Department = {
+    _id: string;
+    name: string;
+    description: string;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+};

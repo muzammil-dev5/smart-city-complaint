@@ -42,26 +42,26 @@ export const adminMenu: MenuItem[] = [
         path: "/admin/dashboard",
         icon: <HomeIcon />
     },
-    // {
-    //     label: "Users",
-    //     path: "/users",
-    //     icon: <GroupIcon />
-    // },
-    // {
-    //     label: "Departments",
-    //     path: "/departments",
-    //     icon: <SettingsIcon />
-    // },
+    {
+        label: "Users",
+        path: "/users",
+        icon: <GroupIcon />
+    },
+    {
+        label: "Departments",
+        path: "/departments",
+        icon: <SettingsIcon />
+    },
     {
         label: "Complaints",
         path: "/admin/complaints",
         icon: <NoteAltIcon />
     },
-    // {
-    //     label: "Reports",
-    //     path: "/reports",
-    //     icon: <DescriptionIcon />
-    // }
+    {
+        label: "Reports",
+        path: "/reports",
+        icon: <DescriptionIcon />
+    }
 ];
 
 export const officerMenu: MenuItem[] = [

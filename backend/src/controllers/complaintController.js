@@ -224,7 +224,7 @@ const getAssignedComplaints = async (req, res) => {
 const assignComplaint = async (req, res) => {
     try {
         const { id } = req.params;
-        const { officerId } = req.body;
+        const { departmentId, officerId } = req.body;
 
         const complaint = await Complaint.findById(id);
 
@@ -234,37 +234,69 @@ const assignComplaint = async (req, res) => {
             });
         }
 
-        const officer = await User.findById(officerId);
-
-        if (!officer) {
-            return res.status(404).json({
-                message: "Officer not found"
+        if (departmentId) {
+            const department = await Department.findOne({
+                _id: departmentId,
+                isActive: true
             });
+
+            if (!department) {
+                return res.status(400).json({
+                    message: "Invalid or inactive department"
+                });
+            }
+
+            complaint.department = departmentId;
         }
 
-        if (officer.role !== "officer") {
-            return res.status(400).json({
-                message: "Selected user is not an officer"
+        if (officerId) {
+            const officer = await User.findOne({
+                _id: officerId,
+                role: "officer",
+                status: "active"
             });
+
+            if (!officer) {
+                return res.status(400).json({
+                    message: "Invalid officer"
+                });
+            }
+
+            complaint.assignedOfficer = officerId;
+            complaint.officer = officerId;
         }
 
-        complaint.assignedOfficer = officer._id;
+        if (complaint.status === "pending") {
+            complaint.status = "assigned";
+        }
 
         await complaint.save();
 
+        const updatedComplaint =
+            await Complaint.findById(id)
+                .populate("department", "name description")
+                .populate(
+                    "assignedOfficer",
+                    "name email"
+                )
+                .populate(
+                    "worker",
+                    "name email"
+                );
+
         return res.status(200).json({
             message: "Complaint assigned successfully",
-            complaint
+            complaint: updatedComplaint
         });
 
     } catch (error) {
         console.error(
-            "ASSIGN COMPLAINT ERROR:",
+            "Assign complaint error:",
             error
         );
 
         return res.status(500).json({
-            message: "Server error"
+            message: "Server error while assigning complaint"
         });
     }
 };

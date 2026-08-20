@@ -5,9 +5,9 @@ import {
     officerMenu,
     workerMenu,
 } from "../../constants/sidebarMenu";
-
 import type { MenuItem } from "../../constants/sidebarMenu";
 import { Link } from "react-router-dom";
+import "./Sidebar.scss";
 
 const Sidebar = () => {
 
