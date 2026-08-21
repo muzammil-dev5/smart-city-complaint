@@ -65,22 +65,20 @@ export const getAllComplaints = async () => {
 
 export const assignComplaint = async (
     complaintId: string,
+    departmentId: string,
     officerId: string
 ) => {
     const response = await api.put(
         `/complaints/${complaintId}/assign`,
         {
+            departmentId,
             officerId
-        },
-        {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
         }
     );
 
     return response.data;
 };
+
 
 export const updateComplaintStatus = async (
     id: string,
@@ -136,6 +134,16 @@ export const updateWorkerComplaintStatus = async (id: string, status: string) =>
 
 export const getComplaintAnalytics = async () => {
     const response = await api.get("/complaints/analytics");
+
+    return response.data;
+};
+
+export const getComplaintActivities = async (
+    id: string
+) => {
+    const response = await api.get(
+        `/complaints/${id}/activities`
+    );
 
     return response.data;
 };

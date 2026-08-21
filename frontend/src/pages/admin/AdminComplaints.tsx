@@ -18,7 +18,15 @@ import {
 import { useEffect, useState } from "react";
 import { getAllComplaints, assignComplaint, assignWorker } from "../../services/complaintService"
 import { getOfficers, getWorkers } from "../../services/userService";
+import { getActiveDepartments } from "../../services/departmentService";
 import type { Complaint, Worker, Officer } from "../../types/user";
+
+type Department = {
+    _id: string;
+    name: string;
+    description: string;
+    isActive: boolean;
+};
 
 const AdminComplaints = () => {
     const [complaints, setComplaints] = useState<Complaint[]>([]);
@@ -30,32 +38,35 @@ const AdminComplaints = () => {
     const [workers, setWorkers] = useState<Worker[]>([]);
     const [openWorkerDialog, setOpenWorkerDialog] = useState(false);
     const [selectedWorker, setSelectedWorker] = useState("");
+    const [departments, setDepartments] = useState<Department[]>([]);
+    const [selectedDepartment, setSelectedDepartment] = useState("");
 
     const handleAssignOfficer = async () => {
-        if (!selectedComplaint || !selectedOfficer) {
+        if (!selectedComplaint || !selectedDepartment || !selectedOfficer) {
             return;
         }
 
         try {
-            await assignComplaint(
+            const response = await assignComplaint(
                 selectedComplaint._id,
+                selectedDepartment,
                 selectedOfficer
             );
 
+            console.log("Assignment response:", response);
+
             setOpenDialog(false);
 
-            const response = await getAllComplaints();
+            const responseData = await getAllComplaints();
 
-            setComplaints(response.complaints);
+            setComplaints(responseData.complaints);
 
             setSelectedComplaint(null);
+            setSelectedDepartment("");
             setSelectedOfficer("");
 
         } catch (error) {
-            console.error(
-                "Failed to assign officer:",
-                error
-            );
+            console.error("Failed to assign complaint:", error);
         }
     };
 
@@ -92,19 +103,20 @@ const AdminComplaints = () => {
                 const [
                     complaintsResponse,
                     officersResponse,
-                    workersResponse
+                    workersResponse,
+                    departmentsResponse
                 ] = await Promise.all([
                     getAllComplaints(),
                     getOfficers(),
-                    getWorkers()
+                    getWorkers(),
+                    getActiveDepartments()
                 ]);
-
-                console.log("Complaints:", complaintsResponse);
-                console.log("Officers:", officersResponse);
+                console.log("Departments:", departmentsResponse);
 
                 setComplaints(complaintsResponse.complaints);
                 setOfficers(officersResponse.officers);
                 setWorkers(workersResponse.workers);
+                setDepartments(departmentsResponse.departments);
 
             } catch (error) {
                 console.error("Failed to fetch admin data:", error);
@@ -193,10 +205,9 @@ const AdminComplaints = () => {
                                 sx={{ ml: 1 }}
                                 onClick={() => {
                                     setSelectedComplaint(complaint);
-                                    setSelectedWorker(
-                                        complaint.worker?._id || ""
-                                    );
-                                    setOpenWorkerDialog(true);
+                                    setSelectedDepartment(complaint.department?._id || "");
+                                    setSelectedOfficer(complaint.assignedOfficer?._id || "");
+                                    setOpenDialog(true);
                                 }}
                             >
                                 {complaint.worker
@@ -218,6 +229,27 @@ const AdminComplaints = () => {
                                     <Typography sx={{ mb: 2 }}>
                                         Complaint: {selectedComplaint?.title}
                                     </Typography>
+
+                                    <FormControl fullWidth sx={{ mb: 2 }}>
+                                        <InputLabel>Department</InputLabel>
+
+                                        <Select
+                                            value={selectedDepartment}
+                                            label="Department"
+                                            onChange={(e) => {
+                                                setSelectedDepartment(e.target.value);
+                                            }}
+                                        >
+                                            {departments.map((department) => (
+                                                <MenuItem
+                                                    key={department._id}
+                                                    value={department._id}
+                                                >
+                                                    {department.name}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
 
                                     <FormControl fullWidth>
                                         <InputLabel>Officer</InputLabel>
@@ -250,7 +282,10 @@ const AdminComplaints = () => {
 
                                     <Button
                                         variant="contained"
-                                        disabled={!selectedOfficer}
+                                        disabled={
+                                            !selectedDepartment ||
+                                            !selectedOfficer
+                                        }
                                         onClick={handleAssignOfficer}
                                     >
                                         Assign

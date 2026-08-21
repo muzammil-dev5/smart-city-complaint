@@ -1,47 +1,224 @@
+// .AdminDashboard {
+//     border: 1px solid #000;
+//     // width: calc(100% - 475px);
+//     // left: 22%;
+//     // position: absolute;
+//     // right: 0;
+//     // top: 66px;
+//     padding: 16px;
+//     border-radius: 4px;
+
+
+//     .Analytics-dashboard-card {
+//         display: flex;
+//         justify-content: center;
+//         align-items: center;
+//         gap: 16px;
+
+//         .Analytics-card {
+//             display: flex;
+//             justify-content: space-between;
+//             align-items: center;
+//             box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+//             height: 30px;
+//             padding: 16px;
+//             width: 100%;
+
+//             .Analytics-title {
+//                 font-size: 14px;
+//                 font-weight: 400;
+//                 color: #000;
+//             }
+
+//             .Analytics-count {
+//                 box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+//                 height: 25px;
+//                 width: 25px;
+//                 display: flex;
+//                 justify-content: center;
+//                 align-items: center;
+//                 font-weight: bold;
+//                 font-size: 16px;
+
+//             }
+//         }
+//     }
+
+// }
+
+
 .AdminDashboard {
-    border: 1px solid #000;
-    width: calc(100% - 475px);
-    left: 22%;
-    position: absolute;
-    right: 0;
-    top: 66px;
-    padding: 16px;
-    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 24px;
+    border-radius: 8px;
 
+    // Remove this after checking the layout
+    // border: 1px solid #000;
 
-    .complaint-dashboard-card {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    .Analytics-dashboard-card {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
         gap: 16px;
+        width: 100%;
 
-        .complaint-card {
+        .Analytics-card {
+            min-width: 0;
+            min-height: 90px;
+            box-sizing: border-box;
+
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-            height: 30px;
-            padding: 16px;
-            width: 100%;
 
-            .complaint-title {
-                font-size: 14px;
-                font-weight: 400;
-                color: #000;
+            padding: 18px;
+
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            background-color: #ffffff;
+
+            box-shadow:
+                0 2px 8px rgba(99, 99, 99, 0.08);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+
+            &:hover {
+                transform: translateY(-2px);
+
+                box-shadow:
+                    0 6px 16px rgba(99, 99, 99, 0.12);
             }
 
-            .complaint-count {
-                box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-                height: 25px;
-                width: 25px;
+            .Analytics-title {
+                font-size: 14px;
+                font-weight: 500;
+                color: #555;
+            }
+
+            .Analytics-count {
+                min-width: 38px;
+                height: 38px;
+
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                font-weight: bold;
-                font-size: 16px;
 
+                padding: 0 8px;
+
+                border-radius: 8px;
+
+                background-color: #f3f4f6;
+                color: #222;
+
+                font-weight: 700;
+                font-size: 16px;
             }
         }
     }
+}
 
+
+/* =========================================================
+   LARGE DESKTOP
+   1600px+
+========================================================= */
+
+@media (min-width: 1600px) {
+
+    .AdminDashboard {
+        padding: 28px;
+
+        .Analytics-dashboard-card {
+            gap: 20px;
+
+            .Analytics-card {
+                padding: 20px;
+                min-height: 100px;
+            }
+        }
+    }
+}
+
+
+/* =========================================================
+   LAPTOP / DESKTOP
+   1200px - 1599px
+========================================================= */
+
+@media (max-width: 1599px) {
+
+    .AdminDashboard {
+
+        .Analytics-dashboard-card {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+}
+
+
+/* =========================================================
+   TABLET
+   768px - 1199px
+========================================================= */
+
+@media (max-width: 1199px) {
+
+    .AdminDashboard {
+        padding: 20px;
+
+        .Analytics-dashboard-card {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   767px and below
+========================================================= */
+
+@media (max-width: 767px) {
+
+    .AdminDashboard {
+        padding: 16px;
+
+        .Analytics-dashboard-card {
+            grid-template-columns: 1fr;
+            gap: 12px;
+
+            .Analytics-card {
+                min-height: 75px;
+                padding: 14px;
+            }
+        }
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   480px and below
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .AdminDashboard {
+        padding: 12px;
+
+        .Analytics-card {
+
+            .Analytics-title {
+                font-size: 13px !important;
+            }
+
+            .Analytics-count {
+                min-width: 34px !important;
+                height: 34px !important;
+                font-size: 14px !important;
+            }
+        }
+    }
 }

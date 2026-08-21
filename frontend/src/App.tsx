@@ -19,6 +19,7 @@ import AdminComplaints from "./pages/admin/AdminComplaints";
 import OfficerComplaintDetails from "./pages/officer/OfficerComplaintDetails";
 import WorkerComplaints from "./pages/worker/WorkerComplaints";
 import WorkerComplaintDetails from "./pages/worker/WorkerComplaintDetails";
+import AdminDepartments from "./pages/department/AdminDepartments";
 
 function App() {
   return (
@@ -114,6 +115,10 @@ function App() {
             <Route
               path="/admin/complaints"
               element={<AdminComplaints />}
+            />
+            <Route
+              path="/admin/departments"
+              element={<AdminDepartments />}
             />
           </Route>
 

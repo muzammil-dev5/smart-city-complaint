@@ -44,6 +44,10 @@ export type Complaint = {
         name: string;
         email: string;
     } | null;
+    department?: {
+        _id: string;
+        name: string;
+    } | null;
 
 };
 

@@ -1,5 +1,7 @@
 const Complaint = require("../models/Complaint");
 const User = require("../models/User");
+const Department = require("../models/Department");
+const ComplaintActivity = require("../models/ComplaintActivity");
 
 const createComplaint = async (req, res) => {
     try {
@@ -226,6 +228,12 @@ const assignComplaint = async (req, res) => {
         const { id } = req.params;
         const { departmentId, officerId } = req.body;
 
+        if (!departmentId || !officerId) {
+            return res.status(400).json({
+                message: "Department and officer are required"
+            });
+        }
+
         const complaint = await Complaint.findById(id);
 
         if (!complaint) {
@@ -234,55 +242,56 @@ const assignComplaint = async (req, res) => {
             });
         }
 
-        if (departmentId) {
-            const department = await Department.findOne({
-                _id: departmentId,
-                isActive: true
+        // Check department
+        const department = await Department.findById(departmentId);
+
+        if (!department) {
+            return res.status(400).json({
+                message: "Department not found"
             });
-
-            if (!department) {
-                return res.status(400).json({
-                    message: "Invalid or inactive department"
-                });
-            }
-
-            complaint.department = departmentId;
         }
 
-        if (officerId) {
-            const officer = await User.findOne({
-                _id: officerId,
-                role: "officer",
-                status: "active"
+        // Check officer
+        const officer = await User.findOne({
+            _id: officerId,
+            role: "officer"
+        });
+
+        if (!officer) {
+            return res.status(400).json({
+                message: "Officer not found"
             });
-
-            if (!officer) {
-                return res.status(400).json({
-                    message: "Invalid officer"
-                });
-            }
-
-            complaint.assignedOfficer = officerId;
-            complaint.officer = officerId;
         }
 
+        // Assign department and officer
+        complaint.department = departmentId;
+        complaint.assignedOfficer = officerId;
+        complaint.officer = officerId;
+
+        // Update status
         if (complaint.status === "pending") {
             complaint.status = "assigned";
         }
 
+        // Add status history
+        complaint.statusHistory.push({
+            status: "assigned",
+            changedAt: new Date()
+        });
+
         await complaint.save();
 
-        const updatedComplaint =
-            await Complaint.findById(id)
-                .populate("department", "name description")
-                .populate(
-                    "assignedOfficer",
-                    "name email"
-                )
-                .populate(
-                    "worker",
-                    "name email"
-                );
+        await ComplaintActivity.create({
+            complaint: complaint._id,
+            action: "Complaint assigned",
+            performedBy: req.user.id,
+            role: req.user.role
+        });
+
+        const updatedComplaint = await Complaint.findById(id)
+            .populate("department", "name description")
+            .populate("assignedOfficer", "name email")
+            .populate("worker", "name email");
 
         return res.status(200).json({
             message: "Complaint assigned successfully",
@@ -290,10 +299,7 @@ const assignComplaint = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(
-            "Assign complaint error:",
-            error
-        );
+        console.error("Assign complaint error:", error);
 
         return res.status(500).json({
             message: "Server error while assigning complaint"
@@ -365,7 +371,8 @@ const updateComplaintStatus = async (req, res) => {
         }
 
         const validTransitions = {
-            pending: ["in_progress"],
+            pending: ["assigned"],
+            assigned: ["in_progress"],
             in_progress: ["resolved"],
             resolved: []
         };
@@ -385,6 +392,14 @@ const updateComplaintStatus = async (req, res) => {
         });
 
         await complaint.save();
+        if (status === "in_progress") {
+            await ComplaintActivity.create({
+                complaint: complaint._id,
+                action: "Complaint started",
+                performedBy: req.user.id,
+                role: req.user.role
+            });
+        }
 
         return res.status(200).json({
             message: "Complaint status updated successfully",
@@ -482,6 +497,13 @@ const assignWorker = async (req, res) => {
 
         await complaint.save();
 
+        await ComplaintActivity.create({
+            complaint: complaint._id,
+            action: "Worker assigned",
+            performedBy: req.user.id,
+            role: req.user.role
+        });
+
         return res.status(200).json({
             message: "Worker assigned successfully",
             complaint
@@ -574,6 +596,15 @@ const updateWorkerComplaintStatus = async (req, res) => {
 
         await complaint.save();
 
+        if (status === "resolved") {
+            await ComplaintActivity.create({
+                complaint: complaint._id,
+                action: "Complaint resolved",
+                performedBy: req.user.id,
+                role: req.user.role
+            });
+        }
+
         return res.status(200).json({
             message: "Complaint status updated successfully",
             complaint
@@ -618,6 +649,36 @@ const getComplaintAnalytics = async (req, res) => {
     }
 }
 
+const getComplaintActivities = async (req, res) => {
+    try {
+        const activities =
+            await ComplaintActivity.find({
+                complaint: req.params.id
+            })
+                .populate(
+                    "performedBy",
+                    "name role"
+                )
+                .sort({
+                    createdAt: 1
+                });
+
+        return res.status(200).json({
+            activities
+        });
+
+    } catch (error) {
+        console.error(
+            "Get complaint activities error:",
+            error
+        );
+
+        return res.status(500).json({
+            message: "Server error"
+        });
+    }
+};
+
 module.exports = {
     createComplaint,
     getMyComplaints,
@@ -633,5 +694,6 @@ module.exports = {
     assignWorker,
     getWorkerComplaintById,
     updateWorkerComplaintStatus,
-    getComplaintAnalytics
+    getComplaintAnalytics,
+    getComplaintActivities
 };

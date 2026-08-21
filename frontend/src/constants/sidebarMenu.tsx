@@ -38,19 +38,9 @@ export const citizenMenu: MenuItem[] = [
 
 export const adminMenu: MenuItem[] = [
     {
-        label: "Admin Dashboard",
+        label: "Dashboard",
         path: "/admin/dashboard",
         icon: <HomeIcon />
-    },
-    {
-        label: "Users",
-        path: "/users",
-        icon: <GroupIcon />
-    },
-    {
-        label: "Departments",
-        path: "/departments",
-        icon: <SettingsIcon />
     },
     {
         label: "Complaints",
@@ -58,8 +48,18 @@ export const adminMenu: MenuItem[] = [
         icon: <NoteAltIcon />
     },
     {
+        label: "Users",
+        path: "/admin/users",
+        icon: <GroupIcon />
+    },
+    {
+        label: "Departments",
+        path: "/admin/departments",
+        icon: <SettingsIcon />
+    },
+    {
         label: "Reports",
-        path: "/reports",
+        path: "/admin/reports",
         icon: <DescriptionIcon />
     }
 ];

@@ -20,7 +20,8 @@ const {
     assignWorker,
     getWorkerComplaintById,
     updateWorkerComplaintStatus,
-    getComplaintAnalytics
+    getComplaintAnalytics,
+    getComplaintActivities
 } = require("../controllers/complaintController");
 
 router.post(
@@ -69,6 +70,12 @@ router.get(
     "/:id",
     authMiddleware,
     getComplaintById
+);
+
+router.get(
+    "/:id/activities",
+    authMiddleware,
+    getComplaintActivities
 );
 
 router.put(

@@ -22,6 +22,12 @@ export const createDepartment = async (
     return response.data;
 };
 
+export const getActiveDepartments = async () => {
+    const response = await api.get("/departments/active");
+
+    return response.data;
+};
+
 export const updateDepartment = async (
     id: string,
     data: {
