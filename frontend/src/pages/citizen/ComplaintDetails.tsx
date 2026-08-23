@@ -11,12 +11,25 @@ import {
 } from "@mui/lab";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getComplaintById, deleteComplaint, updateComplaintStatus } from "../../services/complaintService";
+import { getComplaintById, deleteComplaint, updateComplaintStatus, getComplaintActivities } from "../../services/complaintService";
 import { useNavigate } from "react-router-dom";
 import type { Complaint } from "../../types/user";
 
+type ComplaintActivity = {
+    _id: string;
+    action: string;
+    role: string;
+    performedBy: {
+        _id: string;
+        name: string;
+        role: string;
+    };
+    createdAt: string;
+};
+
 const ComplaintDetails = () => {
     const [complaint, setComplaint] = useState<Complaint | null>(null);
+    const [activities, setActivities] = useState<ComplaintActivity[]>([]);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const role = user?.role;
@@ -30,11 +43,13 @@ const ComplaintDetails = () => {
                 const response = await getComplaintById(id);
                 setComplaint(response.complaint);
 
+                const activityResponse =
+                    await getComplaintActivities(id);
+
+                setActivities(activityResponse.activities);
+
             } catch (error) {
-                console.error(
-                    "Failed to fetch complaint:",
-                    error
-                );
+                console.error("Failed to fetch complaint:", error);
             }
         };
         fetchComplaint();
@@ -164,6 +179,58 @@ const ComplaintDetails = () => {
                             </TimelineItem>
                         ))}
                     </Timeline>
+
+                    <Typography
+                        variant="h5"
+                        sx={{ mt: 4, mb: 2 }}
+                    >
+                        Activity History
+                    </Typography>
+
+                    {activities.length === 0 ? (
+                        <Typography color="text.secondary">
+                            No activity found.
+                        </Typography>
+                    ) : (
+                        <Timeline>
+                            {activities.map((activity, index) => (
+                                <TimelineItem key={activity._id}>
+                                    <TimelineSeparator>
+                                        <TimelineDot />
+
+                                        {index < activities.length - 1 && (
+                                            <TimelineConnector />
+                                        )}
+                                    </TimelineSeparator>
+
+                                    <TimelineContent>
+                                        <Typography variant="h6">
+                                            {activity.action}
+                                        </Typography>
+
+                                        <Typography
+                                            variant="body2"
+                                            color="text.secondary"
+                                        >
+                                            By:{" "}
+                                            {activity.performedBy?.name ||
+                                                activity.role}
+                                        </Typography>
+
+                                        <Typography
+                                            variant="caption"
+                                            color="text.secondary"
+                                        >
+                                            {new Date(
+                                                activity.createdAt
+                                            ).toLocaleString()}
+                                        </Typography>
+                                    </TimelineContent>
+                                </TimelineItem>
+                            ))}
+                        </Timeline>
+                    )}
+
                     <Typography>
                         {role === "citizen" && (
                             <>

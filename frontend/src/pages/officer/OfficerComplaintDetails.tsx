@@ -15,7 +15,7 @@ type Complaint = {
     title: string;
     description: string;
     category: string;
-    status: "pending" | "in_progress" | "resolved" | "rejected";
+    status: "pending" | "assigned" | "in_progress" | "resolved" | "rejected";
     createdAt: string;
     citizen?: {
         name: string;
@@ -95,45 +95,47 @@ const OfficerComplaintDetails = () => {
                         }
                     />
                 </Typography>
-                {complaint.status !== "resolved" && (
-                    <Button
-                        variant="contained"
-                        sx={{ mt: 3 }}
-                        disabled={updating}
-                        onClick={async () => {
-                            const nextStatus =
-                                complaint.status === "pending"
-                                    ? "in_progress"
-                                    : "resolved";
 
-                            try {
-                                setUpdating(true);
+                {complaint.status !== "resolved" &&
+                    complaint.status !== "rejected" && (
+                        <Button
+                            variant="contained"
+                            sx={{ mt: 3 }}
+                            disabled={updating}
+                            onClick={async () => {
+                                const nextStatus =
+                                    complaint.status === "assigned"
+                                        ? "in_progress"
+                                        : "resolved";
 
-                                const response =
-                                    await updateComplaintStatus(
-                                        complaint._id,
-                                        nextStatus
+                                try {
+                                    setUpdating(true);
+
+                                    const response =
+                                        await updateComplaintStatus(
+                                            complaint._id,
+                                            nextStatus
+                                        );
+
+                                    setComplaint(response.complaint);
+
+                                } catch (error) {
+                                    console.error(
+                                        "Failed to update complaint status:",
+                                        error
                                     );
-
-                                setComplaint(response.complaint);
-
-                            } catch (error) {
-                                console.error(
-                                    "Failed to update complaint status:",
-                                    error
-                                );
-                            } finally {
-                                setUpdating(false);
-                            }
-                        }}
-                    >
-                        {updating
-                            ? "Updating..."
-                            : complaint.status === "pending"
-                                ? "Start Complaint"
-                                : "Mark as Resolved"}
-                    </Button>
-                )}
+                                } finally {
+                                    setUpdating(false);
+                                }
+                            }}
+                        >
+                            {updating
+                                ? "Updating..."
+                                : complaint.status === "assigned"
+                                    ? "Start Complaint"
+                                    : "Mark as Resolved"}
+                        </Button>
+                    )}
 
                 <Typography sx={{ mt: 2 }}>
                     <strong>Date:</strong>{" "}

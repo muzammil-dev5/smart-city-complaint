@@ -22,27 +22,49 @@ const Navbar = () => {
         ? JSON.parse(storedUser)
         : null;
 
+    const role = user?.role ?? "guest";
+
     return (
-        <Box className="Navbar">
-            <Typography variant="h5">Smart City</Typography>
+        <Box className={`Navbar navbar-${role}`}>
 
-            <Box style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-                <Typography>
-                    {user?.name ?? "Guest"}
+            {/* Brand */}
+            <Box className="navbar-brand">
+                <Typography className="brand-title">
+                    Smart City
                 </Typography>
 
-                <Typography>
-                    {user?.role}
+                <Typography className="brand-subtitle">
+                    Complaint Management
                 </Typography>
+            </Box>
 
-                <Avatar>
-                    {user?.name?.charAt(0)}
+            {/* User Section */}
+            <Box className="navbar-user">
+
+                <Box className="user-info">
+                    <Typography className="user-name">
+                        {user?.name ?? "Guest"}
+                    </Typography>
+
+                    <Typography className="user-role">
+                        {user?.role ?? "Guest"}
+                    </Typography>
+                </Box>
+
+                <Avatar className="user-avatar">
+                    {user?.name?.charAt(0).toUpperCase() ?? "G"}
                 </Avatar>
 
-                <Button variant="contained" onClick={logout}>
+                <Button
+                    className="logout-btn"
+                    variant="contained"
+                    onClick={logout}
+                >
                     Logout
                 </Button>
+
             </Box>
+
         </Box>
     );
 };

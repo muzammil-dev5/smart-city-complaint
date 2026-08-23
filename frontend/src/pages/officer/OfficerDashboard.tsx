@@ -3,6 +3,7 @@ import { getAssignedComplaints } from '../../services/complaintService';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Complaint } from '../../types/user';
+import "./OfficerDashboard.scss"
 
 const OfficerDashboard = () => {
     const [complaints, setComplaints] = useState<Complaint[]>([]);
@@ -25,50 +26,52 @@ const OfficerDashboard = () => {
         fetchComplaints();
     }, [])
 
-    const totalComplaints = complaints.length;
-    const pendingComplaints = complaints.filter(complaint => complaint.status === "pending").length;
-    const inProgressComplaints = complaints.filter(complaint => complaint.status === "in_progress").length;
-    const resolvedComplaints = complaints.filter(complaint => complaint.status === "resolved").length;
+    const [analytics, setAnalytics] = useState({
+        total: 0,
+        pending: 0,
+        assigned: 0,
+        inProgress: 0,
+        resolved: 0,
+        rejected: 0,
+        categories: {
+            roadDamage: 0,
+            streetLight: 0,
+            garbageCollection: 0,
+        },
+    });
 
     return (
         <>
-            {loading ? (<Typography>Loading...</Typography>) : (<Box>
-                <Typography variant="h4" gutterBottom>Officer Dashboard</Typography>
-                <Typography variant="body1" sx={{ mb: 3 }}>Manage and monitor assigned complaints.</Typography>
+            {loading ? (<Typography>Loading...</Typography>) : (
+                <Box className="OfficerDashboard">
+                    <div className='OfficerDashboard-header'>Officer Dashboard</div>
+                    <div className='OfficerDashboard-title'>Manage and monitor assigned complaints.</div>
 
-                <Box sx={{
-                    display: "grid",
-                    gridTemplateColumns: {
-                        xs: "1fr",
-                        sm: "repeat(2, 1fr)",
-                        md: "repeat(4, 1fr)"
-                    }, gap: 2
-                }}>
+                    <Box className="Analytics-dashboard-card" >
+                        <div className='Analytics-card'>
+                            <Typography className='Analytics-title'>Assigned Complaints </Typography>
+                            <div className='Analytics-count'>{analytics.assigned}</div>
+                        </div>
 
-                    <Paper sx={{ p: 3 }}>
-                        <Typography variant="h6"> Assigned Complaints </Typography>
-                        <Typography variant="h4"> {totalComplaints} </Typography>
-                    </Paper>
+                        <div className='Analytics-card'>
+                            <Typography className='Analytics-title'>Pending Complaints </Typography>
+                            <div className='Analytics-count'>{analytics.pending}</div>
+                        </div>
 
-                    <Paper sx={{ p: 3 }}>
-                        <Typography variant="h6"> Pending </Typography>
-                        <Typography variant="h4"> {pendingComplaints}</Typography>
-                    </Paper>
+                        <div className='Analytics-card'>
+                            <Typography className='Analytics-title'>In Progress Complaints </Typography>
+                            <div className='Analytics-count'>{analytics.inProgress}</div>
+                        </div>
 
-                    <Paper sx={{ p: 3 }}>
-                        <Typography variant="h6"> In Progress </Typography>
-                        <Typography variant="h4"> {inProgressComplaints} </Typography>
-                    </Paper>
+                        <div className='Analytics-card'>
+                            <Typography className='Analytics-title'>Resolved Complaints </Typography>
+                            <div className='Analytics-count'>{analytics.resolved}</div>
+                        </div>
 
-                    <Paper sx={{ p: 3 }}>
-                        <Typography variant="h6"> Resolved </Typography>
-                        <Typography variant="h4"> {resolvedComplaints} </Typography>
-                    </Paper>
-                </Box>
-            </Box >)}
+                    </Box >
+                </Box >)}
 
-
-            <TableContainer>
+            <TableContainer className='officerDataTable'>
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -98,6 +101,7 @@ const OfficerDashboard = () => {
                                         <TableCell>{complaint.status}</TableCell>
                                         <TableCell>
                                             <Button
+                                                className='officerDataTable-Btn'
                                                 onClick={() => navigate(`/officer/complaints/${complaint._id}`)}
                                                 variant="outlined">View</Button>
                                         </TableCell>

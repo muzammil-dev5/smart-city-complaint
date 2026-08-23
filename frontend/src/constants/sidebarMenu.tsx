@@ -29,11 +29,11 @@ export const citizenMenu: MenuItem[] = [
         path: "/citizen/complaints/create",
         icon: <AddIcon />
     },
-    {
-        label: "Profile",
-        path: "/profile",
-        icon: <PersonIcon />
-    }
+    // {
+    //     label: "Profile",
+    //     path: "/profile",
+    //     icon: <PersonIcon />
+    // }
 ];
 
 export const adminMenu: MenuItem[] = [
@@ -47,21 +47,21 @@ export const adminMenu: MenuItem[] = [
         path: "/admin/complaints",
         icon: <NoteAltIcon />
     },
-    {
-        label: "Users",
-        path: "/admin/users",
-        icon: <GroupIcon />
-    },
+    // {
+    //     label: "Users",
+    //     path: "/admin/users",
+    //     icon: <GroupIcon />
+    // },
     {
         label: "Departments",
         path: "/admin/departments",
         icon: <SettingsIcon />
     },
-    {
-        label: "Reports",
-        path: "/admin/reports",
-        icon: <DescriptionIcon />
-    }
+    // {
+    //     label: "Reports",
+    //     path: "/admin/reports",
+    //     icon: <DescriptionIcon />
+    // }
 ];
 
 export const officerMenu: MenuItem[] = [
@@ -98,11 +98,11 @@ export const workerMenu: MenuItem[] = [
         path: "/worker/dashboard",
         icon: <HomeIcon />
     },
-    {
-        label: "Users",
-        path: "/users",
-        icon: <GroupIcon />
-    },
+    // {
+    //     label: "Users",
+    //     path: "/users",
+    //     icon: <GroupIcon />
+    // },
     // {
     //     label: "Departments",
     //     path: "/departments",

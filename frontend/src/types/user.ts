@@ -71,3 +71,15 @@ export type Department = {
     createdAt: string;
     updatedAt: string;
 };
+
+export interface ComplaintActivity {
+    _id: string;
+    action: string;
+    role: string;
+    performedBy: {
+        _id: string;
+        name: string;
+        role: string;
+    };
+    createdAt: string;
+}

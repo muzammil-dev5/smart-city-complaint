@@ -11,9 +11,7 @@ import "./Sidebar.scss";
 
 const Sidebar = () => {
 
-    const user = JSON.parse(
-        localStorage.getItem("user") || "null"
-    );
+    const user = JSON.parse(localStorage.getItem("user") || "null");
 
     const role = user?.role;
 
@@ -33,7 +31,7 @@ const Sidebar = () => {
     }
 
     return (
-        <div className="sidebar">
+        <div className={`sidebar sidebar-${role}`}>
             {menuItems.map((item) => (
                 <div
                     className="sidebar-item"

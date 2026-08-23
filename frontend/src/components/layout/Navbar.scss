@@ -1,10 +1,166 @@
 .Navbar {
+    --navbar-accent: #6366f1;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: calc(100% - 15px);
-    border: 1px solid #000;
-    border-radius: 4px;
-    margin-bottom: 16px;
-    padding-left: 14px;
+    // width: 100%;
+    min-height: 64px;
+    box-sizing: border-box;
+    padding: 0 18px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.brand-title {
+    color: #0f172a;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.3px;
+}
+
+.brand-subtitle {
+    color: #94a3b8;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+}
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 1.2;
+}
+
+.user-name {
+    color: #0f172a;
+
+    font-size: 13px !important;
+    font-weight: 600 !important;
+}
+
+.user-role {
+    color: #64748b;
+
+    font-size: 11px !important;
+    font-weight: 500 !important;
+
+    text-transform: capitalize;
+}
+
+
+.user-avatar {
+    width: 38px !important;
+    height: 38px !important;
+    background: var(--navbar-accent) !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+}
+
+.logout-btn {
+    min-width: 80px !important;
+    height: 36px;
+    background: transparent !important;
+    color: #64748b !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 7px !important;
+    box-shadow: none !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    transition: all 0.2s ease !important;
+
+    &:hover {
+        background: #fef2f2 !important;
+        border-color: #fecaca !important;
+        color: #dc2626 !important;
+        box-shadow: none !important;
+    }
+}
+
+
+
+.Navbar.navbar-admin {
+    --navbar-accent: #6366f1;
+}
+
+.Navbar.navbar-officer {
+    --navbar-accent: #2563eb;
+}
+
+.Navbar.navbar-worker {
+    --navbar-accent: #f97316;
+}
+
+.Navbar.navbar-citizen {
+    --navbar-accent: #10b981;
+}
+
+.Navbar.navbar-guest {
+    --navbar-accent: #64748b;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+    .Navbar {
+        width: 100%;
+        min-height: 58px;
+
+        padding: 0 12px;
+
+        margin-bottom: 12px;
+    }
+
+    .navbar-brand {
+        gap: 0;
+    }
+
+    .brand-title {
+        font-size: 17px !important;
+    }
+
+    .brand-subtitle {
+        display: none;
+    }
+
+    .navbar-user {
+        gap: 8px;
+    }
+
+    .user-info {
+        display: none;
+    }
+
+    .user-avatar {
+        width: 34px !important;
+        height: 34px !important;
+    }
+
+    .logout-btn {
+        min-width: auto !important;
+
+        padding: 0 10px !important;
+
+        font-size: 11px !important;
+    }
 }

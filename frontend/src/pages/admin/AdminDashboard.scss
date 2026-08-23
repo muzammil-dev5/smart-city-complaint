@@ -1,123 +1,221 @@
-// .AdminDashboard {
-//     border: 1px solid #000;
-//     // width: calc(100% - 475px);
-//     // left: 22%;
-//     // position: absolute;
-//     // right: 0;
-//     // top: 66px;
-//     padding: 16px;
-//     border-radius: 4px;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+.admin-Dashboard {
+    background-color: #6366F1;
+    // margin: 0 16px;
+    padding: 16px;
+    border-radius: 10px;
+    font-family: "Poppins", sans-serif;
 
-//     .Analytics-dashboard-card {
-//         display: flex;
-//         justify-content: center;
-//         align-items: center;
-//         gap: 16px;
+    .adminDashboard {
+        .adminDashboard-header {
+            color: #fff;
+            font-size: 28px;
+            font-weight: 500;
+            padding-bottom: 10px;
+        }
 
-//         .Analytics-card {
-//             display: flex;
-//             justify-content: space-between;
-//             align-items: center;
-//             box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-//             height: 30px;
-//             padding: 16px;
-//             width: 100%;
-
-//             .Analytics-title {
-//                 font-size: 14px;
-//                 font-weight: 400;
-//                 color: #000;
-//             }
-
-//             .Analytics-count {
-//                 box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-//                 height: 25px;
-//                 width: 25px;
-//                 display: flex;
-//                 justify-content: center;
-//                 align-items: center;
-//                 font-weight: bold;
-//                 font-size: 16px;
-
-//             }
-//         }
-//     }
-
-// }
-
-
-.AdminDashboard {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 24px;
-    border-radius: 8px;
-
-    // Remove this after checking the layout
-    // border: 1px solid #000;
+        .adminDashboard-title {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 400;
+        }
+    }
 
     .Analytics-dashboard-card {
         display: grid;
         grid-template-columns: repeat(6, minmax(0, 1fr));
         gap: 16px;
         width: 100%;
+        margin-top: 24px;
 
         .Analytics-card {
             min-width: 0;
-            min-height: 90px;
-            box-sizing: border-box;
-
+            min-height: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-
-            padding: 18px;
-
-            border-radius: 10px;
+            padding: 14px;
+            border-radius: 8px;
             border: 1px solid #e5e7eb;
             background-color: #ffffff;
-
-            box-shadow:
-                0 2px 8px rgba(99, 99, 99, 0.08);
-
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
 
             &:hover {
                 transform: translateY(-2px);
-
-                box-shadow:
-                    0 6px 16px rgba(99, 99, 99, 0.12);
+                box-shadow: 0 6px 16px rgba(99, 99, 99, 0.12);
             }
 
             .Analytics-title {
-                font-size: 14px;
-                font-weight: 500;
-                color: #555;
+                font-size: 16px;
+                font-weight: 600;
+                color: #000;
             }
 
             .Analytics-count {
                 min-width: 38px;
                 height: 38px;
-
                 display: flex;
                 justify-content: center;
                 align-items: center;
-
                 padding: 0 8px;
-
                 border-radius: 8px;
+                background-color: #6366F1;
+                color: #fff;
+                font-weight: 500;
+                font-size: 18px;
+            }
+        }
+    }
 
-                background-color: #f3f4f6;
-                color: #222;
+    .charts {
+        margin-top: 24px;
+        width: 100%;
 
-                font-weight: 700;
+        .chart-card {
+            min-width: 0;
+            height: 300px;
+            box-sizing: border-box;
+            padding: 18px !important;
+            background: #ffffff;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 10px !important;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+            overflow: hidden;
+
+            .barChart-heading,
+            .piechart-heading {
+                color: #0f172a;
+                font-size: 15px;
+                font-weight: 600;
+                margin-bottom: 4px;
+            }
+
+            .barChart-title,
+            .piechart-title {
+                color: #64748b;
+                font-size: 12px;
+                line-height: 1.4;
+                margin-bottom: 4px;
+            }
+
+            .chart-wrapper {
+                width: 100%;
+                height: 250px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+            }
+
+            .pie-wrapper {
+                justify-content: center;
+            }
+        }
+    }
+
+    .adminDataTable {
+        margin-top: 24px;
+        height: 305px;
+        overflow-y: auto;
+
+        .adminDataTable-Header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .adminDataTable-Heading {
                 font-size: 16px;
+                font-weight: 500;
+                color: #000;
+            }
+
+            .adminDataTable-filters {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 16px;
+
+                .dataTableSearchFilter {
+                    width: 350px;
+                }
             }
         }
     }
 }
+
+// .AdminDashboard {
+//     width: 100%;
+//     box-sizing: border-box;
+//     padding: 24px;
+//     border-radius: 8px;
+
+//     // Remove this after checking the layout
+//     // border: 1px solid #000;
+
+//     .Analytics-dashboard-card {
+//         display: grid;
+//         grid-template-columns: repeat(6, minmax(0, 1fr));
+//         gap: 16px;
+//         width: 100%;
+
+//         .Analytics-card {
+//             min-width: 0;
+//             min-height: 90px;
+//             box-sizing: border-box;
+
+//             display: flex;
+//             justify-content: space-between;
+//             align-items: center;
+
+//             padding: 18px;
+
+//             border-radius: 10px;
+//             border: 1px solid #e5e7eb;
+//             background-color: #ffffff;
+
+//             box-shadow:
+//                 0 2px 8px rgba(99, 99, 99, 0.08);
+
+//             transition:
+//                 transform 0.2s ease,
+//                 box-shadow 0.2s ease;
+
+//             &:hover {
+//                 transform: translateY(-2px);
+
+//                 box-shadow:
+//                     0 6px 16px rgba(99, 99, 99, 0.12);
+//             }
+
+//             .Analytics-title {
+//                 font-size: 14px;
+//                 font-weight: 500;
+//                 color: #555;
+//             }
+
+//             .Analytics-count {
+//                 min-width: 38px;
+//                 height: 38px;
+
+//                 display: flex;
+//                 justify-content: center;
+//                 align-items: center;
+
+//                 padding: 0 8px;
+
+//                 border-radius: 8px;
+
+//                 background-color: #f3f4f6;
+//                 color: #222;
+
+//                 font-weight: 700;
+//                 font-size: 16px;
+//             }
+//         }
+//     }
+// }
 
 
 /* =========================================================
@@ -125,21 +223,21 @@
    1600px+
 ========================================================= */
 
-@media (min-width: 1600px) {
+// @media (min-width: 1600px) {
 
-    .AdminDashboard {
-        padding: 28px;
+//     .AdminDashboard {
+//         padding: 28px;
 
-        .Analytics-dashboard-card {
-            gap: 20px;
+//         .Analytics-dashboard-card {
+//             gap: 20px;
 
-            .Analytics-card {
-                padding: 20px;
-                min-height: 100px;
-            }
-        }
-    }
-}
+//             .Analytics-card {
+//                 padding: 20px;
+//                 min-height: 100px;
+//             }
+//         }
+//     }
+// }
 
 
 /* =========================================================
@@ -147,15 +245,15 @@
    1200px - 1599px
 ========================================================= */
 
-@media (max-width: 1599px) {
+// @media (max-width: 1599px) {
 
-    .AdminDashboard {
+//     .AdminDashboard {
 
-        .Analytics-dashboard-card {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-    }
-}
+//         .Analytics-dashboard-card {
+//             grid-template-columns: repeat(3, minmax(0, 1fr));
+//         }
+//     }
+// }
 
 
 /* =========================================================
@@ -163,16 +261,16 @@
    768px - 1199px
 ========================================================= */
 
-@media (max-width: 1199px) {
+// @media (max-width: 1199px) {
 
-    .AdminDashboard {
-        padding: 20px;
+//     .AdminDashboard {
+//         padding: 20px;
 
-        .Analytics-dashboard-card {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-    }
-}
+//         .Analytics-dashboard-card {
+//             grid-template-columns: repeat(2, minmax(0, 1fr));
+//         }
+//     }
+// }
 
 
 /* =========================================================
@@ -180,22 +278,22 @@
    767px and below
 ========================================================= */
 
-@media (max-width: 767px) {
+// @media (max-width: 767px) {
 
-    .AdminDashboard {
-        padding: 16px;
+//     .AdminDashboard {
+//         padding: 16px;
 
-        .Analytics-dashboard-card {
-            grid-template-columns: 1fr;
-            gap: 12px;
+//         .Analytics-dashboard-card {
+//             grid-template-columns: 1fr;
+//             gap: 12px;
 
-            .Analytics-card {
-                min-height: 75px;
-                padding: 14px;
-            }
-        }
-    }
-}
+//             .Analytics-card {
+//                 min-height: 75px;
+//                 padding: 14px;
+//             }
+//         }
+//     }
+// }
 
 
 /* =========================================================
@@ -203,22 +301,22 @@
    480px and below
 ========================================================= */
 
-@media (max-width: 480px) {
+// @media (max-width: 480px) {
 
-    .AdminDashboard {
-        padding: 12px;
+//     .AdminDashboard {
+//         padding: 12px;
 
-        .Analytics-card {
+//         .Analytics-card {
 
-            .Analytics-title {
-                font-size: 13px !important;
-            }
+//             .Analytics-title {
+//                 font-size: 13px !important;
+//             }
 
-            .Analytics-count {
-                min-width: 34px !important;
-                height: 34px !important;
-                font-size: 14px !important;
-            }
-        }
-    }
-}
+//             .Analytics-count {
+//                 min-width: 34px !important;
+//                 height: 34px !important;
+//                 font-size: 14px !important;
+//             }
+//         }
+//     }
+// }
