@@ -91,51 +91,58 @@ const OfficerComplaintDetails = () => {
                         label={
                             complaint.status === "in_progress"
                                 ? "In Progress"
-                                : complaint.status
+                                : complaint.status === "assigned"
+                                    ? "Assigned"
+                                    : complaint.status === "resolved"
+                                        ? "Resolved"
+                                        : complaint.status === "rejected"
+                                            ? "Rejected"
+                                            : "Pending"
                         }
                     />
                 </Typography>
 
-                {complaint.status !== "resolved" &&
-                    complaint.status !== "rejected" && (
-                        <Button
-                            variant="contained"
-                            sx={{ mt: 3 }}
-                            disabled={updating}
-                            onClick={async () => {
-                                const nextStatus =
-                                    complaint.status === "assigned"
-                                        ? "in_progress"
-                                        : "resolved";
+                {complaint.status === "assigned" && (
+                    <Button
+                        variant="contained"
+                        sx={{ mt: 3 }}
+                        disabled={updating}
+                        onClick={async () => {
+                            try {
+                                setUpdating(true);
 
-                                try {
-                                    setUpdating(true);
-
-                                    const response =
-                                        await updateComplaintStatus(
-                                            complaint._id,
-                                            nextStatus
-                                        );
-
-                                    setComplaint(response.complaint);
-
-                                } catch (error) {
-                                    console.error(
-                                        "Failed to update complaint status:",
-                                        error
+                                const response =
+                                    await updateComplaintStatus(
+                                        complaint._id,
+                                        "in_progress"
                                     );
-                                } finally {
-                                    setUpdating(false);
-                                }
-                            }}
-                        >
-                            {updating
-                                ? "Updating..."
-                                : complaint.status === "assigned"
-                                    ? "Start Complaint"
-                                    : "Mark as Resolved"}
-                        </Button>
-                    )}
+
+                                setComplaint(response.complaint);
+
+                            } catch (error) {
+                                console.error(
+                                    "Failed to start complaint:",
+                                    error
+                                );
+                            } finally {
+                                setUpdating(false);
+                            }
+                        }}
+                    >
+                        {updating ? "Starting..." : "Start Complaint"}
+                    </Button>
+                )}
+
+                {complaint.status === "in_progress" && (
+                    <Typography
+                        sx={{
+                            mt: 2,
+                            color: "text.secondary"
+                        }}
+                    >
+                        Complaint started. Waiting for worker to complete the work.
+                    </Typography>
+                )}
 
                 <Typography sx={{ mt: 2 }}>
                     <strong>Date:</strong>{" "}

@@ -205,9 +205,8 @@ const AdminComplaints = () => {
                                 sx={{ ml: 1 }}
                                 onClick={() => {
                                     setSelectedComplaint(complaint);
-                                    setSelectedDepartment(complaint.department?._id || "");
-                                    setSelectedOfficer(complaint.assignedOfficer?._id || "");
-                                    setOpenDialog(true);
+                                    setSelectedWorker(complaint.worker?._id || "");
+                                    setOpenWorkerDialog(true);
                                 }}
                             >
                                 {complaint.worker

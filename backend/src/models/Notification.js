@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const notificationSchema = new mongoose.Schema(
     {
-        user: {
+        recipient: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true
@@ -14,19 +14,23 @@ const notificationSchema = new mongoose.Schema(
             default: null
         },
 
-        message: {
-            type: String,
-            required: true
-        },
-
         type: {
             type: String,
             enum: [
-                "assignment",
-                "status_update",
-                "general"
+                "complaint_created",
+                "complaint_assigned",
+                "complaint_started",
+                "worker_assigned",
+                "complaint_resolved",
+                "feedback_requested"
             ],
-            default: "general"
+            required: true
+        },
+
+        message: {
+            type: String,
+            required: true,
+            trim: true
         },
 
         isRead: {

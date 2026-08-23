@@ -2,6 +2,7 @@ const Complaint = require("../models/Complaint");
 const User = require("../models/User");
 const Department = require("../models/Department");
 const ComplaintActivity = require("../models/ComplaintActivity");
+const Notification = require("../models/Notification");
 
 const createComplaint = async (req, res) => {
     try {
@@ -288,6 +289,13 @@ const assignComplaint = async (req, res) => {
             role: req.user.role
         });
 
+        await Notification.create({
+            recipient: officerId,
+            complaint: complaint._id,
+            type: "complaint_assigned",
+            message: `Complaint "${complaint.title}" has been assigned to you.`
+        });
+
         const updatedComplaint = await Complaint.findById(id)
             .populate("department", "name description")
             .populate("assignedOfficer", "name email")
@@ -312,6 +320,8 @@ const getAllComplaints = async (req, res) => {
         const complaints = await Complaint.find()
             .populate("citizen", "name email")
             .populate("assignedOfficer", "name email")
+            .populate("worker", "name email")
+            .populate("department", "name description")
             .sort({
                 createdAt: -1
             });
@@ -346,7 +356,7 @@ const updateComplaintStatus = async (req, res) => {
             });
         }
 
-        // Officer can only update assigned complaints
+        // Officer can only update their assigned complaint
         if (req.user.role === "officer") {
             if (
                 !complaint.assignedOfficer ||
@@ -358,51 +368,47 @@ const updateComplaintStatus = async (req, res) => {
             }
         }
 
-        const allowedStatuses = [
-            "pending",
-            "in_progress",
-            "resolved"
-        ];
-
-        if (!allowedStatuses.includes(status)) {
+        // Officer can only start the complaint
+        if (status !== "in_progress") {
             return res.status(400).json({
-                message: "Invalid status"
+                message: "Officer can only start a complaint"
             });
         }
 
-        const validTransitions = {
-            pending: ["assigned"],
-            assigned: ["in_progress"],
-            in_progress: ["resolved"],
-            resolved: []
-        };
-
-        if (!validTransitions[complaint.status].includes(status)) {
+        // Officer can only start an assigned complaint
+        if (complaint.status !== "assigned") {
             return res.status(400).json({
                 message:
-                    `Cannot change status from ${complaint.status} to ${status}`
+                    `Cannot change status from ${complaint.status} to in_progress`
             });
         }
 
-        complaint.status = status;
+        complaint.status = "in_progress";
 
         complaint.statusHistory.push({
-            status: status,
+            status: "in_progress",
             changedAt: new Date()
         });
 
         await complaint.save();
-        if (status === "in_progress") {
-            await ComplaintActivity.create({
-                complaint: complaint._id,
-                action: "Complaint started",
-                performedBy: req.user.id,
-                role: req.user.role
-            });
-        }
+
+        await ComplaintActivity.create({
+            complaint: complaint._id,
+            action: "Complaint started",
+            performedBy: req.user.id,
+            role: req.user.role
+        });
+
+        await Notification.create({
+            recipient: complaint.citizen,
+            complaint: complaint._id,
+            type: "complaint_started",
+            message: `Your complaint "${complaint.title}" has been started by the officer.`
+        });
+
 
         return res.status(200).json({
-            message: "Complaint status updated successfully",
+            message: "Complaint started successfully",
             complaint
         });
 
@@ -504,6 +510,13 @@ const assignWorker = async (req, res) => {
             role: req.user.role
         });
 
+        await Notification.create({
+            recipient: workerId,
+            complaint: complaint._id,
+            type: "worker_assigned",
+            message: `Complaint "${complaint.title}" has been assigned to you.`
+        });
+
         return res.status(200).json({
             message: "Worker assigned successfully",
             complaint
@@ -563,7 +576,6 @@ const updateWorkerComplaintStatus = async (req, res) => {
         }
 
         const allowedStatuses = [
-            "in_progress",
             "resolved"
         ];
 
@@ -574,8 +586,8 @@ const updateWorkerComplaintStatus = async (req, res) => {
         }
 
         const validTransitions = {
-            pending: ["in_progress"],
-            assigned: ["in_progress"],
+            pending: [],
+            assigned: [],
             in_progress: ["resolved"],
             resolved: [],
             rejected: []
@@ -603,6 +615,22 @@ const updateWorkerComplaintStatus = async (req, res) => {
                 performedBy: req.user.id,
                 role: req.user.role
             });
+
+            await Notification.create({
+                recipient: complaint.citizen,
+                complaint: complaint._id,
+                type: "complaint_resolved",
+                message: `Your complaint "${complaint.title}" has been resolved.`
+            });
+
+            if (complaint.assignedOfficer) {
+                await Notification.create({
+                    recipient: complaint.assignedOfficer,
+                    complaint: complaint._id,
+                    type: "complaint_resolved",
+                    message: `Complaint "${complaint.title}" has been resolved by the worker.`
+                });
+            }
         }
 
         return res.status(200).json({

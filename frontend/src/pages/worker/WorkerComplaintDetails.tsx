@@ -152,18 +152,6 @@ const WorkerComplaintDetails = () => {
                     />
                 </Typography>
 
-                {(complaint.status === "pending" ||
-                    complaint.status === "assigned") && (
-                        <Button
-                            sx={{ mt: 2 }}
-                            variant="contained"
-                            onClick={() =>
-                                handleOpenStatusDialog("in_progress")
-                            }
-                        >
-                            Start Work
-                        </Button>
-                    )}
 
                 {complaint.status === "in_progress" && (
                     <Button
