@@ -1,0 +1,143 @@
+.myComplaints {
+    .myComplaints_heading {
+        font-size: 20px;
+        font-weight: 600;
+        color: #ffffff;
+        font-family: "Poppins", sans-serif;
+    }
+
+    .myComplaints_Table {
+        margin-top: 24px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: none;
+        border: 1px solid #d1fae5;
+
+        .MuiTableContainer-root {
+            border-radius: 8px;
+        }
+
+        .myComplaints_TableContainer {
+            width: 100%;
+            max-height: 650px;
+            overflow-y: auto;
+            overflow-x: auto;
+
+            .myComplaints_DataTable {
+                width: 100%;
+                table-layout: fixed;
+                border-collapse: separate;
+                border-spacing: 0;
+
+                th:nth-child(1),
+                td:nth-child(1) {
+                    width: 18%;
+                }
+
+                th:nth-child(2),
+                td:nth-child(2) {
+                    width: 15%;
+                }
+
+                th:nth-child(3),
+                td:nth-child(3) {
+                    width: 32%;
+                }
+
+                th:nth-child(4),
+                td:nth-child(4) {
+                    width: 15%;
+                }
+
+                th:nth-child(5),
+                td:nth-child(5) {
+                    width: 13%;
+                }
+
+                th:nth-child(6),
+                td:nth-child(6) {
+                    width: 7%;
+                }
+
+                .MuiTableHead-root {
+                    tr {
+                        th {
+                            padding: 14px 16px;
+                            font-size: 15px;
+                            font-weight: 600;
+                            color: #ffffff;
+                            font-family: "Poppins", sans-serif;
+                            background-color: #047857;
+                            border-bottom: 1px solid #d1fae5;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+
+                .MuiTableBody-root {
+                    tr {
+                        background-color: #ffffff;
+                        cursor: pointer;
+
+                        transition:
+                            background-color 0.2s ease,
+                            box-shadow 0.2s ease;
+
+                        td {
+                            padding: 14px 16px;
+                            font-size: 14px;
+                            font-weight: 400;
+                            color: #1f2937;
+                            font-family: "Poppins", sans-serif;
+                            border-bottom: 1px solid #d1fae5;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            transition: color 0.2s ease, background-color 0.2s ease;
+                        }
+
+                        &:nth-of-type(even) {
+                            background-color: #f0fdf4;
+                        }
+
+                        &:hover {
+                            background-color: #ecfdf5;
+
+                            td {
+                                background-color: #ecfdf5;
+                            }
+
+                            td:first-child {
+                                color: #047857;
+                                font-weight: 500;
+                            }
+
+                            .MuiSvgIcon-root {
+                                color: #047857;
+                            }
+                        }
+
+                        &:last-child {
+                            td {
+                                border-bottom: none;
+                            }
+                        }
+                    }
+                }
+
+                .MuiIconButton-root {
+                    width: 32px;
+                    height: 32px;
+                    color: #6b7280;
+                    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+
+                    &:hover {
+                        color: #047857;
+                        background-color: #d1fae5;
+                        transform: translateX(2px);
+                    }
+                }
+            }
+        }
+    }
+}

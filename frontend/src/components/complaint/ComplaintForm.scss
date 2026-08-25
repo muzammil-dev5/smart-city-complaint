@@ -1,0 +1,121 @@
+.complaintForm {
+    width: 100%;
+
+    &_field {
+        margin-bottom: 20px;
+
+        .MuiFormLabel-root {
+            font-family: "Poppins", sans-serif;
+            font-size: 14px;
+        }
+
+        .MuiInputBase-root {
+            font-family: "Poppins", sans-serif;
+            font-size: 14px;
+            background-color: #ffffff;
+            border-radius: 7px;
+        }
+
+        .MuiFormHelperText-root {
+            margin-left: 2px;
+            font-family: "Poppins", sans-serif;
+            font-size: 11px;
+        }
+
+        .MuiOutlinedInput-root {
+            &:hover {
+                .MuiOutlinedInput-notchedOutline {
+                    border-color: #10b981;
+                }
+            }
+
+            &.Mui-focused {
+                .MuiOutlinedInput-notchedOutline {
+                    border-color: #047857;
+                    border-width: 2px;
+                }
+            }
+        }
+
+        .MuiInputLabel-root.Mui-focused {
+            color: #047857;
+        }
+    }
+
+    &_grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    &_icon {
+        margin-right: 8px;
+        color: #10b981;
+        font-size: 20px !important;
+    }
+
+    &_descriptionIcon {
+        align-self: flex-start;
+        margin-top: 5px;
+    }
+
+    // =========================
+    &_actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+        padding-top: 8px;
+        margin-top: 8px;
+        border-top: 1px solid #ecfdf5;
+    }
+
+    &_cancelButton,
+    &_submitButton {
+        min-width: 140px;
+        height: 40px;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        text-transform: none !important;
+        border-radius: 6px !important;
+    }
+
+    &_cancelButton {
+        color: #6b7280 !important;
+        border-color: #d1d5db !important;
+
+        &:hover {
+            background-color: #f9fafb !important;
+            border-color: #9ca3af !important;
+        }
+    }
+
+    &_submitButton {
+        background-color: #047857 !important;
+        box-shadow: none !important;
+
+        &:hover {
+            background-color: #065f46 !important;
+            box-shadow: none !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        &_grid {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        &_actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        &_cancelButton,
+        &_submitButton {
+            width: 100%;
+        }
+    }
+}

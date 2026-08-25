@@ -49,24 +49,26 @@ function App() {
                 path="/citizen/dashboard"
                 element={<CitizenDashboard />}
               />
-            </Route>
-            <Route
-              path="/citizen/complaints/create"
-              element={<CreateComplaint />}
-            />
-            <Route
-              path="/citizen/complaints"
-              element={<MyComplaints />}
-            />
-            <Route
-              path="/citizen/complaints/:id/edit"
-              element={<EditComplaint />}
-            />
+              <Route
+                path="/citizen/complaints/create"
+                element={<CreateComplaint />}
+              />
 
-            <Route
-              path="/citizen/complaints/:id"
-              element={<ComplaintDetails />}
-            />
+              <Route
+                path="/citizen/complaints"
+                element={<MyComplaints />}
+              />
+
+              <Route
+                path="/citizen/complaints/:id/edit"
+                element={<EditComplaint />}
+              />
+
+              <Route
+                path="/citizen/complaints/:id"
+                element={<ComplaintDetails />}
+              />
+            </Route>
           </Route>
 
           {/* Officer */}

@@ -1,0 +1,88 @@
+.createComplaint {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 0 40px;
+
+    &_header {
+        margin-bottom: 24px;
+    }
+
+    &_backButton {
+        padding: 4px 0 !important;
+        margin-bottom: 12px !important;
+        color: #047857 !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+
+        &:hover {
+            background-color: transparent !important;
+            color: #065f46 !important;
+        }
+    }
+
+    &_title {
+        font-family: "Poppins", sans-serif !important;
+        font-size: 28px !important;
+        font-weight: 600 !important;
+        color: #1f2937;
+    }
+
+    &_subtitle {
+        margin-top: 4px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 14px !important;
+        color: #6b7280;
+    }
+
+    &_card {
+        padding: 28px;
+        background-color: #ffffff;
+        border: 1px solid #d1fae5;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.05);
+    }
+
+    &_cardHeader {
+        padding-bottom: 20px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #ecfdf5;
+    }
+
+    &_cardTitle {
+        font-family: "Poppins", sans-serif !important;
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        color: #1f2937;
+    }
+
+    &_cardSubtitle {
+        margin-top: 4px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 12px !important;
+        color: #9ca3af;
+    }
+
+    @media (max-width: 768px) {
+        padding: 16px 0 30px;
+
+        &_title {
+            font-size: 24px !important;
+        }
+
+        &_card {
+            padding: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        &_title {
+            font-size: 21px !important;
+        }
+
+        &_card {
+            padding: 14px;
+        }
+    }
+}

@@ -1,19 +1,8 @@
-import {
-    Badge,
-    Box,
-    Button,
-    Divider,
-    IconButton,
-    Menu,
-    MenuItem,
-    Avatar,
-    Typography
-} from "@mui/material";
+import { Badge, Box, Button, Divider, IconButton, Menu, MenuItem, Avatar, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./Navbar.scss";
 import { getMyNotifications, getUnreadNotificationCount, markAllNotificationsAsRead, markNotificationAsRead } from "../../services/notificationService";
-
 import type { Notification } from "../../services/notificationService";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
@@ -197,11 +186,9 @@ const Navbar = () => {
         ? JSON.parse(storedUser)
         : null;
 
-    const role = user?.role ?? "guest";
 
     return (
-        <Box className={`Navbar navbar-${role}`}>
-
+        <Box className="Navbar">
             {/* Brand */}
             <Box className="navbar-brand">
                 <Typography className="brand-title">
@@ -271,8 +258,7 @@ const Navbar = () => {
                             alignItems: "center",
                             px: 2,
                             py: 1.5
-                        }}
-                    >
+                        }}>
                         <Typography variant="h6">
                             Notifications
                         </Typography>
@@ -320,88 +306,89 @@ const Navbar = () => {
                             </Typography>
                         </Box>
                     ) : (
-                        notifications.map((notification) => (
-                            <MenuItem
-                                key={notification._id}
-                                onClick={() =>
-                                    handleNotificationClick(
-                                        notification
-                                    )
-                                }
-                                sx={{
-                                    whiteSpace: "normal",
-                                    alignItems: "flex-start",
-                                    py: 1.5,
-                                    px: 2,
-
-                                    borderLeft: "3px solid",
-                                    borderColor: notification.isRead
-                                        ? "transparent"
-                                        : "primary.main",
-
-                                    backgroundColor: notification.isRead
-                                        ? "transparent"
-                                        : "action.hover",
-
-                                    opacity: notification.isRead ? 0.75 : 1,
-
-                                    "&:hover": {
-                                        backgroundColor: "action.selected"
+                        notifications.map((notification) => {
+                            console.log(notification.type);
+                            return (
+                                <MenuItem
+                                    key={notification._id}
+                                    onClick={() =>
+                                        handleNotificationClick(
+                                            notification
+                                        )
                                     }
-                                }}>
-
-                                <Box
                                     sx={{
-                                        display: "flex",
-                                        gap: 1.5,
-                                        width: "100%",
-                                        alignItems: "flex-start"
-                                    }}
-                                >
+                                        whiteSpace: "normal",
+                                        alignItems: "flex-start",
+                                        py: 1.5,
+                                        px: 2,
+
+                                        borderLeft: "3px solid",
+                                        borderColor: notification.isRead
+                                            ? "transparent"
+                                            : "#3b82f6",
+
+                                        backgroundColor: notification.isRead
+                                            ? "transparent"
+                                            : "action.hover",
+
+                                        opacity: notification.isRead ? 0.75 : 1,
+
+                                        "&:hover": {
+                                            backgroundColor: "action.selected"
+                                        }
+                                    }}>
+
                                     <Box
                                         sx={{
                                             display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            mt: 0.3,
-                                            minWidth: 32,
-                                            height: 32,
-                                            borderRadius: "50%",
-                                            color: notification.isRead
-                                                ? "text.secondary"
-                                                : "primary.main",
-                                            backgroundColor: notification.isRead
-                                                ? "action.hover"
-                                                : "primary.50"
-                                        }}
-                                    >
-                                        {getNotificationIcon(notification.type)}
-                                    </Box>
-
-                                    <Box sx={{ flex: 1 }}>
-                                        <Typography
-                                            variant="body2"
+                                            gap: 1.5,
+                                            width: "100%",
+                                            alignItems: "flex-start"
+                                        }}>
+                                        <Box
                                             sx={{
-                                                fontWeight: notification.isRead
-                                                    ? 400
-                                                    : 600
-                                            }}
-                                        >
-                                            {notification.message}
-                                        </Typography>
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                mt: 0.3,
+                                                minWidth: 32,
+                                                height: 32,
+                                                borderRadius: "50%",
+                                                color: notification.isRead
+                                                    ? "text.secondary"
+                                                    : "#3b82f6",
+                                                backgroundColor: notification.isRead
+                                                    ? "action.hover"
+                                                    : "primary.50"
+                                            }}>
+                                            {getNotificationIcon(notification.type)}
+                                        </Box>
 
-                                        <Typography
-                                            variant="caption"
-                                            color="text.secondary"
-                                        >
-                                            {new Date(
-                                                notification.createdAt
-                                            ).toLocaleString()}
-                                        </Typography>
+                                        <Box sx={{ flex: 1 }}>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    fontWeight: notification.isRead
+                                                        ? 400
+                                                        : 600
+                                                }}>
+                                                {notification.message}
+                                            </Typography>
+
+                                            <Typography
+                                                variant="caption"
+                                                color="text.secondary">
+                                                {new Date(
+                                                    notification.createdAt
+                                                ).toLocaleString()}
+                                            </Typography>
+                                        </Box>
                                     </Box>
-                                </Box>
-                            </MenuItem>
-                        ))
+                                </MenuItem>
+                            )
+                        }
+
+                        )
                     )}
                 </Menu>
 

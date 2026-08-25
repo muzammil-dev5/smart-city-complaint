@@ -29,7 +29,6 @@
             font-size: 16px;
             font-weight: 600;
             text-transform: none;
-            font-family: "Poppins", sans-serif;
             transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 
             .MuiButton-startIcon {
@@ -157,12 +156,6 @@
         }
     }
 }
-
-
-/* =========================================
-   ACTIVE / SELECTED MENU
-========================================= */
-
 .sidebar-item {
     .MuiButton-root.active {
         background: var(--sidebar-accent);
@@ -178,11 +171,6 @@
         }
     }
 }
-
-
-/* =========================================
-   MOBILE
-========================================= */
 
 @media (max-width: 767px) {
 

@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.tsx'
 import { Provider } from "react-redux"
 import { store } from './store/store.ts'
+import "./styles/fonts.scss";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
