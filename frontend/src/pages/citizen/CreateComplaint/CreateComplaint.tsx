@@ -1,8 +1,8 @@
 import { Box, Button, Typography } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import ComplaintForm, { type ComplaintFormData } from "../../components/complaint/ComplaintForm";
-import { createComplaint } from "../../services/complaintService";
+import ComplaintForm, { type ComplaintFormData } from "../../../components/complaint/ComplaintForm";
+import { createComplaint } from "../../../services/complaintService";
 import "./CreateComplaint.scss";
 
 const CreateComplaint = () => {

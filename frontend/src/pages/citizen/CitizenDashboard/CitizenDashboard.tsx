@@ -1,15 +1,12 @@
-import { Box, Button, Paper, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Box, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
-import { getMyComplaints } from "../../services/complaintService";
-import type { Complaint } from "../../types/user";
+import { getMyComplaints } from "../../../services/complaintService";
+import type { Complaint } from "../../../types/user";
 import "./CitizenDashboard.scss";
 
 const CitizenDashboard = () => {
-    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [complaints, setComplaints] = useState<Complaint[]>([]);
-
     const [analytics, setAnalytics] = useState({
         total: 0,
         pending: 0,
