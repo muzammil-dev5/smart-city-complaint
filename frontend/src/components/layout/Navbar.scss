@@ -4,38 +4,57 @@
     --navbar-text: #f8fafc;
     --navbar-muted: #94a3b8;
     --navbar-icon: #cbd5e1;
+    --navbar-accent: #10b981;
+    --navbar-accent-light: #34d399;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    // width: 100%;
     min-height: 64px;
     box-sizing: border-box;
     padding: 0 20px;
     margin: 0 16px;
-    background: var(--navbar-bg);
+    background-color: var(--navbar-bg);
     border: 1px solid var(--navbar-border);
-    // border-radius: 10px;
+    border-radius: 10px;
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
     color: var(--navbar-text);
+    font-family: "Poppins", sans-serif;
+    position: relative;
+}
+
+.Navbar::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--navbar-accent);
+    border-radius: 0 0 10px 10px;
 }
 
 .navbar-brand {
     display: flex;
     align-items: center;
     gap: 10px;
+    min-width: 0;
 }
 
 .brand-title {
     color: #ffffff;
+    font-family: "Poppins", sans-serif;
     font-size: 20px !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
     letter-spacing: -0.3px;
+    white-space: nowrap;
 }
 
 .brand-subtitle {
-    color: #94a3b8;
+    color: var(--navbar-muted);
+    font-family: "Poppins", sans-serif;
     font-size: 12px !important;
     font-weight: 500 !important;
+    white-space: nowrap;
 }
 
 .navbar-user {
@@ -49,114 +68,105 @@
     flex-direction: column;
     align-items: flex-end;
     line-height: 1.2;
+    gap: 2px;
 }
 
 .user-name {
-    color: #f8fafc;
+    color: var(--navbar-text);
+    font-family: "Poppins", sans-serif;
     font-size: 13px !important;
     font-weight: 600 !important;
 }
 
 .user-role {
-    color: #94a3b8;
+    color: var(--navbar-accent-light);
+    font-family: "Poppins", sans-serif;
     font-size: 11px !important;
     font-weight: 500 !important;
     text-transform: capitalize;
 }
 
-
 .user-avatar {
     width: 38px !important;
     height: 38px !important;
-    background: #334155 !important;
-    color: #ffffff !important;
-    border: 1px solid #475569;
+    background-color: #1e293b !important;
+    color: var(--navbar-accent-light) !important;
+    border: 1px solid var(--navbar-accent) !important;
+    font-family: "Poppins", sans-serif;
     font-size: 14px !important;
     font-weight: 600 !important;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease !important;
+
+    &:hover {
+        background-color: #263449 !important;
+        transform: translateY(-1px);
+    }
 }
 
 .navbar-user .MuiIconButton-root {
     width: 38px;
     height: 38px;
-
-    color: #cbd5e1;
-
-    transition: all 0.2s ease;
+    color: var(--navbar-icon);
+    border-radius: 8px;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 
     &:hover {
-        background: #1e293b;
-        color: #ffffff;
+        background-color: #1e293b;
+        color: var(--navbar-accent-light);
+        transform: translateY(-1px);
     }
 }
 
 .logout-btn {
     min-width: 78px !important;
     height: 36px;
-    background: transparent !important;
-    color: #cbd5e1 !important;
+    padding: 0 14px !important;
+    background-color: transparent !important;
+    color: var(--navbar-icon) !important;
     border: 1px solid #334155 !important;
     border-radius: 7px !important;
     box-shadow: none !important;
+    font-family: "Poppins", sans-serif;
     font-size: 12px !important;
     font-weight: 600 !important;
     text-transform: none !important;
-    transition: all 0.2s ease !important;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
+
 
     &:hover {
-        background: #1e293b !important;
-        border-color: #475569 !important;
+        background-color: rgba(255, 255, 255, 0.06) !important;
+        border-color: var(--navbar-accent) !important;
         color: #ffffff !important;
     }
 }
 
-@media (max-width: 767px) {
-    .Navbar {
-        min-height: 58px;
-        padding: 0 12px;
-        margin-bottom: 12px;
-    }
-
-    .navbar-brand {
-        gap: 0;
-    }
-
-    .brand-title {
-        font-size: 17px !important;
-    }
-
-    .brand-subtitle {
-        display: none;
-    }
-
-    .navbar-user {
-        gap: 6px;
-    }
-
-    .user-info {
-        display: none;
-    }
-
-    .user-avatar {
-        width: 34px !important;
-        height: 34px !important;
-    }
-
-    .logout-btn {
-        min-width: auto !important;
-        padding: 0 10px !important;
-        font-size: 11px !important;
-    }
+.Navbar.navbar-citizen {
+    --navbar-accent: #10b981;
+    --navbar-accent-light: #34d399;
 }
 
+.Navbar.navbar-officer {
+    --navbar-accent: #2563eb;
+    --navbar-accent-light: #60a5fa;
+}
+
+.Navbar.navbar-worker {
+    --navbar-accent: #f97316;
+    --navbar-accent-light: #fb923c;
+}
+
+.Navbar.navbar-admin {
+    --navbar-accent: #6366f1;
+    --navbar-accent-light: #818cf8;
+}
+
+
 @media (max-width: 767px) {
-
     .Navbar {
-        width: 100%;
         min-height: 58px;
-
         padding: 0 12px;
-
-        margin-bottom: 12px;
+        margin: 0 8px 12px;
+        border-radius: 8px;
     }
 
     .navbar-brand {
@@ -172,7 +182,7 @@
     }
 
     .navbar-user {
-        gap: 8px;
+        gap: 7px;
     }
 
     .user-info {
@@ -182,13 +192,18 @@
     .user-avatar {
         width: 34px !important;
         height: 34px !important;
+        font-size: 13px !important;
+    }
+
+    .navbar-user .MuiIconButton-root {
+        width: 34px;
+        height: 34px;
     }
 
     .logout-btn {
         min-width: auto !important;
-
+        height: 34px;
         padding: 0 10px !important;
-
         font-size: 11px !important;
     }
 }

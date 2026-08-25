@@ -75,16 +75,16 @@ export const officerMenu: MenuItem[] = [
     //     path: "/users",
     //     icon: <GroupIcon />
     // },
-    {
-        label: "Departments",
-        path: "/departments",
-        icon: <SettingsIcon />
-    },
-    {
-        label: "Complaints",
-        path: "/complaints",
-        icon: <NoteAltIcon />
-    },
+    // {
+    //     label: "Departments",
+    //     path: "/departments",
+    //     icon: <SettingsIcon />
+    // },
+    // {
+    //     label: "Complaints",
+    //     path: "/complaints",
+    //     icon: <NoteAltIcon />
+    // },
     // {
     //     label: "Reports",
     //     path: "/reports",

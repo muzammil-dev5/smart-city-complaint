@@ -2,7 +2,7 @@
     .myComplaints_heading {
         font-size: 20px;
         font-weight: 600;
-        color: #ffffff;
+        color: #000;
         font-family: "Poppins", sans-serif;
     }
 
@@ -60,6 +60,9 @@
                 }
 
                 .MuiTableHead-root {
+                    position: sticky;
+                    top: 0;
+                    z-index: 9;
                     tr {
                         th {
                             padding: 14px 16px;

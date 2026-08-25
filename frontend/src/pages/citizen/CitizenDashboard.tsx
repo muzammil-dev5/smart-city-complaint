@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { getMyComplaints } from "../../services/complaintService";
 import type { Complaint } from "../../types/user";
 import "./CitizenDashboard.scss";
+import { AssignmentOutlined } from "@mui/icons-material";
 
 const CitizenDashboard = () => {
     const [loading, setLoading] = useState(true);
@@ -39,44 +40,78 @@ const CitizenDashboard = () => {
     return (
         <>
             {loading ? (<Typography>Loading...</Typography>) : (
+
                 <Box className="citizenDashboard">
-                    <div className='citizenDashboard-header'>Citizen Dashboard</div>
-                    <div className='citizenDashboard-title'>Welcome, Citizen!</div>
-                    {/* <div className="citizenDashboard-Btn">
-                        <Button
-                            onClick={() => navigate("/citizen/complaints/create")}
-                            variant="contained" sx={{ mb: 3 }}>
-                            Create Complaint
-                        </Button>
+                    <Box className="citizenDashboard_header">
+                        <Typography className="citizenDashboard_heading">
+                            Citizen Dashboard
+                        </Typography>
 
-                        <Button
-                            onClick={() => navigate("/citizen/complaints")}
-                            variant="contained" sx={{ ml: 3, mb: 3 }}>
-                            My Complaint
-                        </Button>
-                    </div> */}
+                        <Typography className="citizenDashboard_subtitle">
+                            Welcome, Citizen!
+                        </Typography>
+                    </Box>
 
-                    <Box className="Analytics-dashboard-card" >
-                        <div className='Analytics-card'>
-                            <Typography className='Analytics-title'>Total Complaints </Typography>
-                            <div className='Analytics-count'>{analytics.total}</div>
-                        </div>
+                    <Box className="citizenDashboard_analytics">
+                        <Box className="analyticsCard">
+                            <Box className="analyticsCard_icon">
+                                <AssignmentOutlined />
+                            </Box>
+                            <Box>
+                                <Typography className="analyticsCard_title">
+                                    Total Complaints
+                                </Typography>
 
-                        <div className='Analytics-card'>
-                            <Typography className='Analytics-title'>Pending </Typography>
-                            <div className='Analytics-count'>{analytics.pending}</div>
-                        </div>
+                                <Typography className="analyticsCard_count">
+                                    {analytics.total}
+                                </Typography>
+                            </Box>
+                        </Box>
 
-                        <div className='Analytics-card'>
-                            <Typography className='Analytics-title'>In Progress </Typography>
-                            <div className='Analytics-count'>{analytics.inProgress}</div>
-                        </div>
+                        <Box className="analyticsCard">
+                            <Box className="analyticsCard_icon">
+                                <AssignmentOutlined />
+                            </Box>
+                            <Box>
+                                <Typography className="analyticsCard_title">
+                                    Pending Complaints
+                                </Typography>
 
-                        <div className='Analytics-card'>
-                            <Typography className='Analytics-title'>Resolved </Typography>
-                            <div className='Analytics-count'>{analytics.resolved}</div>
-                        </div>
+                                <Typography className="analyticsCard_count">
+                                    {analytics.pending}
+                                </Typography>
+                            </Box>
+                        </Box>
 
+                        <Box className="analyticsCard">
+                            <Box className="analyticsCard_icon">
+                                <AssignmentOutlined />
+                            </Box>
+                            <Box>
+                                <Typography className="analyticsCard_title">
+                                    In Progress
+                                </Typography>
+
+                                <Typography className="analyticsCard_count">
+                                    {analytics.inProgress}
+                                </Typography>
+                            </Box>
+                        </Box>
+
+                        <Box className="analyticsCard">
+                            <Box className="analyticsCard_icon">
+                                <AssignmentOutlined />
+                            </Box>
+                            <Box>
+                                <Typography className="analyticsCard_title">
+                                    Resolved Complaints
+                                </Typography>
+
+                                <Typography className="analyticsCard_count">
+                                    {analytics.resolved}
+                                </Typography>
+                            </Box>
+                        </Box>
                     </Box>
                 </Box>
             )}
