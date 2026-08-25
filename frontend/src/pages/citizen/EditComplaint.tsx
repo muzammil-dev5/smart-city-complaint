@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowBack } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
-import ComplaintForm, { type ComplaintFormData } from "../../../components/complaint/ComplaintForm";
-import { getComplaintById, updateComplaint } from "../../../services/complaintService";
+import ComplaintForm, { type ComplaintFormData } from "../../components/complaint/ComplaintForm";
+import { getComplaintById, updateComplaint } from "../../services/complaintService";
 import "./EditComplaint.scss";
 
 const EditComplaint = () => {

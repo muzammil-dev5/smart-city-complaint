@@ -1,30 +1,37 @@
+import { Box, Paper, Typography, Chip, Button } from "@mui/material";
 import {
-    Box,
-    Paper,
-    Typography,
-    Chip,
-    Button
-} from "@mui/material";
+    ArrowBack, CalendarTodayOutlined, CategoryOutlined, DescriptionOutlined, PlayArrow, EmailOutlined, EngineeringOutlined
+    // LocationOnOutlined,
+    // PersonOutline,
+} from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getAssignedComplaintById, updateComplaintStatus } from "../../services/complaintService";
+import "./OfficerComplaintDetails.scss";
+import type { Complaint } from "../../types/user";
 
+const getStatusLabel = (status: Complaint["status"]) => {
+    switch (status) {
+        case "in_progress":
+            return "In Progress";
 
-type Complaint = {
-    _id: string;
-    title: string;
-    description: string;
-    category: string;
-    status: "pending" | "assigned" | "in_progress" | "resolved" | "rejected";
-    createdAt: string;
-    citizen?: {
-        name: string;
-        email: string;
-    };
+        case "assigned":
+            return "Assigned";
+
+        case "resolved":
+            return "Resolved";
+
+        case "rejected":
+            return "Rejected";
+
+        default:
+            return "Pending";
+    }
 };
 
 const OfficerComplaintDetails = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [complaint, setComplaint] = useState<Complaint | null>(null);
     const [updating, setUpdating] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -32,16 +39,12 @@ const OfficerComplaintDetails = () => {
     useEffect(() => {
         const fetchComplaint = async () => {
             if (!id) return;
-
             try {
                 const response = await getAssignedComplaintById(id);
-
                 setComplaint(response.complaint);
             } catch (error) {
-                console.error(
-                    "Failed to fetch complaint:",
-                    error
-                );
+                console.error("Failed to fetch complaint:", error);
+
             } finally {
                 setLoading(false);
             }
@@ -50,120 +53,252 @@ const OfficerComplaintDetails = () => {
         fetchComplaint();
     }, [id]);
 
+
+    const handleStartComplaint = async () => {
+        if (!complaint) return;
+        try {
+            setUpdating(true);
+            const response = await updateComplaintStatus(complaint._id, "in_progress");
+            setComplaint(response.complaint);
+
+        } catch (error) {
+            console.error("Failed to start complaint:", error);
+        } finally {
+            setUpdating(false);
+        }
+    };
+
     if (loading) {
-        return <Typography>Loading complaint...</Typography>;
+        return (
+            <Box className="officerComplaintDetails_loading">
+                <Typography>
+                    Loading complaint...
+                </Typography>
+            </Box>
+        );
     }
 
     if (!complaint) {
         return (
-            <Typography>
-                Complaint not found.
-            </Typography>
+            <Box className="officerComplaintDetails_empty">
+                <Typography>
+                    Complaint not found.
+                </Typography>
+            </Box>
         );
     }
 
+
     return (
-        <Box>
+
+        <Box className="officerComplaintDetails">
+            <Box className="officerComplaintDetails_header">
+                <Button
+                    className="officerComplaintDetails_backButton"
+                    startIcon={<ArrowBack />}
+                    onClick={() => navigate("/officer/dashboard")}>
+                    Back to Complaints
+                </Button>
+
+                <Typography className="officerComplaintDetails_title">
+                    Complaint Details
+                </Typography>
+
+                <Typography className="officerComplaintDetails_subtitle">
+                    Review the assigned complaint and manage its workflow.
+                </Typography>
+            </Box>
+
             <Paper
-                elevation={3}
-                sx={{ p: 3 }}
-            >
-                <Typography
-                    variant="h5"
-                    gutterBottom
-                >
-                    {complaint.title}
-                </Typography>
+                elevation={0}
+                className="officerComplaintDetails_card">
+                <Box className="officerComplaintDetails_cardHeader">
+                    <Box>
+                        <Typography className="officerComplaintDetails_cardTitle">
+                            Complaint Information
+                        </Typography>
 
-                <Typography sx={{ mt: 2 }}>
-                    <strong>Description:</strong>{" "}
-                    {complaint.description}
-                </Typography>
+                        <Typography className="officerComplaintDetails_cardSubtitle">
+                            Details of the complaint assigned to you.
+                        </Typography>
+                    </Box>
 
-                <Typography sx={{ mt: 2 }}>
-                    <strong>Category:</strong>{" "}
-                    {complaint.category}
-                </Typography>
-
-                <Typography sx={{ mt: 2 }}>
-                    <strong>Status:</strong>{" "}
                     <Chip
-                        label={
-                            complaint.status === "in_progress"
-                                ? "In Progress"
-                                : complaint.status === "assigned"
-                                    ? "Assigned"
-                                    : complaint.status === "resolved"
-                                        ? "Resolved"
-                                        : complaint.status === "rejected"
-                                            ? "Rejected"
-                                            : "Pending"
-                        }
+                        label={getStatusLabel(complaint.status)}
+                        className={`officerStatus officerStatus_${complaint.status}`}
                     />
-                </Typography>
+                </Box>
+
+                <Box className="officerComplaintDetails_field">
+                    <Box className="officerComplaintDetails_icon">
+                        <DescriptionOutlined />
+                    </Box>
+                    <Box>
+                        <Typography className="officerComplaintDetails_label">
+                            Complaint Title
+                        </Typography>
+
+                        <Typography className="officerComplaintDetails_value">
+                            {complaint.title}
+                        </Typography>
+                    </Box>
+                </Box>
+
+                <Box className="officerComplaintDetails_field officerComplaintDetails_descriptionField">
+                    <Box className="officerComplaintDetails_icon">
+                        <DescriptionOutlined />
+                    </Box>
+                    <Box>
+                        <Typography className="officerComplaintDetails_label">
+                            Description
+                        </Typography>
+
+                        <Typography className="officerComplaintDetails_description">
+                            {complaint.description}
+                        </Typography>
+                    </Box>
+                </Box>
+
+                <Box className="officerComplaintDetails_grid">
+                    <Box className="officerComplaintDetails_field">
+                        <Box className="officerComplaintDetails_icon">
+                            <CategoryOutlined />
+                        </Box>
+                        <Box>
+                            <Typography className="officerComplaintDetails_label">
+                                Category
+                            </Typography>
+
+                            <Typography className="officerComplaintDetails_value">
+                                {complaint.category}
+                            </Typography>
+                        </Box>
+                    </Box>
+
+                    <Box className="officerComplaintDetails_field">
+                        <Box className="officerComplaintDetails_icon">
+                            <CalendarTodayOutlined />
+                        </Box>
+                        <Box>
+                            <Typography className="officerComplaintDetails_label">
+                                Submitted Date
+                            </Typography>
+
+                            <Typography className="officerComplaintDetails_value">
+                                {new Date(
+                                    complaint.createdAt
+                                ).toLocaleString()}
+                            </Typography>
+                        </Box>
+                    </Box>
+                </Box>
+
+                {complaint.citizen && (
+                    <Box className="officerComplaintDetails_citizen">
+                        <Typography className="officerComplaintDetails_citizenTitle">
+                            Citizen Information
+                        </Typography>
+                        <Box className="officerComplaintDetails_citizenGrid">
+                            <Box className="officerComplaintDetails_citizenItem">
+                                {/* <PersonIcon /> */}
+                                <EmailOutlined />
+                                <Box>
+                                    <Typography className="officerComplaintDetails_label">
+                                        Citizen
+                                    </Typography>
+
+                                    <Typography className="officerComplaintDetails_value">
+                                        {complaint.citizen.name}
+                                    </Typography>
+                                </Box>
+                            </Box>
+
+                            <Box className="officerComplaintDetails_citizenItem">
+                                <EmailOutlined />
+                                <Box>
+                                    <Typography className="officerComplaintDetails_label">
+                                        Email
+                                    </Typography>
+
+                                    <Typography className="officerComplaintDetails_value">
+                                        {complaint.citizen.email}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Box>
+                )}
 
                 {complaint.status === "assigned" && (
-                    <Button
-                        variant="contained"
-                        sx={{ mt: 3 }}
-                        disabled={updating}
-                        onClick={async () => {
-                            try {
-                                setUpdating(true);
-
-                                const response =
-                                    await updateComplaintStatus(
-                                        complaint._id,
-                                        "in_progress"
-                                    );
-
-                                setComplaint(response.complaint);
-
-                            } catch (error) {
-                                console.error(
-                                    "Failed to start complaint:",
-                                    error
-                                );
-                            } finally {
-                                setUpdating(false);
-                            }
-                        }}
-                    >
-                        {updating ? "Starting..." : "Start Complaint"}
-                    </Button>
+                    <Box className="officerComplaintDetails_actions">
+                        <Button
+                            variant="contained"
+                            startIcon={<PlayArrow />}
+                            disabled={updating}
+                            className="officerComplaintDetails_startButton"
+                            onClick={handleStartComplaint}>
+                            {updating
+                                ? "Starting..."
+                                : "Start Complaint"}
+                        </Button>
+                    </Box>
                 )}
 
                 {complaint.status === "in_progress" && (
-                    <Typography
-                        sx={{
-                            mt: 2,
-                            color: "text.secondary"
-                        }}
-                    >
-                        Complaint started. Waiting for worker to complete the work.
-                    </Typography>
+                    <Box className="officerComplaintDetails_infoMessage">
+                        <EngineeringOutlined />
+                        <Typography>
+                            Complaint started. Waiting for the worker
+                            to complete the work.
+                        </Typography>
+                    </Box>
                 )}
+            </Paper>
 
-                <Typography sx={{ mt: 2 }}>
-                    <strong>Date:</strong>{" "}
-                    {new Date(
-                        complaint.createdAt
-                    ).toLocaleString()}
+            <Paper
+                elevation={0}
+                className="officerComplaintDetails_card">
+                <Typography className="officerComplaintDetails_cardTitle">
+                    Complaint Workflow
                 </Typography>
 
-                {complaint.citizen && (
-                    <>
-                        <Typography sx={{ mt: 2 }}>
-                            <strong>Citizen:</strong>{" "}
-                            {complaint.citizen.name}
-                        </Typography>
+                <Typography className="officerComplaintDetails_cardSubtitle">
+                    Current progress of this complaint.
+                </Typography>
 
-                        <Typography sx={{ mt: 1 }}>
-                            <strong>Email:</strong>{" "}
-                            {complaint.citizen.email}
-                        </Typography>
-                    </>
-                )}
+                <Box className="officerComplaintDetails_workflow">
+                    <Box
+                        className={`workflowStep ${complaint.status === "assigned" ||
+                            complaint.status === "in_progress" ||
+                            complaint.status === "resolved"
+                            ? "workflowStep_active"
+                            : ""
+                            }`}>
+                        <Box className="workflowDot"> 1 </Box>
+                        <Typography>Assigned </Typography>
+                    </Box>
+
+                    <Box className="workflowLine" />
+                    <Box
+                        className={`workflowStep ${complaint.status === "in_progress" ||
+                            complaint.status === "resolved"
+                            ? "workflowStep_active"
+                            : ""
+                            }`}>
+                        <Box className="workflowDot">  2</Box>
+                        <Typography> In Progress</Typography>
+                    </Box>
+
+                    <Box className="workflowLine" />
+                    <Box
+                        className={`workflowStep ${complaint.status === "resolved"
+                            ? "workflowStep_active"
+                            : ""
+                            }`}>
+                        <Box className="workflowDot"> 3 </Box>
+                        <Typography> Resolved</Typography>
+                    </Box>
+                </Box>
             </Paper>
         </Box>
     );

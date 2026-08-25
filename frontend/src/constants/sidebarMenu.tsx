@@ -1,10 +1,10 @@
 import HomeIcon from "@mui/icons-material/Home";
 import NoteAltIcon from "@mui/icons-material/NoteAlt";
 import AddIcon from "@mui/icons-material/Add";
-import PersonIcon from "@mui/icons-material/Person";
-import GroupIcon from "@mui/icons-material/Group";
+// import PersonIcon from "@mui/icons-material/Person";
+// import GroupIcon from "@mui/icons-material/Group";
 import SettingsIcon from "@mui/icons-material/Settings";
-import DescriptionIcon from "@mui/icons-material/Description";
+// import DescriptionIcon from "@mui/icons-material/Description";
 
 export type MenuItem = {
     label: string;
@@ -70,11 +70,11 @@ export const officerMenu: MenuItem[] = [
         path: "/officer/dashboard",
         icon: <HomeIcon />
     },
-    {
-        label: "Users",
-        path: "/users",
-        icon: <GroupIcon />
-    },
+    // {
+    //     label: "Users",
+    //     path: "/users",
+    //     icon: <GroupIcon />
+    // },
     {
         label: "Departments",
         path: "/departments",
@@ -85,11 +85,11 @@ export const officerMenu: MenuItem[] = [
         path: "/complaints",
         icon: <NoteAltIcon />
     },
-    {
-        label: "Reports",
-        path: "/reports",
-        icon: <DescriptionIcon />
-    }
+    // {
+    //     label: "Reports",
+    //     path: "/reports",
+    //     icon: <DescriptionIcon />
+    // }
 ];
 
 export const workerMenu: MenuItem[] = [

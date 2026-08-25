@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
-import { getMyComplaints } from "../../../services/complaintService";
-import type { Complaint } from "../../../types/user";
+import { getMyComplaints } from "../../services/complaintService";
+import type { Complaint } from "../../types/user";
 import "./CitizenDashboard.scss";
 
 const CitizenDashboard = () => {

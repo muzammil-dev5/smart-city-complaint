@@ -2,9 +2,9 @@ import { Box, Chip, Paper, Typography, Button, Dialog, DialogTitle, DialogConten
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from "@mui/lab";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getComplaintById, deleteComplaint, updateComplaintStatus, getComplaintActivities } from "../../../services/complaintService";
+import { getComplaintById, deleteComplaint, updateComplaintStatus, getComplaintActivities } from "../../services/complaintService";
 import { useNavigate } from "react-router-dom";
-import type { Complaint } from "../../../types/user";
+import type { Complaint } from "../../types/user";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
