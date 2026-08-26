@@ -113,15 +113,16 @@ function App() {
                 path="/admin/dashboard"
                 element={<AdminDashboard />}
               />
+
+              <Route
+                path="/admin/complaints"
+                element={<AdminComplaints />}
+              />
+              <Route
+                path="/admin/departments"
+                element={<AdminDepartments />}
+              />
             </Route>
-            <Route
-              path="/admin/complaints"
-              element={<AdminComplaints />}
-            />
-            <Route
-              path="/admin/departments"
-              element={<AdminDepartments />}
-            />
           </Route>
 
         </Route>

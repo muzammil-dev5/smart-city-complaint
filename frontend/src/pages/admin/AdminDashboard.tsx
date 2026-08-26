@@ -1,346 +1,5 @@
-// import { Box, MenuItem, Paper, TextField, Typography, Select, InputLabel, FormControl } from '@mui/material';
-// import { useState, useEffect } from 'react';
-// import { getAllComplaints, getComplaintAnalytics } from "../../services/complaintService";
-// import UserTable from "../../components/Table/UserTable";
-// import { getAllUsers } from "../../services/userService";
-// import type { User, Complaint, RoleFilter } from "../../types/user";
-// import { BarChart } from "@mui/x-charts/BarChart";
-// import { PieChart } from "@mui/x-charts/PieChart";
-// import "./AdminDashboard.scss";
-
-// const AdminDashboard = () => {
-//     const [users, setUsers] = useState<User[]>([]);
-//     const [loading, setLoading] = useState(true);
-//     const [complaints, setComplaints] = useState<Complaint[]>([]);
-//     const [roleFilter, setRoleFilter] = useState<RoleFilter>("all");
-//     const [analytics, setAnalytics] = useState({
-//         total: 0, pending: 0, assigned: 0, inProgress: 0, resolved: 0, rejected: 0, categories: { roadDamage: 0, streetLight: 0, garbageCollection: 0 }
-//     })
-//     const [search, setSearch] = useState("");
-//     const storedUser = localStorage.getItem("user");
-//     const currentUser = storedUser ? JSON.parse(storedUser) : null;
-
-//     const filteredUsers = users.filter((user) => {
-//         const matchesSearch =
-//             user.name.toLowerCase().includes(search.toLocaleLowerCase()) ||
-//             user.email.toLowerCase().includes(search.toLowerCase())
-
-//         const matchesRole =
-//             roleFilter === "all" ||
-//             user.role === roleFilter;
-
-//         return matchesSearch && matchesRole;
-//     });
-
-//     const handleRoleUpdated = (
-//         userId: string,
-//         role: User["role"]
-//     ) => {
-//         setUsers((currentUsers) =>
-//             currentUsers.map((user) =>
-//                 user._id === userId
-//                     ? { ...user, role }
-//                     : user
-//             )
-//         );
-//     };
-
-//     const handleStatusUpdated = (
-//         userId: string,
-//         isActive: boolean
-//     ) => {
-//         setUsers((currentUsers) =>
-//             currentUsers.map((user) =>
-//                 user._id === userId
-//                     ? { ...user, isActive }
-//                     : user
-//             )
-//         );
-//     };
-
-//     useEffect(() => {
-//         const fetchDashboardData = async () => {
-//             try {
-//                 const [complaintsResponse, usersResponse, analyticsResponse] = await Promise.all([
-//                     getAllComplaints(),
-//                     getAllUsers(),
-//                     getComplaintAnalytics()
-//                 ]);
-
-//                 setComplaints(complaintsResponse.complaints);
-//                 setUsers(usersResponse.users);
-//                 setAnalytics(analyticsResponse.analytics)
-
-//             } catch (error) {
-//                 console.error("Failed to fetch admin dashboard data:", error);
-//             } finally {
-//                 setLoading(false);
-//             }
-//         };
-//         fetchDashboardData();
-//     }, []);
-
-//     return (
-//         <>
-//             {loading ? (<Typography>Loading... </Typography>) : (
-//                 <Box className="AdminDashboard">
-//                     {/* Dashboard Header */}
-//                     <Typography variant="h4" gutterBottom>Admin Dashboard</Typography>
-//                     <Typography variant="body1" sx={{ mb: 3 }}> Manage the Smart City Complaint Management System.</Typography>
-
-//                     {/* complaints Analytics Cards */}
-//                     <Box className="Analytics-dashboard-card" >
-//                         <div className='Analytics-card'>
-//                             <Typography className='Analytics-title'>Total Complaints </Typography>
-//                             <div className='Analytics-count'>{analytics.total}</div>
-//                         </div>
-
-//                         <div className='Analytics-card'>
-//                             <Typography className='Analytics-title'>Pending Complaints </Typography>
-//                             <div className='Analytics-count'>{analytics.pending}</div>
-//                         </div>
-
-//                         <div className='Analytics-card'>
-//                             <Typography className='Analytics-title'>Assigned Complaints </Typography>
-//                             <div className='Analytics-count'>{analytics.assigned}</div>
-//                         </div>
-
-//                         <div className='Analytics-card'>
-//                             <Typography className='Analytics-title'>In Progress Complaints </Typography>
-//                             <div className='Analytics-count'>{analytics.inProgress}</div>
-//                         </div>
-
-//                         <div className='Analytics-card'>
-//                             <Typography className='Analytics-title'>Resolved Complaints </Typography>
-//                             <div className='Analytics-count'>{analytics.resolved}</div>
-//                         </div>
-
-//                         <div className='Analytics-card'>
-//                             <Typography className='Analytics-title'>Rejected Complaints </Typography>
-//                             <div className='Analytics-count'>{analytics.rejected}</div>
-//                         </div>
-//                     </Box >
-
-//                     {/* complaints By Ctaegory Bar chart */}
-//                     < Paper sx={{ p: 3, mt: 3 }}>
-//                         <Typography variant="h6" gutterBottom>Complaints by Category</Typography>
-//                         <Box sx={{ width: "100%", overflowX: "auto" }}>
-//                             <BarChart
-//                                 xAxis={[
-//                                     {
-//                                         scaleType: "band",
-//                                         data: [
-//                                             "Road Damage",
-//                                             "Street Light",
-//                                             "Garbage Collection"
-//                                         ]
-//                                     }
-//                                 ]}
-//                                 series={[
-//                                     {
-//                                         data: [
-//                                             analytics.categories.roadDamage,
-//                                             analytics.categories.streetLight,
-//                                             analytics.categories.garbageCollection
-//                                         ],
-//                                         label: "Complaints"
-//                                     }
-//                                 ]}
-//                                 height={350}
-//                                 sx={{ width: "100%", minWidth: 400 }}
-//                             />
-//                         </Box>
-//                     </ Paper>
-
-//                     {/* complaints by status Pie Chart */}
-//                     < Paper sx={{ p: 3, mt: 3 }}>
-//                         <Typography variant="h6" gutterBottom>Complaints by Status</Typography>
-
-//                         <Box sx={{ width: "100%", display: "flex", justifyContent: "center", overflowX: "auto" }}>
-//                             <PieChart
-//                                 series={[
-//                                     {
-//                                         data: [
-//                                             {
-//                                                 id: 0,
-//                                                 value: analytics.pending,
-//                                                 label: "Pending"
-//                                             },
-//                                             {
-//                                                 id: 1,
-//                                                 value: analytics.assigned,
-//                                                 label: "Assigned"
-//                                             },
-//                                             {
-//                                                 id: 2,
-//                                                 value: analytics.inProgress,
-//                                                 label: "In Progress"
-//                                             },
-//                                             {
-//                                                 id: 3,
-//                                                 value: analytics.resolved,
-//                                                 label: "Resolved"
-//                                             },
-//                                             {
-//                                                 id: 4,
-//                                                 value: analytics.rejected,
-//                                                 label: "Rejected"
-//                                             }
-//                                         ],
-//                                         innerRadius: 60,
-//                                         outerRadius: 120,
-//                                         paddingAngle: 2
-//                                     }
-//                                 ]}
-//                                 height={350}
-//                                 sx={{ width: "100%", maxWidth: 500 }} />
-//                         </Box>
-//                     </Paper >
-
-//                     {/* Basic Reports Complain Status and Complain Summary */}
-//                     < Box
-//                         sx={{
-//                             display: "grid",
-//                             gridTemplateColumns: {
-//                                 xs: "1fr",
-//                                 md: "repeat(2, 1fr)"
-//                             },
-//                             gap: 2,
-//                             mt: 3
-//                         }}>
-//                         {/* Complaint Statistics */}
-//                         < Paper sx={{ p: 3 }}>
-//                             <Typography variant="h6" gutterBottom>Complaint Statistics</Typography>
-//                             <Box
-//                                 sx={{
-//                                     display: "grid",
-//                                     gridTemplateColumns: {
-//                                         xs: "1fr",
-//                                         sm: "repeat(2, 1fr)"
-//                                     },
-//                                     gap: 2, mt: 2
-//                                 }}>
-//                                 <Box>
-//                                     <Typography variant="body2" color="text.secondary">Total Complaints</Typography>
-//                                     <Typography variant="h6">{analytics.total}</Typography>
-//                                 </Box>
-
-//                                 <Box>
-//                                     <Typography variant="body2" color="text.secondary">Pending</Typography>
-//                                     <Typography variant="h6">{analytics.pending}</Typography>
-//                                 </Box>
-
-//                                 <Box>
-//                                     <Typography variant="body2" color="text.secondary">Assigned</Typography>
-//                                     <Typography variant="h6">{analytics.assigned}</Typography>
-//                                 </Box>
-
-//                                 <Box>
-//                                     <Typography variant="body2" color="text.secondary">In Progress</Typography>
-//                                     <Typography variant="h6">{analytics.inProgress}</Typography>
-//                                 </Box>
-
-//                                 <Box>
-//                                     <Typography variant="body2" color="text.secondary">Resolved</Typography>
-//                                     <Typography variant="h6">{analytics.resolved}</Typography>
-//                                 </Box>
-
-//                                 <Box>
-//                                     <Typography variant="body2" color="text.secondary">Rejected</Typography>
-//                                     <Typography variant="h6">{analytics.rejected}</Typography>
-//                                 </Box>
-//                             </Box>
-//                         </Paper >
-
-//                         {/* Category Summary */}
-//                         < Paper sx={{ p: 3 }}>
-//                             <Typography variant="h6" gutterBottom> Category Summary</Typography>
-
-//                             <Box sx={{ mt: 2 }}>
-//                                 <Box sx={{ mb: 2 }}>
-//                                     <Typography variant="body2" color="text.secondary">Road Damage</Typography>
-//                                     <Typography variant="h6">{analytics.categories.roadDamage}</Typography>
-//                                 </Box>
-
-//                                 <Box sx={{ mb: 2 }}>
-//                                     <Typography variant="body2" color="text.secondary">Street Light</Typography>
-//                                     <Typography variant="h6">{analytics.categories.streetLight}</Typography>
-//                                 </Box>
-
-//                                 <Box>
-//                                     <Typography variant="body2" color="text.secondary">Garbage Collection</Typography>
-//                                     <Typography variant="h6">{analytics.categories.garbageCollection}</Typography>
-//                                 </Box>
-//                             </Box>
-//                         </Paper >
-//                     </Box >
-
-//                     {/* User Management */}
-//                     < Box sx={{
-//                         display: "grid",
-//                         marginTop: "20px",
-//                         gridTemplateColumns: {
-//                             xs: "1fr",
-//                             sm: "repeat(2, 1fr)",
-//                             md: "repeat(2, 1fr)"
-//                         }, gap: 2
-//                     }}>
-//                         <Paper sx={{ p: 3 }}>
-//                             <Typography variant="h5" sx={{ mt: 2, mb: 2 }}> User Management </Typography>
-//                         </Paper>
-
-//                         <Paper sx={{ p: 3 }}>
-//                             <TextField
-//                                 fullWidth
-//                                 value={search}
-//                                 label="Search Users"
-//                                 placeholder="Search by name or email..."
-//                                 onChange={(e) => setSearch(e.target.value)}
-//                             />
-//                         </Paper>
-
-//                         <FormControl sx={{ minWidth: 200, mb: 2 }}>
-//                             <InputLabel id="role-filter-label">
-//                                 Role
-//                             </InputLabel>
-//                             <Select labelId="role-filter-label" value={roleFilter} label="Select Role Filter" onChange={(e) => setRoleFilter(e.target.value)}>
-//                                 <MenuItem value="all">All Roles</MenuItem>
-//                                 <MenuItem value="citizen">Citizen</MenuItem>
-//                                 <MenuItem value="officer">Officer</MenuItem>
-//                                 <MenuItem value="worker">Worker</MenuItem>
-//                                 <MenuItem value="admin">Admin</MenuItem>
-//                             </Select>
-//                         </FormControl>
-//                     </Box >
-
-//                     {/* User Data Table */}
-//                     <UserTable
-//                         users={filteredUsers}
-//                         onRoleUpdated={handleRoleUpdated}
-//                         onStatusUpdated={handleStatusUpdated}
-//                         currentUserId={currentUser?.id}
-//                     />
-
-//                 </Box >
-//             )}
-//         </>
-//     );
-// }
-
-// export default AdminDashboard;
-
-
-
 import {
-    Box,
-    CircularProgress,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Paper,
-    Select,
-    TextField,
-    Typography,
+    Box, Paper, Typography, CircularProgress, FormControl, InputLabel, Select, MenuItem, TextField,
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { getComplaintAnalytics } from "../../services/complaintService";
@@ -356,7 +15,6 @@ const AdminDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [roleFilter, setRoleFilter] = useState<RoleFilter>("all");
     const [search, setSearch] = useState("");
-
     const [analytics, setAnalytics] = useState({
         total: 0,
         pending: 0,
@@ -374,9 +32,6 @@ const AdminDashboard = () => {
     const storedUser = localStorage.getItem("user");
     const currentUser = storedUser ? JSON.parse(storedUser) : null;
 
-    /*
-     * Filter users
-     */
     const filteredUsers = useMemo(() => {
         const searchValue = search.trim().toLowerCase();
 
@@ -393,9 +48,6 @@ const AdminDashboard = () => {
         });
     }, [users, search, roleFilter]);
 
-    /*
-     * Update user role locally after successful API update
-     */
     const handleRoleUpdated = (
         userId: string,
         role: User["role"]
@@ -409,9 +61,6 @@ const AdminDashboard = () => {
         );
     };
 
-    /*
-     * Update user active status locally
-     */
     const handleStatusUpdated = (
         userId: string,
         isActive: boolean
@@ -425,9 +74,6 @@ const AdminDashboard = () => {
         );
     };
 
-    /*
-     * Fetch dashboard data
-     */
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
@@ -440,10 +86,7 @@ const AdminDashboard = () => {
                 setUsers(usersResponse.users);
                 setAnalytics(analyticsResponse.analytics);
             } catch (error) {
-                console.error(
-                    "Failed to fetch admin dashboard data:",
-                    error
-                );
+                console.error("Failed to fetch admin dashboard data:", error);
             } finally {
                 setLoading(false);
             }
@@ -452,45 +95,18 @@ const AdminDashboard = () => {
         fetchDashboardData();
     }, []);
 
-    /*
-     * Loading state
-     */
     if (loading) {
         return (
-            <Box
-                sx={{
-                    minHeight: "60vh",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        gap: 2,
-                    }}
-                >
-                    <CircularProgress />
-                    <Typography color="text.secondary">
-                        Loading dashboard...
-                    </Typography>
-                </Box>
+            <Box className="adminDashboard-loading">
+                <CircularProgress />
+                <Typography>
+                    Loading dashboard...
+                </Typography>
             </Box>
         );
     }
 
-    /*
-     * Analytics cards
-     */
     const analyticsCards = [
-        {
-            title: "Total Complaints",
-            value: analytics.total,
-            className: "total",
-        },
         {
             title: "Pending",
             value: analytics.pending,
@@ -519,60 +135,67 @@ const AdminDashboard = () => {
     ];
 
     return (
-        <Box className="">
-            {/* DASHBOARD HEADER */}
-            <div className="adminDashboard">
-                <div className="adminDashboard-header">
-                    Admin Dashboard
-                </div>
+        <Box className="adminDashboard-page">
+            <Box className="adminDashboard">
+                <Box className="adminDashboard-content">
+                    <Typography className="adminDashboard-header">
+                        Admin Dashboard
+                    </Typography>
 
-                <div className="adminDashboard-title"> Manage and monitor the Smart City Complaint
-                    Management System.
-                </div>
-            </div>
+                    <Typography className="adminDashboard-title">
+                        Manage and monitor the Smart City Complaint Management System.
+                    </Typography>
+                </Box>
 
-            {/* COMPLAINT OVERVIEW */}
-            {/* <div>Complaint Overview</div> */}
+                <Box className="adminComplaints-count">
+                    <Typography className="count-label">
+                        Total Complaints
+                    </Typography>
+
+                    <Typography className="count-number">
+                        0
+                    </Typography>
+                </Box>
+            </Box>
+
             <Box className="Analytics-dashboard-card">
                 {analyticsCards.map((card) => (
-                    <div key={card.title} className={`Analytics-card ${card.className}`}>
-                        <div className="Analytics-title">
-                            {card.title}
-                        </div>
+                    <Paper
+                        elevation={0}
+                        key={card.title}
+                        className={`Analytics-card ${card.className}`}>
+                        <Box>
+                            <Typography className="Analytics-title">
+                                {card.title}
+                            </Typography>
 
-                        <div className="Analytics-count">
+                            <Typography className="Analytics-description">
+                                Complaint overview
+                            </Typography>
+                        </Box>
+
+                        <Box className="Analytics-count">
                             {card.value}
-                        </div>
-                    </div>
+                        </Box>
+                    </Paper>
                 ))}
             </Box>
 
-            {/* =====================================================
-                COMPLAINT ANALYTICS
-            ====================================================== */}
-
-
-            <Box
-                className="charts"
-                sx={{
-                    display: "grid",
-                    gap: 2,
-                    gridTemplateColumns: {
-                        xs: "1fr",
-                        lg: "repeat(2, 1fr)",
-                    },
-                }}>
-
+            <Box className="charts">
                 <Paper
                     elevation={0}
-                    className="chart-card barchart">
+                    className="chart-card">
+                    <Box className="chart-card-header">
+                        <Box>
+                            <Typography className="chart-heading">
+                                Complaints by Category
+                            </Typography>
 
-                    <div className="barChart-heading">
-                        Complaints by Category
-                    </div>
-                    <div className="barChart-title">
-                        Distribution of complaints across different categories.
-                    </div>
+                            <Typography className="chart-title">
+                                Distribution across complaint categories
+                            </Typography>
+                        </Box>
+                    </Box>
 
                     <Box className="chart-wrapper">
                         <BarChart
@@ -596,24 +219,27 @@ const AdminDashboard = () => {
                                     label: "Complaints",
                                 },
                             ]}
-                            height={200}
-                            sx={{ width: "100%", }} />
+                            height={250}
+                            sx={{
+                                width: "100%",
+                            }} />
                     </Box>
                 </Paper>
 
-                {/* Status Chart */}
-
                 <Paper
                     elevation={0}
-                    className="chart-card piechart">
+                    className="chart-card">
+                    <Box className="chart-card-header">
+                        <Box>
+                            <Typography className="chart-heading">
+                                Complaints by Status
+                            </Typography>
 
-                    <div className="piechart-heading">
-                        Complaints by Status
-                    </div>
-
-                    <div className="piechart-title">
-                        Current status distribution of all complaints.
-                    </div>
+                            <Typography className="chart-title">
+                                Current complaint status distribution
+                            </Typography>
+                        </Box>
+                    </Box>
 
                     <Box className="chart-wrapper pie-wrapper">
                         <PieChart
@@ -646,52 +272,45 @@ const AdminDashboard = () => {
                                             label: "Rejected",
                                         },
                                     ],
-                                    outerRadius: 82,
-                                    innerRadius: 48,
+                                    outerRadius: 88,
+                                    innerRadius: 52,
                                     paddingAngle: 2,
                                 },
                             ]}
-                            height={200}
-                            sx={{ width: "100%", maxWidth: 450, }} />
+                            height={250}
+                            sx={{
+                                width: "100%",
+                                maxWidth: 450,
+                            }}
+                        />
                     </Box>
                 </Paper>
             </Box>
 
-            {/* COMPLAINT SUMMARY */}
-
-
-            {/* =====================================================
-                USER MANAGEMENT
-            ====================================================== */}
-
             <Paper
                 className="adminDataTable"
-                elevation={0}
-                sx={{
-                    p: {
-                        xs: 2,
-                        sm: 3,
-                    },
-                    borderRadius: 2,
-                    border: "1px solid",
-                    borderColor: "divider",
-                }}
-            >
-                <div className="adminDataTable-Header">
-                    <div className="adminDataTable-Heading">User Management</div>
+                elevation={0}>
+                <Box className="adminDataTable-Header">
+                    <Box className="adminDataTable-Info">
+                        <Typography className="adminDataTable-Heading">
+                            User Management
+                        </Typography>
 
-                    <div className="adminDataTable-filters">
+                        <Typography className="adminDataTable-Subtitle">
+                            Manage registered users and their access
+                        </Typography>
+                    </Box>
+
+                    <Box className="adminDataTable-filters">
                         <TextField
-                            fullWidth
                             className="dataTableSearchFilter"
                             value={search}
                             label="Search Users"
                             placeholder="Search by name or email..."
-                            onChange={(e) =>
-                                setSearch(e.target.value)
-                            }
+                            onChange={(e) => setSearch(e.target.value)}
                         />
-                        <FormControl fullWidth>
+
+                        <FormControl className="roleFilter">
                             <InputLabel id="role-filter-label">
                                 Role
                             </InputLabel>
@@ -703,8 +322,7 @@ const AdminDashboard = () => {
                                     setRoleFilter(
                                         e.target.value as RoleFilter
                                     )
-                                }
-                            >
+                                }>
                                 <MenuItem value="all">
                                     All Roles
                                 </MenuItem>
@@ -726,19 +344,20 @@ const AdminDashboard = () => {
                                 </MenuItem>
                             </Select>
                         </FormControl>
-                    </div>
-                </div>
+                    </Box>
+                </Box>
 
                 <UserTable
                     users={filteredUsers}
                     onRoleUpdated={handleRoleUpdated}
                     onStatusUpdated={handleStatusUpdated}
                     currentUserId={
-                        currentUser?._id ?? currentUser?.id
+                        currentUser?._id ??
+                        currentUser?.id
                     }
                 />
             </Paper>
-        </Box >
+        </Box>
     );
 };
 
