@@ -3,6 +3,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const connectDB = require("./src/config/db");
+require("./src/config/cloudinary");
 const authRoutes = require("./src/routes/authRoutes");
 const complaintRoutes = require("./src/routes/complaintRoutes");
 const userRoutes = require("./src/routes/userRoutes");

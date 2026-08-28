@@ -3,17 +3,34 @@ const User = require("../models/User");
 const Department = require("../models/Department");
 const ComplaintActivity = require("../models/ComplaintActivity");
 const Notification = require("../models/Notification");
+// const upload = require("../middleware/uploadMiddleware");
 
 const createComplaint = async (req, res) => {
     try {
+        console.log("BODY:", req.body);
+        console.log("FILES:", req.files);
         const {
             title,
             description,
             category,
-            location,
-            department,
-            images
+            department
         } = req.body;
+
+        let location;
+
+        try {
+            location = req.body.location
+                ? JSON.parse(req.body.location)
+                : null;
+        } catch (error) {
+            return res.status(400).json({
+                message: "Invalid location data"
+            });
+        }
+
+        // const imageUrls = req.files
+        //     ? req.files.map((file) => file.path)
+        //     : [];
 
         if (!title || !description || !category || !location?.address) {
             return res.status(400).json({
@@ -27,8 +44,9 @@ const createComplaint = async (req, res) => {
             category,
             location,
             department: department || null,
-            images: images || [],
             citizen: req.user.id,
+
+            images: [],
 
             statusHistory: [
                 {
@@ -51,6 +69,7 @@ const createComplaint = async (req, res) => {
         });
     }
 };
+
 
 const getMyComplaints = async (req, res) => {
     try {

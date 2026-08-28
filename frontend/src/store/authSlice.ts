@@ -4,6 +4,8 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 type User = {
     id: string;
+    name: string;
+    email: string;
     role: "citizen" | "officer" | "worker" | "admin";
 }
 

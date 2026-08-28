@@ -4,20 +4,40 @@ export interface CreateComplaintData {
     title: string,
     description: string,
     category: string,
-    address: string
+    address: string,
+    images?: File[]
 }
 
-export const createComplaint = async (data: CreateComplaintData) => {
-    const response = await api.post("/complaints", {
-        title: data.title,
-        description: data.description,
-        category: data.category,
-        location: {
+export const createComplaint = async (
+    data: CreateComplaintData,
+    images?: File[]
+) => {
+    const formData = new FormData();
+
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("category", data.category);
+
+    formData.append(
+        "location",
+        JSON.stringify({
             address: data.address
-        }
-    })
+        })
+    );
+
+    if (images) {
+        images.forEach((image) => {
+            formData.append("images", image);
+        });
+    }
+
+    const response = await api.post(
+        "/complaints",
+        formData
+    );
+
     return response.data;
-}
+};
 
 export const getMyComplaints = async () => {
     const response = await api.get("/complaints/my");

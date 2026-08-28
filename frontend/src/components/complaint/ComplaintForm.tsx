@@ -1,6 +1,6 @@
 import { Box, Button, MenuItem, TextField } from "@mui/material";
 import { DescriptionOutlined, LocationOnOutlined, TitleOutlined } from "@mui/icons-material";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "./ComplaintForm.scss";
 
@@ -9,6 +9,7 @@ export type ComplaintFormData = {
     description: string;
     category: string;
     address: string;
+    images?: File[];
 };
 
 type ComplaintFormProps = {
@@ -20,6 +21,7 @@ type ComplaintFormProps = {
 };
 
 const ComplaintForm = ({ initialData, onSubmit, submitText = "Create Complaint" }: ComplaintFormProps) => {
+    const [selectedImages, setSelectedImages] = useState<File[]>([]);
     const {
         register,
         handleSubmit,
@@ -28,6 +30,17 @@ const ComplaintForm = ({ initialData, onSubmit, submitText = "Create Complaint" 
     } = useForm<ComplaintFormData>({
         defaultValues: initialData
     });
+
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (!event.target.files) return;
+        const files = Array.from(event.target.files);
+
+        if (files.length > 5) {
+            alert("You can upload maximum 5 images.");
+            return;
+        }
+        setSelectedImages(files);
+    };
 
     useEffect(() => {
         if (initialData) {
@@ -128,6 +141,36 @@ const ComplaintForm = ({ initialData, onSubmit, submitText = "Create Complaint" 
                         }}
                     />
                 </Box>
+
+                <Box className="complaintForm_field">
+    <Button
+        variant="outlined"
+        component="label"
+        className="complaintForm_uploadButton"
+    >
+        Upload Images
+        <input
+            type="file"
+            hidden
+            multiple
+            accept="image/*"
+            onChange={handleImageChange}
+        />
+    </Button>
+
+    {selectedImages.length > 0 && (
+        <Box className="complaintForm_imageList">
+            {selectedImages.map((file, index) => (
+                <Box
+                    key={`${file.name}-${index}`}
+                    className="complaintForm_imageItem"
+                >
+                    {file.name}
+                </Box>
+            ))}
+        </Box>
+    )}
+</Box>
             </Box>
 
             <Box className="complaintForm_actions">
