@@ -27,6 +27,7 @@ export type Complaint = {
     description: string;
     category: string;
     status: "assigned" | "pending" | "in_progress" | "resolved" | "rejected";
+    images?: string[];
     createdAt: string;
     statusHistory: StatusHistory[];
     citizen?: {

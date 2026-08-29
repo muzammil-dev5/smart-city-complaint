@@ -1,5 +1,9 @@
-import { Box, Button, MenuItem, TextField } from "@mui/material";
-import { DescriptionOutlined, LocationOnOutlined, TitleOutlined } from "@mui/icons-material";
+import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
+import {
+    DescriptionOutlined,
+    LocationOnOutlined,
+    TitleOutlined
+} from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +15,7 @@ export type ComplaintFormData = {
     category: string;
     address: string;
     images?: File[];
+    existingImages?: string[];
 };
 
 type ComplaintFormProps = {
@@ -21,8 +26,13 @@ type ComplaintFormProps = {
     submitText?: string;
 };
 
-const ComplaintForm = ({ initialData, onSubmit, submitText = "Create Complaint" }: ComplaintFormProps) => {
+const ComplaintForm = ({
+    initialData,
+    onSubmit,
+    submitText = "Create Complaint"
+}: ComplaintFormProps) => {
     const [images, setImages] = useState<File[]>([]);
+    const [existingImages, setExistingImages] = useState<string[]>([]);
     const navigate = useNavigate();
 
     const {
@@ -37,14 +47,24 @@ const ComplaintForm = ({ initialData, onSubmit, submitText = "Create Complaint" 
     useEffect(() => {
         if (initialData) {
             reset(initialData);
-            setImages(initialData.images || []);
+            setImages([]);
+            setExistingImages(
+                initialData.existingImages || []
+            );
         }
     }, [initialData, reset]);
+
+    const handleRemoveExistingImage = (image: string) => {
+        setExistingImages((prev) =>
+            prev.filter((item) => item !== image)
+        );
+    };
 
     const handleFormSubmit = (data: ComplaintFormData) => {
         const formData: ComplaintFormData = {
             ...data,
-            images
+            images,
+            existingImages
         };
         onSubmit(formData);
     };
@@ -165,16 +185,111 @@ const ComplaintForm = ({ initialData, onSubmit, submitText = "Create Complaint" 
                             }
 
                             setImages(files);
-                            console.log("SELECTED FILES:", files);
                         }}
                     />
 
+                    {existingImages.length > 0 && (
+                        <Box sx={{ mt: 2 }}>
+
+                            <Typography sx={{ mb: 1 }}>
+                                Existing Images
+                            </Typography>
+
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    gap: 1.5,
+                                    flexWrap: "wrap"
+                                }}
+                            >
+                                {existingImages.map(
+                                    (image, index) => (
+                                        <Box
+                                            key={image}
+                                            sx={{
+                                                position:
+                                                    "relative",
+                                                width: 90,
+                                                height: 90,
+                                                borderRadius: 1,
+                                                overflow:
+                                                    "hidden",
+                                                border:
+                                                    "1px solid #d1fae5"
+                                            }}
+                                        >
+
+                                            <img
+                                                src={image}
+                                                alt={`Complaint image ${index + 1}`}
+                                                style={{
+                                                    width:
+                                                        "100%",
+                                                    height:
+                                                        "100%",
+                                                    objectFit:
+                                                        "cover"
+                                                }}
+                                            />
+
+                                            <Button
+                                                type="button"
+                                                onClick={() =>
+                                                    handleRemoveExistingImage(
+                                                        image
+                                                    )
+                                                }
+                                                sx={{
+                                                    position:
+                                                        "absolute",
+                                                    top: 4,
+                                                    right: 4,
+                                                    minWidth:
+                                                        24,
+                                                    width: 24,
+                                                    height: 24,
+                                                    padding: 0,
+                                                    borderRadius:
+                                                        "50%",
+                                                    backgroundColor:
+                                                        "rgba(0,0,0,0.65)",
+                                                    color:
+                                                        "#fff",
+                                                    fontSize:
+                                                        16,
+                                                    lineHeight:
+                                                        1,
+                                                    "&:hover":
+                                                    {
+                                                        backgroundColor:
+                                                            "rgba(220,38,38,0.9)"
+                                                    }
+                                                }}
+                                            >
+                                                ×
+                                            </Button>
+
+                                        </Box>
+                                    )
+                                )}
+                            </Box>
+                        </Box>
+                    )}
+
                     {images.length > 0 && (
-                        <Box sx={{ mt: 1 }}>
-                            {images.map((image, index) => (
-                                <div key={index}>
-                                    {image.name}
-                                </div>
+                        <Box sx={{ mt: 2 }}>
+
+                            <Typography sx={{ mb: 1 }}>
+                                New Images
+                            </Typography>
+
+                            {images.map(
+                                (image, index) => (
+                                    <div
+                                        key={`${image.name}-${index}`}
+                                    >
+                                        {image.name}
+                                    </div>
                             ))}
                         </Box>
                     )}

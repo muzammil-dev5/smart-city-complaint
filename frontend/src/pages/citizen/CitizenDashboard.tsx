@@ -26,7 +26,24 @@ const CitizenDashboard = () => {
         const fetchComplaints = async () => {
             try {
                 const response = await getMyComplaints();
-                setComplaints(response.complaints);
+                const complaints = response.complaints;
+                setComplaints(complaints);
+
+                setAnalytics({
+                    total: complaints.length,
+                    pending: complaints.filter((complaint: Complaint) => complaint.status === "pending").length,
+                    assigned: complaints.filter((complaint: Complaint) => complaint.status === "assigned").length,
+                    inProgress: complaints.filter((complaint: Complaint) => complaint.status === "in_progress").length,
+                    resolved: complaints.filter((complaint: Complaint) => complaint.status === "resolved").length,
+                    rejected: complaints.filter((complaint: Complaint) => complaint.status === "rejected").length,
+
+                    categories: {
+                        roadDamage: complaints.filter((complaint: Complaint) => complaint.category === "road_damage").length,
+                        streetLight: complaints.filter((complaint: Complaint) => complaint.category === "street_light").length,
+                        garbageCollection: complaints.filter((complaint: Complaint) => complaint.category === "garbage_collection").length,
+                    },
+                });
+
             } catch (error) {
                 console.error("Failed to fetch complaints:", error);
             } finally {

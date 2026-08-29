@@ -307,7 +307,6 @@ const Navbar = () => {
                         </Box>
                     ) : (
                         notifications.map((notification) => {
-                            console.log(notification.type);
                             return (
                                 <MenuItem
                                     key={notification._id}

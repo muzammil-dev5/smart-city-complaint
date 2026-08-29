@@ -36,6 +36,7 @@ const MyComplaints = () => {
                                     <TableCell>Title</TableCell>
                                     <TableCell>Category</TableCell>
                                     <TableCell>Description</TableCell>
+                                    <TableCell>Image</TableCell>
                                     <TableCell>Status</TableCell>
                                     <TableCell>Date</TableCell>
                                     <TableCell align="center">Action</TableCell>
@@ -51,6 +52,26 @@ const MyComplaints = () => {
                                         <TableCell>{complaint.title}</TableCell>
                                         <TableCell>{complaint.category}</TableCell>
                                         <TableCell>{complaint.description}</TableCell>
+                                        <TableCell>
+                                            {complaint.images && complaint.images.length > 0 ? (
+                                                <Box className="complaintTable_imageWrapper">
+                                                    <img
+                                                        src={complaint.images[0]}
+                                                        alt="Complaint"
+                                                        className="complaintTable_image"
+                                                    />
+                                                    {complaint.images.length > 1 && (
+                                                        <Typography className="complaintTable_imageCount">
+                                                            +{complaint.images.length - 1}
+                                                        </Typography>
+                                                    )}
+                                                </Box>
+                                            ) : (
+                                                <Typography className="complaintTable_noImage">
+                                                    No image
+                                                </Typography>
+                                            )}
+                                        </TableCell>
                                         <TableCell><Chip label={complaint.status} /></TableCell>
                                         <TableCell>
                                             {new Date(

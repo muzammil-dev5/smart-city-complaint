@@ -120,6 +120,37 @@
         font: 14px/1.7 "Poppins", sans-serif !important;
         word-break: break-word;
     }
+    .complaintDetails_imagesSection {
+        margin-top: 24px;
+    }
+
+    .complaintDetails_images {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-top: 12px;
+    }
+
+    .complaintDetails_imageWrapper {
+        height: 220px;
+        overflow: hidden;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        background: #f9fafb;
+        cursor: pointer;
+    }
+
+    .complaintDetails_image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.25s ease;
+    }
+
+    .complaintDetails_imageWrapper:hover .complaintDetails_image {
+        transform: scale(1.05);
+    }
 
     .complaintStatus {
         border-radius: 6px !important;
@@ -422,5 +453,60 @@
         &_delete {
             min-width: auto;
         }
+    }
+}
+
+.complaintImageDialog_content {
+    position: relative;
+    padding: 8px;
+    background: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.complaintImageDialog_image {
+    display: block;
+    max-width: 90vw;
+    max-height: 85vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+.complaintImageDialog_close {
+    position: absolute !important;
+    top: 12px;
+    right: 12px;
+    min-width: 40px !important;
+    width: 40px;
+    height: 40px;
+    border-radius: 50% !important;
+    color: white !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+    z-index: 2;
+}
+
+.complaintImageDialog_close:hover {
+    background: rgba(0, 0, 0, 0.8) !important;
+}
+
+@media (max-width: 768px) {
+    .complaintDetails_images {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .complaintDetails_imageWrapper {
+        height: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .complaintDetails_images {
+        grid-template-columns: 1fr;
+    }
+
+    .complaintDetails_imageWrapper {
+        height: 220px;
     }
 }

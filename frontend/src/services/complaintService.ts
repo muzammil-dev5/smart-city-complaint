@@ -1,11 +1,12 @@
 import api from "./api"
 
 export interface CreateComplaintData {
-    title: string,
-    description: string,
-    category: string,
-    address: string,
-    images?: File[]
+    title: string;
+    description: string;
+    category: string;
+    address: string;
+    images?: File[];
+    existingImages?: string[];
 }
 
 export const createComplaint = async (
@@ -23,6 +24,13 @@ export const createComplaint = async (
             address: data.address
         })
     );
+
+    if (data.existingImages) {
+        formData.append(
+            "existingImages",
+            JSON.stringify(data.existingImages)
+        );
+    }
 
     if (data.images && data.images.length > 0) {
         data.images.forEach((image) => {
@@ -50,8 +58,32 @@ export const getComplaintById = async (id: string) => {
     return response.data;
 };
 
-export const updateComplaint = async (id: string, data: CreateComplaintData) => {
-    const response = await api.put(`/complaints/${id}`, data);
+export const updateComplaint = async (
+    id: string,
+    data: CreateComplaintData
+) => {
+    const formData = new FormData();
+
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("category", data.category);
+    formData.append("address", data.address);
+
+    formData.append(
+        "existingImages",
+        JSON.stringify(data.existingImages || [])
+    );
+
+    if (data.images && data.images.length > 0) {
+        data.images.forEach((image) => {
+            formData.append("images", image);
+        });
+    }
+
+    const response = await api.put(
+        `/complaints/${id}`,
+        formData
+    );
 
     return response.data;
 };

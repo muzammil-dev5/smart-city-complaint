@@ -21,7 +21,8 @@ import {
     EditOutlined,
     DescriptionOutlined,
     PlayArrow,
-    PlaylistAddTwoTone
+    PlaylistAddTwoTone,
+    Close,
     // CheckCircleOutline,
 } from "@mui/icons-material";
 
@@ -68,6 +69,7 @@ const getActivityIcon = (action: string) => {
 const ComplaintDetails = () => {
     const [complaint, setComplaint] = useState<Complaint | null>(null);
     const [activities, setActivities] = useState<ComplaintActivity[]>([]);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const role = user?.role;
@@ -218,6 +220,29 @@ const ComplaintDetails = () => {
                         </Typography>
                     </Box>
                 </Box>
+
+                {complaint.images && complaint.images.length > 0 && (
+                    <Box className="complaintDetails_imagesSection">
+                        <Typography className="complaintDetails_label">
+                            Complaint Images
+                        </Typography>
+
+                        <Box className="complaintDetails_images">
+                            {complaint.images.map((image, index) => (
+                                <Box
+                                    key={image}
+                                    className="complaintDetails_imageWrapper"
+                                    onClick={() => setSelectedImage(image)} >
+                                    <img
+                                        src={image}
+                                        alt={`Complaint ${index + 1}`}
+                                        className="complaintDetails_image"
+                                    />
+                                </Box>
+                            ))}
+                        </Box>
+                    </Box>
+                )}
 
                 <Box className="complaintDetails_grid">
                     <Box className="complaintDetails_field">
@@ -482,6 +507,32 @@ const ComplaintDetails = () => {
                         Delete Complaint
                     </Button>
                 </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={Boolean(selectedImage)}
+                onClose={() => setSelectedImage(null)}
+                maxWidth="lg"
+                className="complaintImageDialog"
+            >
+                <Box className="complaintImageDialog_content">
+
+                    <Button
+                        className="complaintImageDialog_close"
+                        onClick={() => setSelectedImage(null)}
+                    >
+                        <Close />
+                    </Button>
+
+                    {selectedImage && (
+                        <img
+                            src={selectedImage}
+                            alt="Complaint preview"
+                            className="complaintImageDialog_image"
+                        />
+                    )}
+
+                </Box>
             </Dialog>
         </Box>
     );

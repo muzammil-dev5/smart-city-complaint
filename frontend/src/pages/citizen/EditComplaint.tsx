@@ -23,7 +23,9 @@ const EditComplaint = () => {
                     title: complaint.title,
                     description: complaint.description,
                     category: complaint.category,
-                    address: complaint.location?.address || ""
+                    address: complaint.location?.address || "",
+                    existingImages: complaint.images || [],
+                    images: []
                 });
             } catch (error) {
                 console.error(

@@ -84,6 +84,7 @@ router.put(
     "/:id",
     authMiddleware,
     roleMiddleware("citizen"),
+    upload.array("images", 5),
     updateComplaint
 );
 

@@ -3,6 +3,25 @@ const User = require("../models/User");
 const Department = require("../models/Department");
 const ComplaintActivity = require("../models/ComplaintActivity");
 const Notification = require("../models/Notification");
+const cloudinary = require("../../src/config/cloudinary");
+
+
+const getPublicIdFromUrl = (url) => {
+    try {
+        const parts = url.split("/upload/");
+        if (parts.length < 2) return null;
+
+        const publicIdWithExtension = parts[1]
+            .split("/")
+            .slice(1)
+            .join("/");
+
+        return publicIdWithExtension.replace(/\.[^/.]+$/, "");
+    } catch (error) {
+        return null;
+    }
+};
+
 const createComplaint = async (req, res) => {
     try {
         console.log("BODY:", req.body);
@@ -148,7 +167,6 @@ const updateComplaint = async (req, res) => {
             });
         }
 
-        // Only pending complaints can be updated
         if (complaint.status !== "pending") {
             return res.status(400).json({
                 message: "Only pending complaints can be updated"
@@ -162,10 +180,51 @@ const updateComplaint = async (req, res) => {
             address
         } = req.body;
 
+        let existingImages = [];
+
+        try {
+            existingImages = req.body.existingImages
+                ? JSON.parse(req.body.existingImages)
+                : [];
+        } catch (error) {
+            return res.status(400).json({
+                message: "Invalid existing images data"
+            });
+        }
+        const oldImages = complaint.images || [];
+
+        const removedImages = oldImages.filter(
+            (oldImage) => !existingImages.includes(oldImage)
+        );
+
+        for (const imageUrl of removedImages) {
+            const publicId = getPublicIdFromUrl(imageUrl);
+
+            if (publicId) {
+                try {
+                    await cloudinary.uploader.destroy(publicId);
+
+                    console.log(
+                        `Removed image deleted from Cloudinary: ${publicId}`
+                    );
+                } catch (error) {
+                    console.error(
+                        `Failed to delete Cloudinary image: ${publicId}`,
+                        error
+                    );
+                }
+            }
+        }
+
+        const newImageUrls = req.files
+            ? req.files.map((file) => file.path)
+            : [];
+
         complaint.title = title;
         complaint.description = description;
         complaint.category = category;
         complaint.location.address = address;
+        complaint.images = [...existingImages, ...newImageUrls];
 
         const updatedComplaint = await complaint.save();
 
@@ -203,6 +262,26 @@ const deleteComplaint = async (req, res) => {
             });
         }
 
+        if (complaint.images && complaint.images.length > 0) {
+            for (const imageUrl of complaint.images) {
+                const publicId = getPublicIdFromUrl(imageUrl);
+
+                if (publicId) {
+                    try {
+                        await cloudinary.uploader.destroy(publicId);
+                        console.log(
+                            `Cloudinary image deleted: ${publicId}`
+                        );
+                    } catch (error) {
+                        console.error(
+                            `Failed to delete Cloudinary image: ${publicId}`,
+                            error
+                        );
+                    }
+                }
+            }
+        }
+
         await Complaint.deleteOne({
             _id: req.params.id
         });
@@ -219,7 +298,6 @@ const deleteComplaint = async (req, res) => {
         });
     }
 };
-
 const getAssignedComplaints = async (req, res) => {
     try {
         const complaints = await Complaint.find({
