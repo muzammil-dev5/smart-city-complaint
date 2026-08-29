@@ -1,7 +1,8 @@
 import { Box, Button, MenuItem, TextField } from "@mui/material";
 import { DescriptionOutlined, LocationOnOutlined, TitleOutlined } from "@mui/icons-material";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import "./ComplaintForm.scss";
 
 export type ComplaintFormData = {
@@ -21,7 +22,9 @@ type ComplaintFormProps = {
 };
 
 const ComplaintForm = ({ initialData, onSubmit, submitText = "Create Complaint" }: ComplaintFormProps) => {
-    const [selectedImages, setSelectedImages] = useState<File[]>([]);
+    const [images, setImages] = useState<File[]>([]);
+    const navigate = useNavigate();
+
     const {
         register,
         handleSubmit,
@@ -31,28 +34,26 @@ const ComplaintForm = ({ initialData, onSubmit, submitText = "Create Complaint" 
         defaultValues: initialData
     });
 
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (!event.target.files) return;
-        const files = Array.from(event.target.files);
-
-        if (files.length > 5) {
-            alert("You can upload maximum 5 images.");
-            return;
-        }
-        setSelectedImages(files);
-    };
-
     useEffect(() => {
         if (initialData) {
             reset(initialData);
+            setImages(initialData.images || []);
         }
     }, [initialData, reset]);
+
+    const handleFormSubmit = (data: ComplaintFormData) => {
+        const formData: ComplaintFormData = {
+            ...data,
+            images
+        };
+        onSubmit(formData);
+    };
 
     return (
         <Box
             component="form"
             className="complaintForm"
-            onSubmit={handleSubmit(onSubmit)}>
+            onSubmit={handleSubmit(handleFormSubmit)}>
 
             <Box className="complaintForm_field">
                 <TextField
@@ -143,34 +144,41 @@ const ComplaintForm = ({ initialData, onSubmit, submitText = "Create Complaint" 
                 </Box>
 
                 <Box className="complaintForm_field">
-    <Button
-        variant="outlined"
-        component="label"
-        className="complaintForm_uploadButton"
-    >
-        Upload Images
-        <input
-            type="file"
-            hidden
-            multiple
-            accept="image/*"
-            onChange={handleImageChange}
-        />
-    </Button>
+                    <TextField
+                        fullWidth
+                        type="file"
+                        slotProps={{
+                            htmlInput: {
+                                accept: "image/jpeg,image/png,image/webp",
+                                multiple: true
+                            }
+                        }}
+                        onChange={(event) => {
+                            const files = Array.from(
+                                (event.target as HTMLInputElement).files || []
+                            );
 
-    {selectedImages.length > 0 && (
-        <Box className="complaintForm_imageList">
-            {selectedImages.map((file, index) => (
-                <Box
-                    key={`${file.name}-${index}`}
-                    className="complaintForm_imageItem"
-                >
-                    {file.name}
+                            if (files.length > 5) {
+                                console.warn("Maximum 5 images are allowed.");
+                                setImages(files.slice(0, 5));
+                                return;
+                            }
+
+                            setImages(files);
+                            console.log("SELECTED FILES:", files);
+                        }}
+                    />
+
+                    {images.length > 0 && (
+                        <Box sx={{ mt: 1 }}>
+                            {images.map((image, index) => (
+                                <div key={index}>
+                                    {image.name}
+                                </div>
+                            ))}
+                        </Box>
+                    )}
                 </Box>
-            ))}
-        </Box>
-    )}
-</Box>
             </Box>
 
             <Box className="complaintForm_actions">
@@ -178,7 +186,8 @@ const ComplaintForm = ({ initialData, onSubmit, submitText = "Create Complaint" 
                     type="button"
                     variant="outlined"
                     className="complaintForm_cancelButton"
-                    onClick={() => window.history.back()}>
+                    onClick={() => navigate(-1)}
+                >
                     Cancel
                 </Button>
 

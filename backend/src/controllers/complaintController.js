@@ -3,8 +3,6 @@ const User = require("../models/User");
 const Department = require("../models/Department");
 const ComplaintActivity = require("../models/ComplaintActivity");
 const Notification = require("../models/Notification");
-// const upload = require("../middleware/uploadMiddleware");
-
 const createComplaint = async (req, res) => {
     try {
         console.log("BODY:", req.body);
@@ -28,9 +26,9 @@ const createComplaint = async (req, res) => {
             });
         }
 
-        // const imageUrls = req.files
-        //     ? req.files.map((file) => file.path)
-        //     : [];
+        const imageUrls = req.files
+            ? req.files.map((file) => file.path)
+            : [];
 
         if (!title || !description || !category || !location?.address) {
             return res.status(400).json({
@@ -46,7 +44,7 @@ const createComplaint = async (req, res) => {
             department: department || null,
             citizen: req.user.id,
 
-            images: [],
+            images: imageUrls,
 
             statusHistory: [
                 {

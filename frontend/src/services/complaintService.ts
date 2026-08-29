@@ -9,8 +9,7 @@ export interface CreateComplaintData {
 }
 
 export const createComplaint = async (
-    data: CreateComplaintData,
-    images?: File[]
+    data: CreateComplaintData
 ) => {
     const formData = new FormData();
 
@@ -25,8 +24,8 @@ export const createComplaint = async (
         })
     );
 
-    if (images) {
-        images.forEach((image) => {
+    if (data.images && data.images.length > 0) {
+        data.images.forEach((image) => {
             formData.append("images", image);
         });
     }
