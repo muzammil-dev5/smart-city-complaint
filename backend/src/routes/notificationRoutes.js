@@ -10,11 +10,11 @@ const {
     getUnreadNotificationCount
 } = require("../controllers/notificationController");
 
-router.post(
-    "/",
-    authMiddleware,
-    createNotification
-);
+// router.post(
+//     "/",
+//     authMiddleware,
+//     createNotification
+// );
 
 router.get(
     "/",

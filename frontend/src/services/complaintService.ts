@@ -5,6 +5,8 @@ export interface CreateComplaintData {
     description: string;
     category: string;
     address: string;
+    latitude?: number;
+    longitude?: number;
     images?: File[];
     existingImages?: string[];
 }
@@ -21,7 +23,9 @@ export const createComplaint = async (
     formData.append(
         "location",
         JSON.stringify({
-            address: data.address
+            address: data.address,
+            latitude: data.latitude,
+            longitude: data.longitude
         })
     );
 
@@ -68,6 +72,15 @@ export const updateComplaint = async (
     formData.append("description", data.description);
     formData.append("category", data.category);
     formData.append("address", data.address);
+
+    formData.append(
+        "location",
+        JSON.stringify({
+            address: data.address,
+            latitude: data.latitude,
+            longitude: data.longitude
+        })
+    );
 
     formData.append(
         "existingImages",

@@ -3,9 +3,12 @@ import api from "./api";
 export interface Notification {
     _id: string;
     recipient: string;
-    complaint: | string | {
+    complaint:
+    | string
+    | {
         _id: string;
         title?: string;
+        status?: string;
     }
     | null;
     type:

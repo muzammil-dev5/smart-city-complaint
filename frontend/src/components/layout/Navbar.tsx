@@ -1,28 +1,58 @@
-import { Badge, Box, Button, Divider, IconButton, Menu, MenuItem, Avatar, Typography } from "@mui/material";
+import {
+    Avatar,
+    Badge,
+    Box,
+    Button,
+    Divider,
+    IconButton,
+    Menu,
+    MenuItem,
+    Typography
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./Navbar.scss";
-import { getMyNotifications, getUnreadNotificationCount, markAllNotificationsAsRead, markNotificationAsRead } from "../../services/notificationService";
+
+import {
+    getMyNotifications,
+    getUnreadNotificationCount,
+    markAllNotificationsAsRead,
+    markNotificationAsRead
+} from "../../services/notificationService";
+
 import type { Notification } from "../../services/notificationService";
+
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
 import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+// import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import LogoutOutlinedIcon from "@mui/icons-material/Logout";
+import LocationCityOutlinedIcon from "@mui/icons-material/LocationCityOutlined";
 
 interface User {
     name: string;
     role: string;
 }
+
 const Navbar = () => {
     const navigate = useNavigate();
+
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
-    const [notificationAnchor, setNotificationAnchor] = useState<null | HTMLElement>(null);
+
+    const [notificationAnchor, setNotificationAnchor] =
+        useState<null | HTMLElement>(null);
+
     const notificationOpen = Boolean(notificationAnchor);
 
+    const storedUser = localStorage.getItem("user");
+
+    const user: User | null = storedUser
+        ? JSON.parse(storedUser)
+        : null;
 
     const logout = () => {
         localStorage.removeItem("token");
@@ -45,7 +75,9 @@ const Navbar = () => {
                     notificationsResponse.notifications
                 );
 
-                setUnreadCount(unreadResponse.count);
+                setUnreadCount(
+                    unreadResponse.count
+                );
 
             } catch (error) {
                 console.error(
@@ -56,6 +88,14 @@ const Navbar = () => {
         };
 
         fetchNotifications();
+
+        const interval = setInterval(
+            fetchNotifications,
+            10000
+        );
+
+        return () => clearInterval(interval);
+
     }, []);
 
     const handleNotificationOpen = (
@@ -73,25 +113,41 @@ const Navbar = () => {
     ) => {
         switch (type) {
             case "complaint_created":
-                return <AssignmentOutlinedIcon fontSize="small" />;
+                return (
+                    <AssignmentOutlinedIcon fontSize="small" />
+                );
 
             case "complaint_assigned":
-                return <PersonAddAltOutlinedIcon fontSize="small" />;
+                return (
+                    <PersonAddAltOutlinedIcon fontSize="small" />
+                );
 
             case "complaint_started":
-                return <PlayArrowIcon fontSize="small" />;
+                return (
+                    <PlayArrowIcon fontSize="small" />
+                );
 
             case "worker_assigned":
-                return <EngineeringOutlinedIcon fontSize="small" />;
+                return (
+                    <EngineeringOutlinedIcon fontSize="small" />
+                );
 
             case "complaint_resolved":
-                return <CheckCircleIcon fontSize="small" />;
+                return (
+                    // <CheckCircleOutlineIcon fontSize="small" />
+                    <EngineeringOutlinedIcon fontSize="small" />
+
+                );
 
             case "feedback_requested":
-                return <StarBorderOutlinedIcon fontSize="small" />;
+                return (
+                    <StarBorderOutlinedIcon fontSize="small" />
+                );
 
             default:
-                return <NotificationsIcon fontSize="small" />;
+                return (
+                    <NotificationsNoneOutlinedIcon fontSize="small" />
+                );
         }
     };
 
@@ -107,7 +163,10 @@ const Navbar = () => {
                 setNotifications((prev) =>
                     prev.map((item) =>
                         item._id === notification._id
-                            ? { ...item, isRead: true }
+                            ? {
+                                ...item,
+                                isRead: true
+                            }
                             : item
                     )
                 );
@@ -180,226 +239,249 @@ const Navbar = () => {
         }
     };
 
-    const storedUser = localStorage.getItem("user");
-
-    const user: User | null = storedUser
-        ? JSON.parse(storedUser)
-        : null;
-
-
     return (
         <Box className="Navbar">
-            {/* Brand */}
+
+            {/* ================= BRAND ================= */}
             <Box className="navbar-brand">
-                <Typography className="brand-title">
-                    Smart City
-                </Typography>
 
-                <Typography className="brand-subtitle">
-                    Complaint Management
-                </Typography>
-            </Box>
+                <Box className="brand-icon">
+                    <LocationCityOutlinedIcon />
+                </Box>
 
-            {/* User Section */}
-            <Box className="navbar-user">
-
-                <Box className="user-info">
-                    <Typography className="user-name">
-                        {user?.name ?? "Guest"}
+                <Box className="brand-content">
+                    <Typography className="brand-title">
+                        Smart City
                     </Typography>
 
-                    <Typography className="user-role">
-                        {user?.role ?? "Guest"}
+                    <Typography className="brand-subtitle">
+                        Complaint Management
                     </Typography>
                 </Box>
 
-                <Avatar className="user-avatar">
-                    {user?.name?.charAt(0).toUpperCase() ?? "G"}
-                </Avatar>
+            </Box>
 
+
+            {/* ================= RIGHT SECTION ================= */}
+            <Box className="navbar-user">
+
+                {/* Notification */}
                 <IconButton
-                    color="inherit"
+                    className="notification-btn"
                     onClick={handleNotificationOpen}
+                    aria-label="Notifications"
                 >
                     <Badge
                         badgeContent={unreadCount}
                         color="error"
                         max={99}
-                        invisible={unreadCount === 0}>
-                        <NotificationsIcon />
+                        invisible={unreadCount === 0}
+                        className="notification-badge"
+                    >
+                        <NotificationsNoneOutlinedIcon />
                     </Badge>
                 </IconButton>
 
-                <Menu
-                    anchorEl={notificationAnchor}
-                    open={notificationOpen}
-                    onClose={handleNotificationClose}
-                    slotProps={{
-                        paper: {
-                            sx: {
-                                width: {
-                                    xs: "calc(100vw - 24px)",
-                                    sm: 380
-                                },
-                                maxWidth: "calc(100vw - 24px)",
-                                maxHeight: {
-                                    xs: "70vh",
-                                    sm: 500
-                                },
-                                mt: 1,
-                                overflowY: "auto"
-                            }
-                        }
-                    }}>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            px: 2,
-                            py: 1.5
-                        }}>
-                        <Typography variant="h6">
-                            Notifications
+
+                {/* Divider */}
+                <Divider
+                    orientation="vertical"
+                    flexItem
+                    className="navbar-divider"
+                />
+
+
+                {/* User Profile */}
+                <Box className="user-profile">
+
+                    <Avatar className="user-avatar">
+                        {user?.name
+                            ?.charAt(0)
+                            .toUpperCase() ?? "G"}
+                    </Avatar>
+
+                    <Box className="user-info">
+
+                        <Typography className="user-name">
+                            {user?.name ?? "Guest"}
                         </Typography>
 
-                        {unreadCount > 0 && (
-                            <Button
-                                size="small"
-                                onClick={handleMarkAllAsRead}
-                            >
-                                Mark all as read
-                            </Button>
-                        )}
+                        <Typography className="user-role">
+                            {user?.role ?? "Guest"}
+                        </Typography>
+
                     </Box>
 
-                    <Divider />
+                </Box>
 
-                    {notifications.length === 0 ? (
-                        <Box
-                            sx={{
-                                py: 5,
-                                px: 2,
-                                textAlign: "center"
-                            }}
-                        >
-                            <NotificationsIcon
-                                sx={{
-                                    fontSize: 48,
-                                    color: "text.disabled",
-                                    mb: 1
-                                }}
-                            />
 
-                            <Typography
-                                variant="body1"
-                                sx={{ fontWeight: 500 }}>
-                                No notifications
-                            </Typography>
-
-                            <Typography
-                                variant="body2"
-                                color="text.secondary"
-                                sx={{ mt: 0.5 }}
-                            >
-                                You're all caught up!
-                            </Typography>
-                        </Box>
-                    ) : (
-                        notifications.map((notification) => {
-                            return (
-                                <MenuItem
-                                    key={notification._id}
-                                    onClick={() =>
-                                        handleNotificationClick(
-                                            notification
-                                        )
-                                    }
-                                    sx={{
-                                        whiteSpace: "normal",
-                                        alignItems: "flex-start",
-                                        py: 1.5,
-                                        px: 2,
-
-                                        borderLeft: "3px solid",
-                                        borderColor: notification.isRead
-                                            ? "transparent"
-                                            : "#3b82f6",
-
-                                        backgroundColor: notification.isRead
-                                            ? "transparent"
-                                            : "action.hover",
-
-                                        opacity: notification.isRead ? 0.75 : 1,
-
-                                        "&:hover": {
-                                            backgroundColor: "action.selected"
-                                        }
-                                    }}>
-
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            gap: 1.5,
-                                            width: "100%",
-                                            alignItems: "flex-start"
-                                        }}>
-                                        <Box
-                                            sx={{
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                                mt: 0.3,
-                                                minWidth: 32,
-                                                height: 32,
-                                                borderRadius: "50%",
-                                                color: notification.isRead
-                                                    ? "text.secondary"
-                                                    : "#3b82f6",
-                                                backgroundColor: notification.isRead
-                                                    ? "action.hover"
-                                                    : "primary.50"
-                                            }}>
-                                            {getNotificationIcon(notification.type)}
-                                        </Box>
-
-                                        <Box sx={{ flex: 1 }}>
-                                            <Typography
-                                                variant="body2"
-                                                sx={{
-                                                    fontWeight: notification.isRead
-                                                        ? 400
-                                                        : 600
-                                                }}>
-                                                {notification.message}
-                                            </Typography>
-
-                                            <Typography
-                                                variant="caption"
-                                                color="text.secondary">
-                                                {new Date(
-                                                    notification.createdAt
-                                                ).toLocaleString()}
-                                            </Typography>
-                                        </Box>
-                                    </Box>
-                                </MenuItem>
-                            )
-                        }
-
-                        )
-                    )}
-                </Menu>
-
+                {/* Logout */}
                 <Button
                     className="logout-btn"
-                    variant="contained"
+                    variant="outlined"
                     onClick={logout}
+                    startIcon={
+                        <LogoutOutlinedIcon />
+                    }
                 >
-                    Logout
+                    <span className="logout-text">
+                        Logout
+                    </span>
                 </Button>
 
             </Box>
+
+
+            {/* ================= NOTIFICATIONS MENU ================= */}
+            <Menu
+                anchorEl={notificationAnchor}
+                open={notificationOpen}
+                onClose={handleNotificationClose}
+                className="notification-menu"
+                slotProps={{
+                    paper: {
+                        sx: {
+                            width: {
+                                xs: "calc(100vw - 24px)",
+                                sm: 390
+                            },
+                            maxWidth:
+                                "calc(100vw - 24px)",
+                            maxHeight: {
+                                xs: "70vh",
+                                sm: 500
+                            },
+                            mt: 1,
+                            overflowY: "auto",
+                            borderRadius: "14px",
+                            border: "1px solid #e2e8f0",
+                            boxShadow:
+                                "0 15px 40px rgba(15, 23, 42, 0.16)"
+                        }
+                    }
+                }}
+            >
+
+                {/* Notification Header */}
+                <Box className="notification-header">
+
+                    <Box>
+                        <Typography className="notification-title">
+                            Notifications
+                        </Typography>
+
+                        <Typography className="notification-subtitle">
+                            Stay updated with your complaints
+                        </Typography>
+                    </Box>
+
+                    {unreadCount > 0 && (
+                        <Button
+                            size="small"
+                            onClick={
+                                handleMarkAllAsRead
+                            }
+                            className="mark-read-btn"
+                        >
+                            Mark all read
+                        </Button>
+                    )}
+
+                </Box>
+
+                <Divider />
+
+
+                {/* Empty State */}
+                {notifications.length === 0 ? (
+
+                    <Box className="notification-empty">
+
+                        <Box className="empty-icon">
+                            <NotificationsNoneOutlinedIcon />
+                        </Box>
+
+                        <Typography className="empty-title">
+                            No notifications
+                        </Typography>
+
+                        <Typography className="empty-text">
+                            You're all caught up!
+                        </Typography>
+
+                    </Box>
+
+                ) : (
+
+                    /* Notification List */
+                    notifications.map(
+                        (notification) => (
+
+                            <MenuItem
+                                key={
+                                    notification._id
+                                }
+                                onClick={() =>
+                                    handleNotificationClick(
+                                        notification
+                                    )
+                                }
+                                className={
+                                    notification.isRead
+                                        ? "notification-item read"
+                                        : "notification-item unread"
+                                }
+                            >
+
+                                <Box className="notification-item-content">
+
+                                    <Box
+                                        className={
+                                            notification.isRead
+                                                ? "notification-icon read"
+                                                : "notification-icon unread"
+                                        }
+                                    >
+                                        {getNotificationIcon(
+                                            notification.type
+                                        )}
+                                    </Box>
+
+                                    <Box className="notification-message">
+
+                                        <Typography
+                                            className={
+                                                notification.isRead
+                                                    ? "notification-message-text read"
+                                                    : "notification-message-text"
+                                            }
+                                        >
+                                            {
+                                                notification.message
+                                            }
+                                        </Typography>
+
+                                        <Typography className="notification-time">
+                                            {new Date(
+                                                notification.createdAt
+                                            ).toLocaleString()}
+                                        </Typography>
+
+                                    </Box>
+
+                                    {!notification.isRead && (
+                                        <Box className="unread-dot" />
+                                    )}
+
+                                </Box>
+
+                            </MenuItem>
+
+                        )
+                    )
+                )}
+
+            </Menu>
 
         </Box>
     );

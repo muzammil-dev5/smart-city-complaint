@@ -4,9 +4,12 @@ import {
     LocationOnOutlined,
     TitleOutlined
 } from "@mui/icons-material";
+import SearchIcon from "@mui/icons-material/Search";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import LocationPicker from "./LocationPicker";
 import "./ComplaintForm.scss";
 
 export type ComplaintFormData = {
@@ -16,6 +19,10 @@ export type ComplaintFormData = {
     address: string;
     images?: File[];
     existingImages?: string[];
+    location?: {
+        latitude: number;
+        longitude: number;
+    };
 };
 
 type ComplaintFormProps = {
@@ -33,6 +40,8 @@ const ComplaintForm = ({
 }: ComplaintFormProps) => {
     const [images, setImages] = useState<File[]>([]);
     const [existingImages, setExistingImages] = useState<string[]>([]);
+    const [location, setLocation] = useState({ latitude: 24.8607, longitude: 67.0011 });
+    const [isSearching, setIsSearching] = useState(false);
     const navigate = useNavigate();
 
     const {
@@ -64,9 +73,62 @@ const ComplaintForm = ({
         const formData: ComplaintFormData = {
             ...data,
             images,
-            existingImages
+            existingImages,
+            location
         };
         onSubmit(formData);
+    };
+
+    const searchAddress = async () => {
+        const address = document.querySelector(
+            'input[name="address"]'
+        ) as HTMLInputElement | null;
+
+        if (!address?.value.trim()) {
+            return;
+        }
+
+        try {
+            setIsSearching(true);
+
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/search?` +
+                new URLSearchParams({
+                    q: address.value,
+                    format: "jsonv2",
+                    limit: "1",
+                    countrycodes: "pk"
+                }),
+                {
+                    headers: {
+                        Accept: "application/json"
+                    }
+                }
+            );
+
+            const results = await response.json();
+
+            if (!results.length) {
+                alert("Location not found. Please enter a more specific address.");
+                return;
+            }
+
+            const result = results[0];
+
+            const latitude = Number(result.lat);
+            const longitude = Number(result.lon);
+
+            setLocation({
+                latitude,
+                longitude
+            });
+
+        } catch (error) {
+            console.error("Address search error:", error);
+            alert("Unable to search location.");
+        } finally {
+            setIsSearching(false);
+        }
     };
 
     return (
@@ -143,23 +205,52 @@ const ComplaintForm = ({
                     </TextField>
                 </Box>
 
-                <Box className="complaintForm_field">
+                <Box
+                    sx={{
+                        display: "flex",
+                        gap: 1,
+                        alignItems: "flex-start"
+                    }}>
                     <TextField
                         fullWidth
                         {...register("address", {
                             required: "Address is required"
                         })}
                         label="Address"
-                        placeholder="Enter issue location"
+                        placeholder="e.g. Gulshan-e-Iqbal, Karachi"
                         error={!!errors.address}
                         helperText={errors.address?.message}
                         slotProps={{
                             input: {
                                 startAdornment: (
                                     <LocationOnOutlined className="complaintForm_icon" />
-                                ),
-                            },
+                                )
+                            }
                         }}
+                    />
+
+                    <Button
+                        type="button"
+                        variant="contained"
+                        onClick={searchAddress}
+                        disabled={isSearching}
+                        sx={{
+                            minWidth: "110px",
+                            height: "56px"
+                        }}
+                        startIcon={
+                            isSearching
+                                ? <CircularProgress size={18} color="inherit" />
+                                : <SearchIcon />
+                        }
+                    >
+                        {isSearching ? "Searching" : "Search"}
+                    </Button>
+                </Box>
+                <Box className="complaintForm_field">
+                    <LocationPicker
+                        value={location}
+                        onChange={setLocation}
                     />
                 </Box>
 
@@ -290,7 +381,7 @@ const ComplaintForm = ({
                                     >
                                         {image.name}
                                     </div>
-                            ))}
+                                ))}
                         </Box>
                     )}
                 </Box>
