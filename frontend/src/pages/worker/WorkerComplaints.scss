@@ -1,0 +1,382 @@
+.workerComplaints {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding-bottom: 24px;
+
+
+    // --------------------------------
+    // Page Header
+    // --------------------------------
+
+    &_header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 22px 24px;
+        margin-bottom: 24px;
+        background-color: #fff7ed;
+        border: 1px solid #fed7aa;
+        border-radius: 10px;
+    }
+
+    &_headingWrapper {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 0;
+    }
+
+    &_headingIcon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        width: 44px;
+        height: 44px;
+        border-radius: 9px;
+        color: #f97316;
+        background-color: #ffedd5;
+
+        svg {
+            font-size: 23px;
+        }
+    }
+
+    &_heading {
+        color: #1f2937 !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 25px !important;
+        font-weight: 600 !important;
+    }
+
+    &_subtitle {
+        margin-top: 3px !important;
+        color: #6b7280 !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 400 !important;
+    }
+
+    &_total {
+        flex-shrink: 0;
+        padding: 6px 11px;
+        color: #c2410c !important;
+        background-color: #ffedd5;
+        border-radius: 6px;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+    }
+
+
+    // --------------------------------
+    // Table Card
+    // --------------------------------
+
+    &_tableCard {
+        overflow: hidden;
+        background-color: #ffffff;
+        border: 1px solid #fed7aa;
+        border-radius: 10px !important;
+        box-shadow: 0 2px 8px rgba(249, 115, 22, 0.05) !important;
+    }
+
+    &_tableHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 20px 22px;
+        border-bottom: 1px solid #fff7ed;
+    }
+
+    &_tableTitle {
+        color: #1f2937 !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 17px !important;
+        font-weight: 600 !important;
+    }
+
+    &_tableSubtitle {
+        margin-top: 3px !important;
+        color: #9ca3af !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 12px !important;
+    }
+
+    &_count {
+        padding: 5px 10px;
+        color: #c2410c !important;
+        background-color: #fff7ed;
+        border: 1px solid #ffedd5;
+        border-radius: 6px;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+    }
+
+
+    // --------------------------------
+    // Table
+    // --------------------------------
+
+    &_tableContainer {
+        width: 100%;
+    }
+
+    &_table {
+
+        .MuiTableHead-root {
+
+            .MuiTableRow-root {
+
+                th {
+                    padding: 14px 18px;
+                    color: #9a3412;
+                    background-color: #fff7ed;
+                    border-bottom: 1px solid #fed7aa;
+                    font-family: "Poppins", sans-serif;
+                    font-size: 13px;
+                    font-weight: 600;
+                }
+            }
+        }
+
+
+        .MuiTableBody-root {
+
+            .complaintRow {
+                transition: background-color 0.2s ease;
+
+                td {
+                    padding: 15px 18px;
+                    color: #374151;
+                    border-bottom: 1px solid #fff7ed;
+                    font-family: "Poppins", sans-serif;
+                    font-size: 13px;
+                    font-weight: 400;
+                }
+
+                &:hover {
+                    background-color: #fffaf5;
+                }
+
+                &:last-child {
+
+                    td {
+                        border-bottom: none;
+                    }
+                }
+            }
+        }
+    }
+
+
+    // --------------------------------
+    // Complaint Title
+    // --------------------------------
+
+    .complaintTitle {
+        max-width: 320px;
+        overflow: hidden;
+        color: #1f2937 !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+
+    // --------------------------------
+    // Category
+    // --------------------------------
+
+    .complaintCategory {
+        color: #4b5563 !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 400 !important;
+    }
+
+
+    // --------------------------------
+    // Status Chips
+    // --------------------------------
+
+    .complaintStatus {
+        height: 26px;
+        border-radius: 6px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+    }
+
+    .complaintStatus_assigned {
+        color: #c2410c !important;
+        background-color: #ffedd5 !important;
+    }
+
+    .complaintStatus_pending {
+        color: #92400e !important;
+        background-color: #fef3c7 !important;
+    }
+
+    .complaintStatus_in_progress {
+        color: #c2410c !important;
+        background-color: #fed7aa !important;
+    }
+
+    .complaintStatus_resolved {
+        color: #047857 !important;
+        background-color: #d1fae5 !important;
+    }
+
+    .complaintStatus_rejected {
+        color: #b91c1c !important;
+        background-color: #fee2e2 !important;
+    }
+
+
+    // --------------------------------
+    // View Button
+    // --------------------------------
+
+    &_viewButton {
+        min-width: auto !important;
+        padding: 5px 10px !important;
+        color: #ea580c !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        border-radius: 6px !important;
+
+        &:hover {
+            background-color: #fff7ed !important;
+            color: #c2410c !important;
+        }
+
+        svg {
+            font-size: 16px !important;
+        }
+    }
+
+
+    // --------------------------------
+    // Empty State
+    // --------------------------------
+
+    &_empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 45px 20px;
+    }
+
+    &_emptyIcon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 46px;
+        height: 46px;
+        margin-bottom: 12px;
+        color: #f97316;
+        background-color: #ffedd5;
+        border-radius: 50%;
+
+        svg {
+            font-size: 22px;
+        }
+    }
+
+    &_emptyTitle {
+        color: #374151 !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+    }
+
+    &_emptyText {
+        margin-top: 4px !important;
+        color: #9ca3af !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 12px !important;
+    }
+
+
+    // --------------------------------
+    // Loading
+    // --------------------------------
+
+    &_loading {
+        padding: 40px 16px;
+        color: #6b7280;
+        font-family: "Poppins", sans-serif;
+        font-size: 13px;
+    }
+
+
+    // --------------------------------
+    // Responsive
+    // --------------------------------
+
+    @media (max-width: 768px) {
+
+        &_header {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 18px;
+        }
+
+        &_heading {
+            font-size: 22px !important;
+        }
+
+        &_tableHeader {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 16px;
+        }
+
+        &_tableContainer {
+            overflow-x: auto;
+        }
+
+        &_table {
+            min-width: 650px;
+        }
+    }
+
+
+    @media (max-width: 480px) {
+
+        &_headingWrapper {
+            align-items: flex-start;
+        }
+
+        &_headingIcon {
+            min-width: 40px;
+            width: 40px;
+            height: 40px;
+
+            svg {
+                font-size: 20px;
+            }
+        }
+
+        &_heading {
+            font-size: 20px !important;
+        }
+
+        &_subtitle {
+            font-size: 12px !important;
+        }
+
+        &_tableTitle {
+            font-size: 15px !important;
+        }
+    }
+}

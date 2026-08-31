@@ -1,7 +1,24 @@
+
 import {
-    Box, Paper, Typography, CircularProgress, FormControl, InputLabel, Select, MenuItem, TextField,
+    Box,
+    Paper,
+    Typography,
+    CircularProgress,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    TextField,
 } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import {
+    useEffect,
+    useLayoutEffect,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
+import gsap from "gsap";
+
 import { getComplaintAnalytics } from "../../services/complaintService";
 import { getAllUsers } from "../../services/userService";
 import UserTable from "../../components/Table/UserTable";
@@ -10,11 +27,13 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import { PieChart } from "@mui/x-charts/PieChart";
 import "./AdminDashboard.scss";
 
+
 const AdminDashboard = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [roleFilter, setRoleFilter] = useState<RoleFilter>("all");
     const [search, setSearch] = useState("");
+
     const [analytics, setAnalytics] = useState({
         total: 0,
         pending: 0,
@@ -29,8 +48,29 @@ const AdminDashboard = () => {
         },
     });
 
+
+    // ----------------------------------------
+    // Current User
+    // ----------------------------------------
+
     const storedUser = localStorage.getItem("user");
     const currentUser = storedUser ? JSON.parse(storedUser) : null;
+
+
+    // ----------------------------------------
+    // GSAP Refs
+    // ----------------------------------------
+
+    const dashboardRef = useRef<HTMLDivElement | null>(null);
+    const headerRef = useRef<HTMLDivElement | null>(null);
+    const analyticsRef = useRef<HTMLDivElement | null>(null);
+    const chartsRef = useRef<HTMLDivElement | null>(null);
+    const tableRef = useRef<HTMLDivElement | null>(null);
+
+
+    // ----------------------------------------
+    // Filter Users
+    // ----------------------------------------
 
     const filteredUsers = useMemo(() => {
         const searchValue = search.trim().toLowerCase();
@@ -48,6 +88,11 @@ const AdminDashboard = () => {
         });
     }, [users, search, roleFilter]);
 
+
+    // ----------------------------------------
+    // Update User Role
+    // ----------------------------------------
+
     const handleRoleUpdated = (
         userId: string,
         role: User["role"]
@@ -60,6 +105,11 @@ const AdminDashboard = () => {
             )
         );
     };
+
+
+    // ----------------------------------------
+    // Update User Status
+    // ----------------------------------------
 
     const handleStatusUpdated = (
         userId: string,
@@ -74,6 +124,11 @@ const AdminDashboard = () => {
         );
     };
 
+
+    // ----------------------------------------
+    // Fetch Dashboard Data
+    // ----------------------------------------
+
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
@@ -86,7 +141,10 @@ const AdminDashboard = () => {
                 setUsers(usersResponse.users);
                 setAnalytics(analyticsResponse.analytics);
             } catch (error) {
-                console.error("Failed to fetch admin dashboard data:", error);
+                console.error(
+                    "Failed to fetch admin dashboard data:",
+                    error
+                );
             } finally {
                 setLoading(false);
             }
@@ -95,16 +153,158 @@ const AdminDashboard = () => {
         fetchDashboardData();
     }, []);
 
+
+
+
+    useLayoutEffect(() => {
+        if (loading) return;
+
+        // Make sure all required elements exist
+        if (
+            !dashboardRef.current ||
+            !headerRef.current ||
+            !analyticsRef.current ||
+            !chartsRef.current ||
+            !tableRef.current
+        ) {
+            return;
+        }
+
+        const context = gsap.context(() => {
+
+            // Get elements once
+            const analyticsCards =
+                analyticsRef.current!.querySelectorAll(".Analytics-card");
+
+            const chartCards =
+                chartsRef.current!.querySelectorAll(".chart-card");
+
+
+            // --------------------------------
+            // Timeline
+            // --------------------------------
+
+            const timeline = gsap.timeline({
+                defaults: {
+                    ease: "power2.out",
+                },
+            });
+
+
+            // --------------------------------
+            // Initial State
+            // --------------------------------
+
+            gsap.set(headerRef.current, {
+                opacity: 0,
+                y: 25,
+            });
+
+            gsap.set(analyticsCards, {
+                opacity: 0,
+                y: 25,
+            });
+
+            gsap.set(chartCards, {
+                opacity: 0,
+                y: 25,
+            });
+
+            gsap.set(tableRef.current, {
+                opacity: 0,
+                y: 25,
+            });
+
+
+            // --------------------------------
+            // Header
+            // --------------------------------
+
+            timeline.to(headerRef.current, {
+                opacity: 1,
+                y: 0,
+                duration: 0.45,
+            });
+
+
+            // --------------------------------
+            // Analytics Cards
+            // --------------------------------
+
+            timeline.to(
+                analyticsCards,
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.4,
+                    stagger: 0.08,
+                },
+                "-=0.2"
+            );
+
+
+            // --------------------------------
+            // Charts
+            // --------------------------------
+
+            timeline.to(
+                chartCards,
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.45,
+                    stagger: 0.1,
+                },
+                "-=0.15"
+            );
+
+
+            // --------------------------------
+            // User Management Table
+            // --------------------------------
+
+            timeline.to(
+                tableRef.current,
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.45,
+                },
+                "-=0.15"
+            );
+
+        }, dashboardRef);
+
+
+        // --------------------------------
+        // Cleanup
+        // --------------------------------
+
+        return () => {
+            context.revert();
+        };
+
+    }, [loading]);
+
+
     if (loading) {
         return (
             <Box className="adminDashboard-loading">
+
                 <CircularProgress />
+
                 <Typography>
                     Loading dashboard...
                 </Typography>
+
             </Box>
         );
     }
+
+
+    // ----------------------------------------
+    // Analytics Cards
+    // ----------------------------------------
 
     const analyticsCards = [
         {
@@ -134,37 +334,70 @@ const AdminDashboard = () => {
         },
     ];
 
+
     return (
-        <Box className="adminDashboard-page">
-            <Box className="adminDashboard">
+        <Box
+            ref={dashboardRef}
+            className="adminDashboard-page"
+        >
+
+            {/* -------------------------------- */}
+            {/* Dashboard Header */}
+            {/* -------------------------------- */}
+
+            <Box
+                ref={headerRef}
+                className="adminDashboard"
+            >
+
                 <Box className="adminDashboard-content">
+
                     <Typography className="adminDashboard-header">
                         Admin Dashboard
                     </Typography>
 
                     <Typography className="adminDashboard-title">
-                        Manage and monitor the Smart City Complaint Management System.
+                        Manage and monitor the Smart City Complaint
+                        Management System.
                     </Typography>
+
                 </Box>
 
+
                 <Box className="adminComplaints-count">
+
                     <Typography className="count-label">
                         Total Complaints
                     </Typography>
 
                     <Typography className="count-number">
-                        0
+                        {analytics.total}
                     </Typography>
+
                 </Box>
+
             </Box>
 
-            <Box className="Analytics-dashboard-card">
+
+            {/* -------------------------------- */}
+            {/* Analytics Cards */}
+            {/* -------------------------------- */}
+
+            <Box
+                ref={analyticsRef}
+                className="Analytics-dashboard-card"
+            >
+
                 {analyticsCards.map((card) => (
+
                     <Paper
                         elevation={0}
                         key={card.title}
-                        className={`Analytics-card ${card.className}`}>
+                        className={`Analytics-card ${card.className}`}
+                    >
+
                         <Box>
+
                             <Typography className="Analytics-title">
                                 {card.title}
                             </Typography>
@@ -172,21 +405,41 @@ const AdminDashboard = () => {
                             <Typography className="Analytics-description">
                                 Complaint overview
                             </Typography>
+
                         </Box>
+
 
                         <Box className="Analytics-count">
                             {card.value}
                         </Box>
+
                     </Paper>
+
                 ))}
+
             </Box>
 
-            <Box className="charts">
+
+            {/* -------------------------------- */}
+            {/* Charts */}
+            {/* -------------------------------- */}
+
+            <Box
+                ref={chartsRef}
+                className="charts"
+            >
+
+                {/* Bar Chart */}
+
                 <Paper
                     elevation={0}
-                    className="chart-card">
+                    className="chart-card"
+                >
+
                     <Box className="chart-card-header">
+
                         <Box>
+
                             <Typography className="chart-heading">
                                 Complaints by Category
                             </Typography>
@@ -194,10 +447,14 @@ const AdminDashboard = () => {
                             <Typography className="chart-title">
                                 Distribution across complaint categories
                             </Typography>
+
                         </Box>
+
                     </Box>
 
+
                     <Box className="chart-wrapper">
+
                         <BarChart
                             xAxis={[
                                 {
@@ -222,15 +479,25 @@ const AdminDashboard = () => {
                             height={250}
                             sx={{
                                 width: "100%",
-                            }} />
+                            }}
+                        />
+
                     </Box>
+
                 </Paper>
+
+
+                {/* Pie Chart */}
 
                 <Paper
                     elevation={0}
-                    className="chart-card">
+                    className="chart-card"
+                >
+
                     <Box className="chart-card-header">
+
                         <Box>
+
                             <Typography className="chart-heading">
                                 Complaints by Status
                             </Typography>
@@ -238,10 +505,14 @@ const AdminDashboard = () => {
                             <Typography className="chart-title">
                                 Current complaint status distribution
                             </Typography>
+
                         </Box>
+
                     </Box>
 
+
                     <Box className="chart-wrapper pie-wrapper">
+
                         <PieChart
                             series={[
                                 {
@@ -272,6 +543,7 @@ const AdminDashboard = () => {
                                             label: "Rejected",
                                         },
                                     ],
+
                                     outerRadius: 88,
                                     innerRadius: 52,
                                     paddingAngle: 2,
@@ -283,15 +555,28 @@ const AdminDashboard = () => {
                                 maxWidth: 450,
                             }}
                         />
+
                     </Box>
+
                 </Paper>
+
             </Box>
 
+
+            {/* -------------------------------- */}
+            {/* User Management */}
+            {/* -------------------------------- */}
+
             <Paper
+                ref={tableRef}
                 className="adminDataTable"
-                elevation={0}>
+                elevation={0}
+            >
+
                 <Box className="adminDataTable-Header">
+
                     <Box className="adminDataTable-Info">
+
                         <Typography className="adminDataTable-Heading">
                             User Management
                         </Typography>
@@ -299,21 +584,31 @@ const AdminDashboard = () => {
                         <Typography className="adminDataTable-Subtitle">
                             Manage registered users and their access
                         </Typography>
+
                     </Box>
 
+
+                    {/* Filters */}
+
                     <Box className="adminDataTable-filters">
+
                         <TextField
                             className="dataTableSearchFilter"
                             value={search}
                             label="Search Users"
                             placeholder="Search by name or email..."
-                            onChange={(e) => setSearch(e.target.value)}
+                            onChange={(e) =>
+                                setSearch(e.target.value)
+                            }
                         />
 
+
                         <FormControl className="roleFilter">
+
                             <InputLabel id="role-filter-label">
                                 Role
                             </InputLabel>
+
                             <Select
                                 labelId="role-filter-label"
                                 value={roleFilter}
@@ -322,7 +617,9 @@ const AdminDashboard = () => {
                                     setRoleFilter(
                                         e.target.value as RoleFilter
                                     )
-                                }>
+                                }
+                            >
+
                                 <MenuItem value="all">
                                     All Roles
                                 </MenuItem>
@@ -342,10 +639,17 @@ const AdminDashboard = () => {
                                 <MenuItem value="admin">
                                     Admin
                                 </MenuItem>
+
                             </Select>
+
                         </FormControl>
+
                     </Box>
+
                 </Box>
+
+
+                {/* User Table */}
 
                 <UserTable
                     users={filteredUsers}
@@ -356,7 +660,9 @@ const AdminDashboard = () => {
                         currentUser?.id
                     }
                 />
+
             </Paper>
+
         </Box>
     );
 };

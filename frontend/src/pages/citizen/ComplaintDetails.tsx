@@ -1,9 +1,10 @@
-import { Box, Chip, Paper, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
+import { Box, Chip, Paper, Typography, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Rating, TextField } from "@mui/material";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from "@mui/lab";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getComplaintById, deleteComplaint, updateComplaintStatus, getComplaintActivities } from "../../services/complaintService";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import type { Complaint } from "../../types/user";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
@@ -12,6 +13,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
+import { createFeedback, getComplaintFeedback } from "../../services/feedbackService";
 import "./ComplaintDetails.scss";
 import {
     ArrowBack,
@@ -70,6 +72,15 @@ const ComplaintDetails = () => {
     const [complaint, setComplaint] = useState<Complaint | null>(null);
     const [activities, setActivities] = useState<ComplaintActivity[]>([]);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [openFeedbackDialog, setOpenFeedbackDialog] = useState(false);
+    const [feedbackRating, setFeedbackRating] = useState<number | null>(0);
+    const [feedbackComment, setFeedbackComment] = useState("");
+    const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+    const [feedback, setFeedback] = useState<{
+        rating: number;
+        comment?: string;
+        createdAt: string;
+    } | null>(null);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const role = user?.role;
@@ -79,6 +90,7 @@ const ComplaintDetails = () => {
     useEffect(() => {
         const fetchComplaint = async () => {
             if (!id) return;
+
             try {
                 const response = await getComplaintById(id);
                 setComplaint(response.complaint);
@@ -88,10 +100,50 @@ const ComplaintDetails = () => {
 
                 setActivities(activityResponse.activities);
 
+                try {
+                    const feedbackResponse = await getComplaintFeedback(id);
+
+                    setFeedbackSubmitted(
+                        Boolean(feedbackResponse.feedback)
+                    );
+
+                } catch (error: unknown) {
+
+                    if (
+                        axios.isAxiosError(error) &&
+                        error.response?.status === 404
+                    ) {
+                        setFeedbackSubmitted(false);
+                    } else {
+                        console.error("Get feedback error:", error);
+                    }
+                } try {
+                    const feedbackResponse = await getComplaintFeedback(id);
+
+                    setFeedbackSubmitted(
+                        Boolean(feedbackResponse.feedback)
+                    );
+
+                } catch (error: unknown) {
+
+                    if (
+                        axios.isAxiosError(error) &&
+                        error.response?.status === 404
+                    ) {
+                        setFeedbackSubmitted(false);
+                    } else {
+                        console.error("Get feedback error:", error);
+                    }
+                }
+
             } catch (error) {
-                console.error("Failed to fetch complaint:", error);
+                console.error(
+                    "Failed to fetch complaint:",
+                    error
+                );
             }
         };
+
         fetchComplaint();
     }, [id]);
 
@@ -131,6 +183,27 @@ const ComplaintDetails = () => {
         } catch (error) {
             console.error(
                 "Status update error:",
+                error
+            );
+        }
+    };
+
+    const handleSubmitFeedback = async () => {
+        if (!id || !feedbackRating) return;
+
+        try {
+            await createFeedback({
+                complaintId: id,
+                rating: feedbackRating,
+                comment: feedbackComment
+            });
+
+            setFeedbackSubmitted(true);
+            setOpenFeedbackDialog(false);
+
+        } catch (error) {
+            console.error(
+                "Submit feedback error:",
                 error
             );
         }
@@ -277,6 +350,30 @@ const ComplaintDetails = () => {
                                 ).toLocaleDateString()}
                             </Typography>
                         </Box>
+
+                        {user?.role === "citizen" &&
+                            complaint.status === "resolved" && (
+
+                                feedbackSubmitted ? (
+                                    <Button
+                                        variant="outlined"
+                                        color="success"
+                                        onClick={() => setOpenFeedbackDialog(true)}
+                                    >
+                                        View Feedback
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        variant="contained"
+                                        onClick={() =>
+                                            setOpenFeedbackDialog(true)
+                                        }
+                                    >
+                                        Give Feedback
+                                    </Button>
+                                )
+                            )}
+
                     </Box>
 
                 </Box>
@@ -513,14 +610,12 @@ const ComplaintDetails = () => {
                 open={Boolean(selectedImage)}
                 onClose={() => setSelectedImage(null)}
                 maxWidth="lg"
-                className="complaintImageDialog"
-            >
-                <Box className="complaintImageDialog_content">
+                className="complaintImageDialog">
 
+                <Box className="complaintImageDialog_content">
                     <Button
                         className="complaintImageDialog_close"
-                        onClick={() => setSelectedImage(null)}
-                    >
+                        onClick={() => setSelectedImage(null)}>
                         <Close />
                     </Button>
 
@@ -533,6 +628,97 @@ const ComplaintDetails = () => {
                     )}
 
                 </Box>
+            </Dialog>
+
+            <Dialog
+                open={openFeedbackDialog}
+                onClose={() => setOpenFeedbackDialog(false)}
+                maxWidth="sm"
+                fullWidth
+            >
+                <DialogTitle>
+                    {feedbackSubmitted ? "Your Feedback" : "Give Feedback"}
+                </DialogTitle>
+
+                <DialogContent>
+
+                    <Typography sx={{ mb: 1 }}>
+                        How would you rate your experience?
+                    </Typography>
+
+                    <Rating
+                        value={
+                            feedbackSubmitted
+                                ? feedback?.rating || 0
+                                : feedbackRating
+                        }
+                        onChange={(_, value) => {
+                            if (!feedbackSubmitted) {
+                                setFeedbackRating(value);
+                            }
+                        }}
+                        readOnly={feedbackSubmitted}
+                        size="large"
+                    />
+
+                    <TextField
+                        fullWidth
+                        multiline
+                        minRows={4}
+                        label="Comment"
+                        value={
+                            feedbackSubmitted
+                                ? feedback?.comment || ""
+                                : feedbackComment
+                        }
+                        onChange={(event) => {
+                            if (!feedbackSubmitted) {
+                                setFeedbackComment(event.target.value);
+                            }
+                        }}
+                        slotProps={{
+                            input: {
+                                readOnly: feedbackSubmitted
+                            },
+                        }}
+                        sx={{ mt: 3 }}
+                    />
+
+                    {feedbackSubmitted && feedback?.createdAt && (
+                        <Typography
+                            variant="body2"
+                            sx={{ mt: 2 }}
+                        >
+                            Submitted on:{" "}
+                            {new Date(
+                                feedback.createdAt
+                            ).toLocaleString()}
+                        </Typography>
+                    )}
+
+                </DialogContent>
+
+                <DialogActions>
+
+                    <Button
+                        onClick={() =>
+                            setOpenFeedbackDialog(false)
+                        }
+                    >
+                        Close
+                    </Button>
+
+                    {!feedbackSubmitted && (
+                        <Button
+                            variant="contained"
+                            disabled={!feedbackRating}
+                            onClick={handleSubmitFeedback}
+                        >
+                            Submit Feedback
+                        </Button>
+                    )}
+
+                </DialogActions>
             </Dialog>
         </Box>
     );

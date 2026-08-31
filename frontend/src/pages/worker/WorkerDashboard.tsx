@@ -1,20 +1,36 @@
-import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Chip } from '@mui/material';
-import { useState, useEffect } from 'react';
-import type { Complaint } from '../../types/user';
+import {
+    ArrowForward,
+    AssignmentOutlined,
+} from "@mui/icons-material";
+import {
+    Box,
+    Button,
+    Chip,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import type { Complaint } from "../../types/user";
 import { getWorkerComplaints } from "../../services/complaintService";
-import { useNavigate } from 'react-router-dom';
 import "./WorkerDashboard.scss";
 
 const WorkerDashboard = () => {
     const [complaints, setComplaints] = useState<Complaint[]>([]);
     const [loading, setLoading] = useState(true);
+
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchComplaints = async () => {
             try {
                 const response = await getWorkerComplaints();
-
                 setComplaints(response.complaints);
             } catch (error) {
                 console.error(
@@ -29,93 +45,273 @@ const WorkerDashboard = () => {
         fetchComplaints();
     }, []);
 
-    const [analytics, setAnalytics] = useState({
-        total: 0,
-        pending: 0,
-        assigned: 0,
-        inProgress: 0,
-        resolved: 0,
-        rejected: 0,
-        categories: {
-            roadDamage: 0,
-            streetLight: 0,
-            garbageCollection: 0,
-        },
-    });
+    const analytics = {
+        assigned: complaints.filter(
+            (complaint) => complaint.status === "assigned"
+        ).length,
+
+        pending: complaints.filter(
+            (complaint) => complaint.status === "pending"
+        ).length,
+
+        inProgress: complaints.filter(
+            (complaint) => complaint.status === "in_progress"
+        ).length,
+
+        resolved: complaints.filter(
+            (complaint) => complaint.status === "resolved"
+        ).length,
+    };
+
+    const getStatusLabel = (status: Complaint["status"]) => {
+        switch (status) {
+            case "in_progress":
+                return "In Progress";
+
+            case "assigned":
+                return "Assigned";
+
+            case "resolved":
+                return "Resolved";
+
+            case "rejected":
+                return "Rejected";
+
+            default:
+                return "Pending";
+        }
+    };
+
+    if (loading) {
+        return (
+            <Box className="workerDashboard_loading">
+                <Typography>
+                    Loading dashboard...
+                </Typography>
+            </Box>
+        );
+    }
 
     return (
-        <>
-            {loading === true ? (<Typography>Loading...</Typography>) : (
-                <Box className="WorkerDashboard">
-                    <div className='WorkerDashboard-header'>Worker Dashboard</div>
-                    <div className='WorkerDashboard-title'>View and manage your assigned work.</div>
+        <Box className="workerDashboard">
 
-                    <Box className="Analytics-dashboard-card" >
-                        <div className='Analytics-card'>
-                            <Typography className='Analytics-title'>Assigned Task </Typography>
-                            <div className='Analytics-count'>{analytics.assigned}</div>
-                        </div>
+            {/* Dashboard Header */}
+            <Box className="workerDashboard_header">
+                <Typography className="workerDashboard_heading">
+                    Worker Dashboard
+                </Typography>
 
-                        <div className='Analytics-card'>
-                            <Typography className='Analytics-title'>Pending </Typography>
-                            <div className='Analytics-count'>{analytics.pending}</div>
-                        </div>
+                <Typography className="workerDashboard_subtitle">
+                    Manage and complete your assigned tasks.
+                </Typography>
+            </Box>
 
-                        <div className='Analytics-card'>
-                            <Typography className='Analytics-title'>In Progress  </Typography>
-                            <div className='Analytics-count'>{analytics.inProgress}</div>
-                        </div>
 
-                        <div className='Analytics-card'>
-                            <Typography className='Analytics-title'>Completed </Typography>
-                            <div className='Analytics-count'>{analytics.resolved}</div>
-                        </div>
+            {/* Analytics */}
+            <Box className="workerDashboard_analytics">
+
+                <Box className="analyticsCard">
+                    <Box className="analyticsCard_icon">
+                        <AssignmentOutlined />
                     </Box>
-                </Box>)}
 
-            {complaints.length === 0 ? (
-                <div className='WorkerDataTable'>
-                    <div className='WorkerDataTable'>
-                        No complaints assigned to you.
-                    </div>
-                </div>) : (
-                <Box>
-                    <TableContainer component={Paper}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Title</TableCell>
-                                    <TableCell>Category</TableCell>
-                                    <TableCell>Status</TableCell>
-                                    <TableCell>Action</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {complaints.map((complaint) => (
-                                    <TableRow key={complaint._id}>
-                                        <TableCell>{complaint.title}</TableCell>
-                                        <TableCell>{complaint.category}</TableCell>
-                                        <TableCell>  <Chip
-                                            label={
-                                                complaint.status === "in_progress"
-                                                    ? "In Progress"
-                                                    : complaint.status === "resolved"
-                                                        ? "Completed"
-                                                        : complaint.status
-                                            }
-                                            size="small"
-                                        /></TableCell>
-                                        <TableCell><Button variant='outlined' size='small' onClick={() => navigate(`/worker/complaint/${complaint._id}`)}>View</Button></TableCell>
-                                    </TableRow>
-                                ))}
+                    <Box>
+                        <Typography className="analyticsCard_title">
+                            Assigned Tasks
+                        </Typography>
 
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                        <Typography className="analyticsCard_count">
+                            {analytics.assigned}
+                        </Typography>
+                    </Box>
                 </Box>
-            )}
-        </>
+
+
+                <Box className="analyticsCard">
+                    <Box className="analyticsCard_icon">
+                        <AssignmentOutlined />
+                    </Box>
+
+                    <Box>
+                        <Typography className="analyticsCard_title">
+                            Pending Tasks
+                        </Typography>
+
+                        <Typography className="analyticsCard_count">
+                            {analytics.pending}
+                        </Typography>
+                    </Box>
+                </Box>
+
+
+                <Box className="analyticsCard">
+                    <Box className="analyticsCard_icon">
+                        <AssignmentOutlined />
+                    </Box>
+
+                    <Box>
+                        <Typography className="analyticsCard_title">
+                            In Progress
+                        </Typography>
+
+                        <Typography className="analyticsCard_count">
+                            {analytics.inProgress}
+                        </Typography>
+                    </Box>
+                </Box>
+
+
+                <Box className="analyticsCard">
+                    <Box className="analyticsCard_icon">
+                        <AssignmentOutlined />
+                    </Box>
+
+                    <Box>
+                        <Typography className="analyticsCard_title">
+                            Completed Tasks
+                        </Typography>
+
+                        <Typography className="analyticsCard_count">
+                            {analytics.resolved}
+                        </Typography>
+                    </Box>
+                </Box>
+
+            </Box>
+
+
+            {/* Assigned Complaints */}
+            <Paper
+                elevation={0}
+                className="workerDashboard_tableCard"
+            >
+
+                <Box className="workerDashboard_tableHeader">
+
+                    <Box>
+                        <Typography className="workerDashboard_tableTitle">
+                            Assigned Tasks
+                        </Typography>
+
+                        <Typography className="workerDashboard_tableSubtitle">
+                            Complaints currently assigned to you.
+                        </Typography>
+                    </Box>
+
+                    <Typography className="workerDashboard_total">
+                        {complaints.length} Total
+                    </Typography>
+
+                </Box>
+
+
+                <TableContainer>
+                    <Table className="workerDashboard_table">
+
+                        <TableHead>
+                            <TableRow>
+
+                                <TableCell>
+                                    Title
+                                </TableCell>
+
+                                <TableCell>
+                                    Category
+                                </TableCell>
+
+                                <TableCell>
+                                    Status
+                                </TableCell>
+
+                                <TableCell align="right">
+                                    Action
+                                </TableCell>
+
+                            </TableRow>
+                        </TableHead>
+
+
+                        <TableBody>
+
+                            {complaints.length === 0 ? (
+
+                                <TableRow>
+                                    <TableCell
+                                        colSpan={4}
+                                        align="center"
+                                    >
+                                        <Typography className="workerDashboard_empty">
+                                            No tasks assigned to you.
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+
+                            ) : (
+
+                                complaints.map((complaint) => (
+
+                                    <TableRow
+                                        key={complaint._id}
+                                        className="complaintRow"
+                                    >
+
+                                        <TableCell>
+                                            <Typography className="complaintTitle">
+                                                {complaint.title}
+                                            </Typography>
+                                        </TableCell>
+
+
+                                        <TableCell>
+                                            {complaint.category}
+                                        </TableCell>
+
+
+                                        <TableCell>
+                                            <Chip
+                                                label={getStatusLabel(
+                                                    complaint.status
+                                                )}
+                                                className={`complaintStatus complaintStatus_${complaint.status}`}
+                                            />
+                                        </TableCell>
+
+
+                                        <TableCell align="right">
+
+                                            <Button
+                                                className="workerDashboard_viewButton"
+                                                endIcon={<ArrowForward />}
+                                                onClick={(event) => {
+
+                                                    event.stopPropagation();
+
+                                                    navigate(
+                                                        `/worker/complaint/${complaint._id}`
+                                                    );
+
+                                                }}
+                                            >
+                                                View
+                                            </Button>
+
+                                        </TableCell>
+
+                                    </TableRow>
+
+                                ))
+
+                            )}
+
+                        </TableBody>
+
+                    </Table>
+                </TableContainer>
+
+            </Paper>
+
+        </Box>
     );
-}
+};
 
 export default WorkerDashboard;

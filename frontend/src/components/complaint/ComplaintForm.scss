@@ -1,35 +1,60 @@
 .complaintForm {
     width: 100%;
+    max-width: 100%;
 
+    // =========================
+    // Common Field
+    // =========================
     &_field {
-        margin-bottom: 20px;
+        margin-bottom: 22px;
 
         .MuiFormLabel-root {
             font-family: "Poppins", sans-serif;
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
         }
 
         .MuiInputBase-root {
+            min-height: 52px;
             font-family: "Poppins", sans-serif;
-            font-size: 14px;
+            font-size: 13px;
             background-color: #ffffff;
-            border-radius: 7px;
+            border-radius: 9px;
+            transition: all 0.2s ease;
+        }
+
+        .MuiInputBase-input {
+            padding: 14px 14px 14px 4px;
         }
 
         .MuiFormHelperText-root {
-            margin-left: 2px;
+            margin-left: 3px;
+            margin-top: 5px;
             font-family: "Poppins", sans-serif;
             font-size: 11px;
+            line-height: 1.4;
         }
 
+        // Outlined input
         .MuiOutlinedInput-root {
+            .MuiOutlinedInput-notchedOutline {
+                border-color: #d1d5db;
+                border-width: 1px;
+                transition: all 0.2s ease;
+            }
+
             &:hover {
+                background-color: #ffffff;
+
                 .MuiOutlinedInput-notchedOutline {
                     border-color: #10b981;
                 }
             }
 
             &.Mui-focused {
+                background-color: #ffffff;
+
                 .MuiOutlinedInput-notchedOutline {
                     border-color: #047857;
                     border-width: 2px;
@@ -42,48 +67,194 @@
         }
     }
 
+    // =========================
+    // Form Grid
+    // =========================
     &_grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+        align-items: start;
     }
 
+    // =========================
+    // Icons
+    // =========================
     &_icon {
-        margin-right: 8px;
+        margin-right: 9px;
         color: #10b981;
         font-size: 20px !important;
+        flex-shrink: 0;
     }
 
     &_descriptionIcon {
         align-self: flex-start;
-        margin-top: 5px;
+        margin-top: 4px;
     }
 
+    // =========================
+    // Description
+    // =========================
+    .MuiInputBase-root:has(textarea) {
+        align-items: flex-start;
+        min-height: 135px;
+    }
+
+    textarea {
+        padding-top: 14px !important;
+        line-height: 1.6;
+        resize: vertical;
+    }
+
+    // =========================
+    // Address + Search
+    // =========================
+    &_grid>.MuiBox-root {
+        &:has(.MuiButton) {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+
+            .MuiTextField-root {
+                flex: 1;
+            }
+
+            .MuiButton-root {
+                flex-shrink: 0;
+            }
+        }
+    }
+
+    // Search button
+    .MuiButton-root {
+        font-family: "Poppins", sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: none;
+        border-radius: 8px;
+    }
+
+    // =========================
+    // Search Button
+    // =========================
+    .MuiButton-contained {
+        background-color: #047857;
+        box-shadow: none;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: #065f46;
+            box-shadow: 0 4px 10px rgba(4, 120, 87, 0.18);
+            transform: translateY(-1px);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+
+        &:disabled {
+            background-color: #a7f3d0;
+            color: #ffffff;
+        }
+    }
+
+    // =========================
+    // Location Picker
+    // =========================
+    &_field {
+        .leaflet-container {
+            width: 100%;
+            min-height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #d1d5db;
+        }
+    }
+
+    // =========================
+    // File Upload
+    // =========================
+    input[type="file"] {
+        cursor: pointer;
+        padding: 8px 10px;
+        color: #6b7280;
+    }
+
+    input[type="file"]::file-selector-button {
+        margin-right: 12px;
+        padding: 8px 14px;
+        border: none;
+        border-radius: 6px;
+        background-color: #ecfdf5;
+        color: #047857;
+        font-family: "Poppins", sans-serif;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    input[type="file"]::file-selector-button:hover {
+        background-color: #d1fae5;
+    }
+
+    // =========================
+    // Existing / New Images
+    // =========================
+    &_field {
+        .MuiTypography-root {
+            font-family: "Poppins", sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: #374151;
+        }
+    }
+
+    // =========================
+    // Image Preview
+    // =========================
+    img {
+        display: block;
+    }
+
+    // =========================
+    // Action Buttons
     // =========================
     &_actions {
         display: flex;
         justify-content: flex-end;
         align-items: center;
         gap: 12px;
-        padding-top: 8px;
-        margin-top: 8px;
-        border-top: 1px solid #ecfdf5;
+
+        margin-top: 28px;
+        padding-top: 20px;
+
+        border-top: 1px solid #e5e7eb;
     }
 
     &_cancelButton,
     &_submitButton {
         min-width: 140px;
-        height: 40px;
+        height: 42px;
+
+        padding: 0 20px;
+
         font-family: "Poppins", sans-serif !important;
         font-size: 13px !important;
         font-weight: 500 !important;
+
         text-transform: none !important;
-        border-radius: 6px !important;
+        border-radius: 8px !important;
+
+        transition: all 0.2s ease !important;
     }
 
+    // Cancel
     &_cancelButton {
-        color: #6b7280 !important;
-        border-color: #d1d5db !important;
+        color: #4b5563 !important;
+        background-color: #ffffff !important;
+
+        border: 1px solid #d1d5db !important;
 
         &:hover {
             background-color: #f9fafb !important;
@@ -91,14 +262,32 @@
         }
     }
 
+    // Submit
     &_submitButton {
+        color: #ffffff !important;
         background-color: #047857 !important;
+
+        border: 1px solid #047857 !important;
+
         box-shadow: none !important;
 
         &:hover {
             background-color: #065f46 !important;
-            box-shadow: none !important;
+            border-color: #065f46 !important;
+
+            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.2) !important;
+
+            transform: translateY(-1px);
         }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+
+    &_searchButton {
+        min-width: 110px !important;
+        height: 52px !important;
     }
 
     @media (max-width: 768px) {
@@ -108,14 +297,51 @@
             gap: 0;
         }
 
+        &_grid>.MuiBox-root:has(.MuiButton) {
+            margin-bottom: 22px;
+        }
+
         &_actions {
             flex-direction: column-reverse;
             align-items: stretch;
+            gap: 10px;
         }
 
         &_cancelButton,
         &_submitButton {
             width: 100%;
+        }
+
+        .MuiInputBase-root {
+            min-height: 50px;
+        }
+
+        .leaflet-container {
+            min-height: 260px;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        &_field {
+            margin-bottom: 18px;
+        }
+
+        &_grid {
+            gap: 0;
+        }
+
+        .MuiInputBase-root {
+            font-size: 12px;
+        }
+
+        .MuiFormLabel-root {
+            font-size: 12px;
+        }
+
+        &_actions {
+            margin-top: 20px;
+            padding-top: 16px;
         }
     }
 }

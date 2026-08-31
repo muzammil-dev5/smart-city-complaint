@@ -48,6 +48,7 @@ const ComplaintForm = ({
         register,
         handleSubmit,
         reset,
+        setValue,
         formState: { errors }
     } = useForm<ComplaintFormData>({
         defaultValues: initialData
@@ -62,6 +63,49 @@ const ComplaintForm = ({
             );
         }
     }, [initialData, reset]);
+
+    const handleMapLocationChange = async (newLocation: {
+        latitude: number;
+        longitude: number;
+    }) => {
+        setLocation(newLocation);
+
+        try {
+            const response = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?${new URLSearchParams({
+                    lat: newLocation.latitude.toString(),
+                    lon: newLocation.longitude.toString(),
+                    format: "jsonv2",
+                    zoom: "18",
+                    addressdetails: "1"
+                })}`,
+                {
+                    headers: {
+                        Accept: "application/json"
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Reverse geocoding failed");
+            }
+
+            const result = await response.json();
+
+            if (result.display_name) {
+                setValue("address", result.display_name, {
+                    shouldValidate: true,
+                    shouldDirty: true
+                });
+            }
+
+        } catch (error) {
+            console.error(
+                "Reverse geocoding error:",
+                error
+            );
+        }
+    };
 
     const handleRemoveExistingImage = (image: string) => {
         setExistingImages((prev) =>
@@ -228,16 +272,12 @@ const ComplaintForm = ({
                             }
                         }}
                     />
-
                     <Button
                         type="button"
                         variant="contained"
+                        className="complaintForm_searchButton"
                         onClick={searchAddress}
                         disabled={isSearching}
-                        sx={{
-                            minWidth: "110px",
-                            height: "56px"
-                        }}
                         startIcon={
                             isSearching
                                 ? <CircularProgress size={18} color="inherit" />
@@ -250,7 +290,7 @@ const ComplaintForm = ({
                 <Box className="complaintForm_field">
                     <LocationPicker
                         value={location}
-                        onChange={setLocation}
+                        onChange={handleMapLocationChange}
                     />
                 </Box>
 

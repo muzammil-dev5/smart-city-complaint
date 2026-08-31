@@ -26,7 +26,6 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        {/* Public Routes */}
         <Route
           path="/register"
           element={<Register />}
@@ -38,11 +37,8 @@ function App() {
         />
         <Route path="unauthorized" element={<Unauthorized />} />
 
-        {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
 
-
-          {/* Citizen */}
           <Route element={<RoleRoute allowedRoles={["citizen"]} />}>
             <Route element={<MainLayout />}>
               <Route
@@ -71,7 +67,6 @@ function App() {
             </Route>
           </Route>
 
-          {/* Officer */}
           <Route element={<RoleRoute allowedRoles={["officer"]} />}>
             <Route element={<MainLayout />}>
 
@@ -88,7 +83,6 @@ function App() {
             </Route>
           </Route>
 
-          {/* Worker */}
           <Route element={<RoleRoute allowedRoles={["worker"]} />}>
             <Route element={<MainLayout />}>
               <Route
@@ -106,7 +100,6 @@ function App() {
             </Route>
           </Route>
 
-          {/* Admin */}
           <Route element={<RoleRoute allowedRoles={["admin"]} />}>
             <Route element={<MainLayout />}>
               <Route
