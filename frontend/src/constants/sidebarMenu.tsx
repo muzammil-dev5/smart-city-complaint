@@ -5,6 +5,7 @@ import AddIcon from "@mui/icons-material/Add";
 // import GroupIcon from "@mui/icons-material/Group";
 import SettingsIcon from "@mui/icons-material/Settings";
 // import DescriptionIcon from "@mui/icons-material/Description";
+import FeedbackOutlinedIcon from "@mui/icons-material/FeedbackOutlined";
 
 export type MenuItem = {
     label: string;
@@ -56,6 +57,11 @@ export const adminMenu: MenuItem[] = [
         label: "Departments",
         path: "/admin/departments",
         icon: <SettingsIcon />
+    },
+    {
+        label: "feedback",
+        path: "/admin/feedback",
+        icon: <FeedbackOutlinedIcon />
     },
     // {
     //     label: "Reports",

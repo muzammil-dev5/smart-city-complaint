@@ -20,6 +20,7 @@ import OfficerComplaintDetails from "./pages/officer/OfficerComplaintDetails";
 import WorkerComplaints from "./pages/worker/WorkerComplaints";
 import WorkerComplaintDetails from "./pages/worker/WorkerComplaintDetails";
 import AdminDepartments from "./pages/department/AdminDepartments";
+import AdminFeedback from "./pages/admin/AdminFeedback";
 
 function App() {
   return (
@@ -114,6 +115,10 @@ function App() {
               <Route
                 path="/admin/departments"
                 element={<AdminDepartments />}
+              />
+              <Route
+                path="/admin/feedback"
+                element={<AdminFeedback />}
               />
             </Route>
           </Route>

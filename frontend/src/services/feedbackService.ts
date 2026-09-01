@@ -6,13 +6,12 @@ export interface FeedbackData {
     comment?: string;
 }
 
-export const createFeedback = async (
-    data: FeedbackData
-) => {
-    const response = await api.post(
-        "/feedback",
-        data
-    );
+export const createFeedback = async (data: {
+    complaintId: string;
+    rating: number;
+    comment: string;
+}) => {
+    const response = await api.post("/feedback", data);
 
     return response.data;
 };

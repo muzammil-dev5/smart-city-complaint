@@ -1,4 +1,4 @@
-import { Box, Paper, Typography, Chip, Button } from "@mui/material";
+import { Box, Paper, Typography, Chip, Button, Rating } from "@mui/material";
 import {
     ArrowBack, CalendarTodayOutlined, CategoryOutlined, DescriptionOutlined, PlayArrow, EmailOutlined, EngineeringOutlined
     // LocationOnOutlined,
@@ -7,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAssignedComplaintById, updateComplaintStatus } from "../../services/complaintService";
+import { getComplaintFeedback } from "../../services/feedbackService";
 import "./OfficerComplaintDetails.scss";
 import type { Complaint } from "../../types/user";
 
@@ -33,6 +34,11 @@ const OfficerComplaintDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [complaint, setComplaint] = useState<Complaint | null>(null);
+    const [feedback, setFeedback] = useState<{
+        rating: number;
+        comment?: string;
+        createdAt: string;
+    } | null>(null);
     const [updating, setUpdating] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -42,6 +48,17 @@ const OfficerComplaintDetails = () => {
             try {
                 const response = await getAssignedComplaintById(id);
                 setComplaint(response.complaint);
+                if (response.complaint.status === "resolved") {
+                    try {
+                        const feedbackResponse = await getComplaintFeedback(id);
+
+                        setFeedback(feedbackResponse.feedback || null);
+
+                    } catch (error) {
+                        console.error("Failed to fetch feedback:", error);
+                        setFeedback(null);
+                    }
+                }
             } catch (error) {
                 console.error("Failed to fetch complaint:", error);
 
@@ -300,6 +317,49 @@ const OfficerComplaintDetails = () => {
                     </Box>
                 </Box>
             </Paper>
+            {complaint.status === "resolved" && feedback && (
+                <Paper
+                    elevation={0}
+                    className="officerComplaintDetails_card"
+                >
+                    <Typography className="officerComplaintDetails_cardTitle">
+                        Citizen Feedback
+                    </Typography>
+
+                    <Typography className="officerComplaintDetails_cardSubtitle">
+                        Feedback submitted by the citizen after complaint resolution.
+                    </Typography>
+
+                    <Box sx={{ mt: 3 }}>
+                        <Typography className="officerComplaintDetails_label">
+                            Rating
+                        </Typography>
+
+                        <Rating
+                            value={feedback.rating}
+                            readOnly
+                        />
+                    </Box>
+
+                    <Box sx={{ mt: 3 }}>
+                        <Typography className="officerComplaintDetails_label">
+                            Comment
+                        </Typography>
+
+                        <Typography className="officerComplaintDetails_value">
+                            {feedback.comment || "No comment provided."}
+                        </Typography>
+                    </Box>
+
+                    <Typography
+                        variant="body2"
+                        sx={{ mt: 2 }}
+                    >
+                        Submitted on:{" "}
+                        {new Date(feedback.createdAt).toLocaleString()}
+                    </Typography>
+                </Paper>
+            )}
         </Box>
     );
 };

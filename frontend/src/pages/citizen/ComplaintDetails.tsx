@@ -103,12 +103,14 @@ const ComplaintDetails = () => {
                 try {
                     const feedbackResponse = await getComplaintFeedback(id);
 
-                    setFeedbackSubmitted(
-                        Boolean(feedbackResponse.feedback)
-                    );
+                    if (feedbackResponse.feedback) {
+                        setFeedback(feedbackResponse.feedback);
+                        setFeedbackSubmitted(true);
+                    } else {
+                        setFeedbackSubmitted(false);
+                    }
 
                 } catch (error: unknown) {
-
                     if (
                         axios.isAxiosError(error) &&
                         error.response?.status === 404
@@ -192,12 +194,13 @@ const ComplaintDetails = () => {
         if (!id || !feedbackRating) return;
 
         try {
-            await createFeedback({
+            const response = await createFeedback({
                 complaintId: id,
                 rating: feedbackRating,
                 comment: feedbackComment
             });
 
+            setFeedback(response.feedback);
             setFeedbackSubmitted(true);
             setOpenFeedbackDialog(false);
 
