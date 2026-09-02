@@ -185,3 +185,52 @@
 
     color: #64748b;
 }
+
+.adminFeedback-headerStats {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.adminFeedback-averageRating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.adminFeedback-filters {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.adminFeedback-search {
+    width: 240px;
+}
+
+.adminFeedback-ratingFilter {
+    width: 150px;
+}
+
+.adminFeedback-dateFilter {
+    width: 150px;
+}
+
+@media (max-width: 768px) {
+    .adminFeedback-cardHeader {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .adminFeedback-filters {
+        width: 100%;
+        flex-wrap: wrap;
+
+    }
+
+    .adminFeedback-search,
+    .adminFeedback-ratingFilter,
+    .adminFeedback-dateFilter {
+        width: 100%;
+    }
+}
