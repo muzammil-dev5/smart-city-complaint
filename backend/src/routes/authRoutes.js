@@ -6,10 +6,15 @@ const roleMiddleware = require("../middleware/roleMiddleware");
 
 const {
     registerUser,
-    loginUser
+    loginUser,
+    getMyProfile,
+    updateMyProfile,
+    changePassword,
 } = require("../controllers/authController");
 
-const authMiddleware = require("../middleware/authMiddleware");
+const authMiddleware =
+    require("../middleware/authMiddleware");
+
 
 router.post(
     "/register",
@@ -18,17 +23,25 @@ router.post(
 
 router.post(
     "/login",
-    loginUser);
+    loginUser
+);
 
 router.get(
     "/me",
     authMiddleware,
-    (req, res) => {
-        res.status(200).json({
-            message: "Authentication successful",
-            user: req.user
-        });
-    }
+    getMyProfile
+);
+
+router.put(
+    "/profile",
+    authMiddleware,
+    updateMyProfile
+);
+
+router.put(
+    "/change-password",
+    authMiddleware,
+    changePassword
 );
 
 router.get(
@@ -38,7 +51,7 @@ router.get(
     (req, res) => {
         res.status(200).json({
             message: "Citizen access granted",
-            user: req.user
+            user: req.user,
         });
     }
 );
@@ -50,7 +63,7 @@ router.get(
     (req, res) => {
         res.status(200).json({
             message: "Admin access granted",
-            user: req.user
+            user: req.user,
         });
     }
 );

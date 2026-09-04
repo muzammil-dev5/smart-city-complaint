@@ -292,7 +292,9 @@ const Navbar = () => {
 
 
                 {/* User Profile */}
-                <Box className="user-profile">
+                <Box
+                    className="user-profile"
+                    onClick={() => navigate("/profile")}>
 
                     <Avatar className="user-avatar">
                         {user?.name

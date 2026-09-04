@@ -21,6 +21,7 @@ import WorkerComplaints from "./pages/worker/WorkerComplaints";
 import WorkerComplaintDetails from "./pages/worker/WorkerComplaintDetails";
 import AdminDepartments from "./pages/department/AdminDepartments";
 import AdminFeedback from "./pages/admin/AdminFeedback";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   return (
@@ -39,6 +40,13 @@ function App() {
         <Route path="unauthorized" element={<Unauthorized />} />
 
         <Route element={<ProtectedRoute />}>
+
+          <Route element={<MainLayout />}>
+            <Route
+              path="/profile"
+              element={<Profile />}
+            />
+          </Route>
 
           <Route element={<RoleRoute allowedRoles={["citizen"]} />}>
             <Route element={<MainLayout />}>
