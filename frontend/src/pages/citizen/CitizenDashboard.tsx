@@ -7,7 +7,7 @@ import { AssignmentOutlined } from "@mui/icons-material";
 
 const CitizenDashboard = () => {
     const [loading, setLoading] = useState(true);
-    const [complaints, setComplaints] = useState<Complaint[]>([]);
+
     const [analytics, setAnalytics] = useState({
         total: 0,
         pending: 0,
@@ -27,23 +27,52 @@ const CitizenDashboard = () => {
             try {
                 const response = await getMyComplaints();
                 const complaints = response.complaints;
-                setComplaints(complaints);
 
                 setAnalytics({
                     total: complaints.length,
-                    pending: complaints.filter((complaint: Complaint) => complaint.status === "pending").length,
-                    assigned: complaints.filter((complaint: Complaint) => complaint.status === "assigned").length,
-                    inProgress: complaints.filter((complaint: Complaint) => complaint.status === "in_progress").length,
-                    resolved: complaints.filter((complaint: Complaint) => complaint.status === "resolved").length,
-                    rejected: complaints.filter((complaint: Complaint) => complaint.status === "rejected").length,
+
+                    pending: complaints.filter(
+                        (complaint: Complaint) =>
+                            complaint.status === "pending"
+                    ).length,
+
+                    assigned: complaints.filter(
+                        (complaint: Complaint) =>
+                            complaint.status === "assigned"
+                    ).length,
+
+                    inProgress: complaints.filter(
+                        (complaint: Complaint) =>
+                            complaint.status === "in_progress"
+                    ).length,
+
+                    resolved: complaints.filter(
+                        (complaint: Complaint) =>
+                            complaint.status === "resolved"
+                    ).length,
+
+                    rejected: complaints.filter(
+                        (complaint: Complaint) =>
+                            complaint.status === "rejected"
+                    ).length,
 
                     categories: {
-                        roadDamage: complaints.filter((complaint: Complaint) => complaint.category === "road_damage").length,
-                        streetLight: complaints.filter((complaint: Complaint) => complaint.category === "street_light").length,
-                        garbageCollection: complaints.filter((complaint: Complaint) => complaint.category === "garbage_collection").length,
+                        roadDamage: complaints.filter(
+                            (complaint: Complaint) =>
+                                complaint.category === "road_damage"
+                        ).length,
+
+                        streetLight: complaints.filter(
+                            (complaint: Complaint) =>
+                                complaint.category === "street_light"
+                        ).length,
+
+                        garbageCollection: complaints.filter(
+                            (complaint: Complaint) =>
+                                complaint.category === "garbage_collection"
+                        ).length,
                     },
                 });
-
             } catch (error) {
                 console.error("Failed to fetch complaints:", error);
             } finally {
@@ -56,8 +85,9 @@ const CitizenDashboard = () => {
 
     return (
         <>
-            {loading ? (<Typography>Loading...</Typography>) : (
-
+            {loading ? (
+                <Typography>Loading...</Typography>
+            ) : (
                 <Box className="citizenDashboard">
                     <Box className="citizenDashboard_header">
                         <Typography className="citizenDashboard_heading">
@@ -70,10 +100,12 @@ const CitizenDashboard = () => {
                     </Box>
 
                     <Box className="citizenDashboard_analytics">
+                        {/* Total Complaints */}
                         <Box className="analyticsCard">
                             <Box className="analyticsCard_icon">
                                 <AssignmentOutlined />
                             </Box>
+
                             <Box>
                                 <Typography className="analyticsCard_title">
                                     Total Complaints
@@ -85,10 +117,12 @@ const CitizenDashboard = () => {
                             </Box>
                         </Box>
 
+                        {/* Pending Complaints */}
                         <Box className="analyticsCard">
                             <Box className="analyticsCard_icon">
                                 <AssignmentOutlined />
                             </Box>
+
                             <Box>
                                 <Typography className="analyticsCard_title">
                                     Pending Complaints
@@ -100,10 +134,12 @@ const CitizenDashboard = () => {
                             </Box>
                         </Box>
 
+                        {/* In Progress */}
                         <Box className="analyticsCard">
                             <Box className="analyticsCard_icon">
                                 <AssignmentOutlined />
                             </Box>
+
                             <Box>
                                 <Typography className="analyticsCard_title">
                                     In Progress
@@ -115,10 +151,12 @@ const CitizenDashboard = () => {
                             </Box>
                         </Box>
 
+                        {/* Resolved Complaints */}
                         <Box className="analyticsCard">
                             <Box className="analyticsCard_icon">
                                 <AssignmentOutlined />
                             </Box>
+
                             <Box>
                                 <Typography className="analyticsCard_title">
                                     Resolved Complaints
@@ -133,7 +171,7 @@ const CitizenDashboard = () => {
                 </Box>
             )}
         </>
-    )
+    );
 };
 
 export default CitizenDashboard;

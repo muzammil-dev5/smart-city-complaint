@@ -34,9 +34,7 @@ import {
     updateMyProfile,
 } from "../../services/profileService";
 
-import type {
-    UserProfile,
-} from "../../services/profileService";
+import type { UserProfile } from "../../services/profileService";
 
 import "./Profile.scss";
 
@@ -47,50 +45,30 @@ const Profile = () => {
     // STATE
     // =========================
 
-    const [profile, setProfile] =
-        useState<UserProfile | null>(null);
+    const [profile, setProfile] = useState<UserProfile | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [editMode, setEditMode] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [changingPassword, setChangingPassword] = useState(false);
 
-    const [loading, setLoading] =
-        useState(true);
+    const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [address, setAddress] = useState("");
 
-    const [editMode, setEditMode] =
-        useState(false);
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
-    const [saving, setSaving] =
-        useState(false);
+    const [showPasswordSection, setShowPasswordSection] = useState(false);
 
-    const [changingPassword, setChangingPassword] =
-        useState(false);
-
-    const [name, setName] =
-        useState("");
-
-    const [phone, setPhone] =
-        useState("");
-
-    const [address, setAddress] =
-        useState("");
-
-    const [currentPassword, setCurrentPassword] =
-        useState("");
-
-    const [newPassword, setNewPassword] =
-        useState("");
-
-    const [confirmPassword, setConfirmPassword] =
-        useState("");
-
-    const [showPasswordSection, setShowPasswordSection] =
-        useState(false);
-
-    const [message, setMessage] =
-        useState("");
-
+    const [message, setMessage] = useState("");
     const [messageType, setMessageType] =
         useState<"success" | "error">("success");
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-    const [snackbarOpen, setSnackbarOpen] =
-        useState(false);
+    // =========================
+    // HELPERS
+    // =========================
 
     const showMessage = (
         text: string,
@@ -101,23 +79,25 @@ const Profile = () => {
         setSnackbarOpen(true);
     };
 
+    const populateProfile = (user: UserProfile) => {
+        setProfile(user);
+        setName(user.name ?? "");
+        setPhone(user.phone ?? "");
+        setAddress(user.address ?? "");
+    };
+
+    // =========================
+    // FETCH PROFILE
+    // =========================
+
     const fetchProfile = async () => {
         try {
             setLoading(true);
 
             const response = await getMyProfile();
-
-            const user = response.user;
-
-            setProfile(user);
-            setName(user?.name ?? "");
-            setPhone(user?.phone ?? "");
-            setAddress(user?.address ?? "");
+            populateProfile(response.user);
         } catch (error) {
-            console.error(
-                "Failed to fetch profile:",
-                error
-            );
+            console.error("Failed to fetch profile:", error);
 
             showMessage(
                 "Failed to load profile.",
@@ -143,12 +123,7 @@ const Profile = () => {
                     return;
                 }
 
-                const user = response.user;
-
-                setProfile(user);
-                setName(user?.name ?? "");
-                setPhone(user?.phone ?? "");
-                setAddress(user?.address ?? "");
+                populateProfile(response.user);
             } catch (error) {
                 if (cancelled) {
                     return;
@@ -177,6 +152,10 @@ const Profile = () => {
         };
     }, []);
 
+    // =========================
+    // EDIT PROFILE
+    // =========================
+
     const handleEdit = () => {
         setEditMode(true);
     };
@@ -202,32 +181,22 @@ const Profile = () => {
         try {
             setSaving(true);
 
-            const response =
-                await updateMyProfile({
-                    name: name.trim(),
-                    phone: phone.trim(),
-                    address: address.trim(),
-                });
+            const response = await updateMyProfile({
+                name: name.trim(),
+                phone: phone.trim(),
+                address: address.trim(),
+            });
 
-            const updatedUser =
-                response.user;
+            const updatedUser = response.user;
 
-            setProfile(updatedUser);
+            populateProfile(updatedUser);
 
-            setName(updatedUser.name ?? "");
-            setPhone(updatedUser.phone ?? "");
-            setAddress(updatedUser.address ?? "");
-
-            /*
-             * Update localStorage so Navbar
-             * immediately shows the new name.
-             */
-            const storedUser =
-                localStorage.getItem("user");
+            // Update localStorage so Navbar
+            // immediately shows the updated user information.
+            const storedUser = localStorage.getItem("user");
 
             if (storedUser) {
-                const localUser =
-                    JSON.parse(storedUser);
+                const localUser = JSON.parse(storedUser);
 
                 localStorage.setItem(
                     "user",
@@ -345,9 +314,7 @@ const Profile = () => {
         );
     };
 
-    const formatRole = (
-        role?: string
-    ) => {
+    const formatRole = (role?: string) => {
         if (!role) {
             return "User";
         }
@@ -405,7 +372,6 @@ const Profile = () => {
             {/* ================= HEADER ================= */}
 
             <Box className="profile-header">
-
                 <Box className="profile-header-left">
 
                     <IconButton
@@ -427,7 +393,6 @@ const Profile = () => {
                     </Box>
 
                 </Box>
-
             </Box>
 
             {/* ================= PROFILE CARD ================= */}
@@ -436,15 +401,12 @@ const Profile = () => {
                 elevation={0}
                 className="profile-card"
             >
-
                 <Box className="profile-card-top">
 
                     <Box className="profile-avatar-wrapper">
-
                         <Avatar className="profile-avatar">
                             {getInitial()}
                         </Avatar>
-
                     </Box>
 
                     <Box className="profile-user-info">
@@ -494,9 +456,7 @@ const Profile = () => {
                         {!editMode && (
                             <Button
                                 variant="outlined"
-                                startIcon={
-                                    <EditOutlined />
-                                }
+                                startIcon={<EditOutlined />}
                                 onClick={handleEdit}
                             >
                                 Edit Profile
@@ -520,9 +480,7 @@ const Profile = () => {
                                     fullWidth
                                     value={name}
                                     onChange={(event) =>
-                                        setName(
-                                            event.target.value
-                                        )
+                                        setName(event.target.value)
                                     }
                                     placeholder="Enter your name"
                                 />
@@ -572,9 +530,7 @@ const Profile = () => {
                                     fullWidth
                                     value={phone}
                                     onChange={(event) =>
-                                        setPhone(
-                                            event.target.value
-                                        )
+                                        setPhone(event.target.value)
                                     }
                                     placeholder="Enter phone number"
                                 />
@@ -608,9 +564,7 @@ const Profile = () => {
                                     minRows={2}
                                     value={address}
                                     onChange={(event) =>
-                                        setAddress(
-                                            event.target.value
-                                        )
+                                        setAddress(event.target.value)
                                     }
                                     placeholder="Enter your address"
                                 />
@@ -638,12 +592,8 @@ const Profile = () => {
 
                             <Button
                                 variant="outlined"
-                                startIcon={
-                                    <CloseOutlined />
-                                }
-                                onClick={
-                                    handleCancelEdit
-                                }
+                                startIcon={<CloseOutlined />}
+                                onClick={handleCancelEdit}
                                 disabled={saving}
                             >
                                 Cancel
@@ -661,9 +611,7 @@ const Profile = () => {
                                         <SaveOutlined />
                                     )
                                 }
-                                onClick={
-                                    handleSaveProfile
-                                }
+                                onClick={handleSaveProfile}
                                 disabled={saving}
                             >
                                 {saving
@@ -675,7 +623,6 @@ const Profile = () => {
                     )}
 
                 </Box>
-
             </Paper>
 
             {/* ================= SECURITY CARD ================= */}
@@ -684,7 +631,6 @@ const Profile = () => {
                 elevation={0}
                 className="profile-card security-card"
             >
-
                 <Box className="profile-section">
 
                     <Box className="section-header">
@@ -710,13 +656,9 @@ const Profile = () => {
                         {!showPasswordSection && (
                             <Button
                                 variant="outlined"
-                                startIcon={
-                                    <LockOutlined />
-                                }
+                                startIcon={<LockOutlined />}
                                 onClick={() =>
-                                    setShowPasswordSection(
-                                        true
-                                    )
+                                    setShowPasswordSection(true)
                                 }
                             >
                                 Change Password
@@ -726,7 +668,6 @@ const Profile = () => {
                     </Box>
 
                     {showPasswordSection && (
-
                         <Box className="password-form">
 
                             <Alert
@@ -778,17 +719,12 @@ const Profile = () => {
                                 <Button
                                     variant="outlined"
                                     onClick={() => {
-                                        setShowPasswordSection(
-                                            false
-                                        );
-
+                                        setShowPasswordSection(false);
                                         setCurrentPassword("");
                                         setNewPassword("");
                                         setConfirmPassword("");
                                     }}
-                                    disabled={
-                                        changingPassword
-                                    }
+                                    disabled={changingPassword}
                                 >
                                     Cancel
                                 </Button>
@@ -805,12 +741,8 @@ const Profile = () => {
                                             <LockOutlined />
                                         )
                                     }
-                                    onClick={
-                                        handleChangePassword
-                                    }
-                                    disabled={
-                                        changingPassword
-                                    }
+                                    onClick={handleChangePassword}
+                                    disabled={changingPassword}
                                 >
                                     {changingPassword
                                         ? "Changing..."
@@ -820,11 +752,9 @@ const Profile = () => {
                             </Box>
 
                         </Box>
-
                     )}
 
                 </Box>
-
             </Paper>
 
             {/* ================= ACCOUNT INFO ================= */}
@@ -833,7 +763,6 @@ const Profile = () => {
                 elevation={0}
                 className="profile-card account-card"
             >
-
                 <Box className="profile-section">
 
                     <Typography className="section-title">
@@ -852,9 +781,7 @@ const Profile = () => {
                             </Typography>
 
                             <Typography className="account-value">
-                                {formatRole(
-                                    profile.role
-                                )}
+                                {formatRole(profile.role)}
                             </Typography>
 
                         </Box>
@@ -878,7 +805,6 @@ const Profile = () => {
                     </Stack>
 
                 </Box>
-
             </Paper>
 
             {/* ================= SNACKBAR ================= */}
@@ -886,9 +812,7 @@ const Profile = () => {
             <Snackbar
                 open={snackbarOpen}
                 autoHideDuration={4000}
-                onClose={() =>
-                    setSnackbarOpen(false)
-                }
+                onClose={() => setSnackbarOpen(false)}
                 anchorOrigin={{
                     vertical: "bottom",
                     horizontal: "right",
@@ -896,9 +820,7 @@ const Profile = () => {
             >
                 <Alert
                     severity={messageType}
-                    onClose={() =>
-                        setSnackbarOpen(false)
-                    }
+                    onClose={() => setSnackbarOpen(false)}
                     variant="filled"
                 >
                     {message}

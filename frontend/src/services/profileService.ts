@@ -5,6 +5,7 @@ export interface UserProfile {
     id?: string;
     name: string;
     email: string;
+    address?: string;
     phone?: string;
     role: string;
     isActive?: boolean;
@@ -15,6 +16,7 @@ export interface UserProfile {
 export interface UpdateProfileData {
     name: string;
     phone?: string;
+    address?: string;
 }
 
 export interface ChangePasswordData {
