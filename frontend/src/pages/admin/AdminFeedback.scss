@@ -1,236 +1,1097 @@
 .adminFeedback {
-    padding: 24px;
+    width: 100%;
+    min-height: 100%;
+    padding: 20px 24px 28px;
+
+    background: #f8fafc;
     font-family: "Poppins", sans-serif;
-}
+    box-sizing: border-box;
 
-.adminFeedback-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-}
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+    }
 
-.adminFeedback-heading {
-    font-size: 28px !important;
-    font-weight: 700 !important;
-    color: #1e293b;
-}
+    /* =====================================================
+       PAGE HEADER
+       ===================================================== */
 
-.adminFeedback-subtitle {
-    margin-top: 4px !important;
-    font-size: 14px !important;
-    color: #64748b;
-}
+    .adminFeedback-pageHeader {
+        width: 100%;
+        min-height: 82px;
+        padding: 15px 18px;
 
-.adminFeedback-total {
-    min-width: 150px;
-    padding: 16px 20px;
-    border-radius: 12px;
-    background: #eef2ff;
-    text-align: center;
-}
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
 
-.adminFeedback-totalLabel {
-    font-size: 12px !important;
-    color: #64748b;
-}
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
 
-.adminFeedback-totalCount {
-    margin-top: 2px !important;
-    font-size: 26px !important;
-    font-weight: 700 !important;
-    color: #4f46e5;
-}
+        box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+    }
 
-.adminFeedback-card {
-    border: 1px solid #e2e8f0;
-    border-radius: 16px !important;
-    overflow: hidden;
-    background: #ffffff;
-}
+    .adminFeedback-pageHeaderContent {
+        min-width: 0;
 
-.adminFeedback-cardHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 22px 24px;
-    border-bottom: 1px solid #e2e8f0;
-}
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
 
-.adminFeedback-cardTitle {
-    font-size: 18px !important;
-    font-weight: 600 !important;
-    color: #1e293b;
-}
+    .adminFeedback-titleIcon {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
 
-.adminFeedback-cardSubtitle {
-    margin-top: 4px !important;
-    font-size: 13px !important;
-    color: #64748b;
-}
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-.adminFeedback-table {
-    min-width: 1000px;
-
-    th {
+        border-radius: 12px;
         background: #eef2ff;
-        color: #3730a3;
-        font-size: 13px;
-        font-weight: 600;
+        color: #6366f1;
+
+        svg {
+            font-size: 22px;
+        }
+    }
+
+    .adminFeedback-heading {
+        margin: 0 !important;
+
+        color: #0f172a;
+        font-size: 21px !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.3px;
+    }
+
+    .adminFeedback-subtitle {
+        margin-top: 3px !important;
+
+        color: #64748b;
+        font-size: 11.5px !important;
+        font-weight: 400 !important;
+        line-height: 1.5 !important;
+    }
+
+    .adminFeedback-headerBadge {
+        min-width: 125px;
+        padding: 8px 11px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 10px;
+
+        color: #15803d;
+
+        svg {
+            font-size: 17px;
+            flex-shrink: 0;
+        }
+    }
+
+    .adminFeedback-badgeLabel {
+        display: block;
+
+        color: #64748b;
+        font-size: 8.5px !important;
+        font-weight: 500 !important;
+        line-height: 1.2 !important;
+    }
+
+    .adminFeedback-badgeValue {
+        display: block;
+
+        color: #15803d;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+    }
+
+    /* =====================================================
+       STATS / KPI CARDS
+       ===================================================== */
+
+    .adminFeedback-statsGrid {
+        width: 100%;
+        margin-top: 14px;
+
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .adminFeedback-statCard {
+        min-width: 0;
+        min-height: 104px;
+        padding: 15px;
+
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+
+        box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            border-color 0.2s ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            border-color: #cbd5e1;
+            box-shadow: 0 7px 18px rgba(15, 23, 42, 0.07);
+        }
+    }
+
+    .adminFeedback-statIcon {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 11px;
+
+        svg {
+            font-size: 20px;
+        }
+
+        &.purple {
+            background: #eef2ff;
+            color: #6366f1;
+        }
+
+        &.blue {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        &.amber {
+            background: #fffbeb;
+            color: #d97706;
+        }
+
+        &.green {
+            background: #ecfdf5;
+            color: #059669;
+        }
+    }
+
+    .adminFeedback-statContent {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .adminFeedback-statLabel {
+        margin: 0 0 4px !important;
+
+        color: #64748b;
+        font-size: 10px !important;
+        font-weight: 500 !important;
+        line-height: 1.3 !important;
+    }
+
+    .adminFeedback-statRating {
+        min-width: 0;
+
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .adminFeedback-statValue {
+        color: #0f172a;
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        line-height: 1.1 !important;
+        letter-spacing: -0.3px;
+    }
+
+    .adminFeedback-statRating .MuiRating-root {
+        font-size: 17px;
+    }
+
+    .adminFeedback-statHint {
+        margin-top: 4px !important;
+
+        color: #94a3b8;
+        font-size: 8.5px !important;
+        font-weight: 400 !important;
+        line-height: 1.3 !important;
+    }
+
+    /* =====================================================
+       COMMON CARD
+       ===================================================== */
+
+    .adminFeedback-card {
+        width: 100%;
+        margin-top: 14px;
+
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 15px;
+
+        box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
+    }
+
+    /* =====================================================
+       CHART
+       ===================================================== */
+
+    .adminFeedback-chartCard {
+        overflow: hidden;
+    }
+
+    .adminFeedback-cardHeader {
+        min-height: 63px;
+        padding: 14px 18px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .adminFeedback-cardTitle {
+        margin: 0 !important;
+
+        color: #0f172a;
+        font-size: 13px !important;
+        font-weight: 650 !important;
+        line-height: 1.3 !important;
+    }
+
+    .adminFeedback-cardSubtitle {
+        margin-top: 3px !important;
+
+        color: #94a3b8;
+        font-size: 9.5px !important;
+        font-weight: 400 !important;
+        line-height: 1.4 !important;
+    }
+
+    .adminFeedback-chartLegend {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        color: #64748b;
+        font-size: 9px;
+        font-weight: 500;
         white-space: nowrap;
     }
 
-    td {
-        padding: 16px;
+    .adminFeedback-chart {
+        width: 100%;
+        height: 245px;
+        padding: 3px 8px 8px;
+
+        overflow: hidden;
+
+        .MuiChartsLegend-root {
+            font-family: "Poppins", sans-serif !important;
+        }
+
+        svg text {
+            font-family: "Poppins", sans-serif !important;
+        }
+    }
+
+    /* =====================================================
+       FEEDBACK SECTION
+       ===================================================== */
+
+    .adminFeedback-feedbackCard {
+        overflow: hidden;
+    }
+
+    .adminFeedback-sectionHeader {
+        padding: 15px 18px 13px;
+
         border-bottom: 1px solid #f1f5f9;
     }
-}
 
-.feedbackRow {
-    transition: background 0.2s ease;
+    .adminFeedback-sectionTitleRow {
+        min-width: 0;
 
-    &:hover {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .adminFeedback-resultChip {
+        height: 22px !important;
+
+        background: #eef2ff !important;
+        color: #4f46e5 !important;
+
+        font-family: "Poppins", sans-serif !important;
+        font-size: 8.5px !important;
+        font-weight: 600 !important;
+
+        .MuiChip-label {
+            padding: 0 8px !important;
+        }
+    }
+
+    /* =====================================================
+       FILTERS
+       ===================================================== */
+
+    .adminFeedback-filterWrapper {
+        margin: 14px 18px;
+
+        padding: 12px;
+
         background: #f8fafc;
-    }
-}
-
-.feedback-citizenName {
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    color: #1e293b;
-}
-
-.feedback-citizenEmail {
-    margin-top: 3px !important;
-    font-size: 12px !important;
-    color: #64748b;
-}
-
-.feedback-complaintTitle {
-    max-width: 220px;
-    font-size: 14px !important;
-    font-weight: 500 !important;
-    color: #334155;
-}
-
-.feedback-rating {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    .MuiRating-root {
-        font-size: 18px;
+        border: 1px solid #e2e8f0;
+        border-radius: 11px;
     }
 
-    p {
-        font-size: 12px;
-        color: #64748b;
+    .adminFeedback-filterHeader {
+        margin-bottom: 9px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
     }
-}
 
-.feedback-comment {
-    max-width: 280px;
-    font-size: 13px !important;
-    line-height: 1.5 !important;
-    color: #475569;
+    .adminFeedback-filterHeader::before {
+        content: "Filters";
 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+        color: #334155;
+        font-size: 10px;
+        font-weight: 600;
+    }
 
-.feedback-status {
-    font-size: 11px !important;
-    font-weight: 600 !important;
-}
+    .adminFeedback-clearFilter {
+        min-width: auto !important;
+        padding: 2px 6px !important;
 
-.feedback-status-resolved {
-    background: #dcfce7 !important;
-    color: #15803d !important;
-}
+        color: #6366f1 !important;
 
-.feedback-status-in_progress {
-    background: #dbeafe !important;
-    color: #1d4ed8 !important;
-}
+        font-family: "Poppins", sans-serif !important;
+        font-size: 9px !important;
+        font-weight: 500 !important;
 
-.feedback-status-pending {
-    background: #fef3c7 !important;
-    color: #b45309 !important;
-}
+        text-transform: none !important;
 
-.feedback-status-assigned {
-    background: #ede9fe !important;
-    color: #6d28d9 !important;
-}
-
-.feedback-date {
-    font-size: 13px !important;
-    color: #64748b;
-    white-space: nowrap;
-}
-
-.adminFeedback-empty {
-    padding: 40px !important;
-    color: #64748b;
-}
-
-.adminFeedback-loading {
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-
-    color: #64748b;
-}
-
-.adminFeedback-headerStats {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-}
-
-.adminFeedback-averageRating {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.adminFeedback-filters {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.adminFeedback-search {
-    width: 240px;
-}
-
-.adminFeedback-ratingFilter {
-    width: 150px;
-}
-
-.adminFeedback-dateFilter {
-    width: 150px;
-}
-
-@media (max-width: 768px) {
-    .adminFeedback-cardHeader {
-        flex-direction: column;
-        align-items: stretch;
+        &:hover {
+            background: #eef2ff !important;
+        }
     }
 
     .adminFeedback-filters {
         width: 100%;
-        flex-wrap: wrap;
 
+        display: grid;
+        grid-template-columns: minmax(220px, 1fr) 145px 145px 145px;
+        gap: 9px;
+        align-items: center;
     }
 
     .adminFeedback-search,
     .adminFeedback-ratingFilter,
     .adminFeedback-dateFilter {
+        width: 100% !important;
+        min-width: 0;
+    }
+
+    .adminFeedback-filters .MuiFormControl-root,
+    .adminFeedback-filters .MuiTextField-root {
         width: 100%;
+    }
+
+    .adminFeedback-filters .MuiOutlinedInput-root {
+        min-height: 36px;
+
+        background: #ffffff;
+        border-radius: 8px;
+
+        font-family: "Poppins", sans-serif !important;
+        font-size: 10px !important;
+
+        fieldset {
+            border-color: #e2e8f0;
+        }
+
+        &:hover fieldset {
+            border-color: #cbd5e1;
+        }
+
+        &.Mui-focused fieldset {
+            border-color: #6366f1;
+            border-width: 1px;
+        }
+    }
+
+    .adminFeedback-filters .MuiInputBase-input {
+        padding: 8px 10px !important;
+
+        font-family: "Poppins", sans-serif !important;
+        font-size: 10px !important;
+    }
+
+    .adminFeedback-filters .MuiInputLabel-root {
+        font-family: "Poppins", sans-serif !important;
+        font-size: 9.5px !important;
+    }
+
+    .adminFeedback-filters .MuiSelect-select {
+        padding: 8px 30px 8px 10px !important;
+
+        font-family: "Poppins", sans-serif !important;
+        font-size: 10px !important;
+    }
+
+    .adminFeedback-filters .MuiSvgIcon-root {
+        font-size: 18px;
+    }
+
+    /* =====================================================
+       TABLE
+       ===================================================== */
+
+    .adminFeedback-tableContainer {
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: visible;
+
+        border-top: 1px solid #f1f5f9;
+
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e1 transparent;
+
+        &::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 20px;
+        }
+    }
+
+    .adminFeedback-table {
+        width: 100%;
+        min-width: 1050px;
+
+        border-collapse: separate;
+        border-spacing: 0;
+
+        font-family: "Poppins", sans-serif !important;
+
+        .MuiTableCell-root {
+            font-family: "Poppins", sans-serif !important;
+        }
+
+        thead {
+            .MuiTableCell-root {
+                height: 42px;
+                padding: 8px 12px;
+
+                background: #f8fafc;
+
+                border-bottom: 1px solid #e2e8f0;
+
+                color: #64748b;
+
+                font-size: 9px !important;
+                font-weight: 600 !important;
+                line-height: 1.2 !important;
+
+                white-space: nowrap;
+            }
+        }
+    }
+
+    .adminFeedback-tableRow {
+        transition: background 0.18s ease;
+
+        &:hover {
+            background: #f8fafc;
+        }
+
+        &:last-child {
+            .MuiTableCell-root {
+                border-bottom: none;
+            }
+        }
+
+        .MuiTableCell-root {
+            height: 62px;
+            padding: 8px 12px;
+
+            border-bottom: 1px solid #f1f5f9;
+
+            color: #334155;
+
+            font-size: 9.5px !important;
+            vertical-align: middle;
+        }
+    }
+
+    /* =====================================================
+       CITIZEN
+       ===================================================== */
+
+    .feedback-citizen {
+        min-width: 180px;
+
+        display: flex;
+        align-items: center;
+        gap: 9px;
+    }
+
+    .feedback-citizenAvatar {
+        width: 34px !important;
+        height: 34px !important;
+        flex: 0 0 34px;
+
+        background: #eef2ff !important;
+        color: #6366f1 !important;
+
+        font-family: "Poppins", sans-serif !important;
+        font-size: 10px !important;
+        font-weight: 700 !important;
+    }
+
+    .feedback-citizenInfo {
+        min-width: 0;
+    }
+
+    .feedback-citizenName {
+        max-width: 150px;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        color: #1e293b;
+        font-size: 9.5px !important;
+        font-weight: 600 !important;
+        line-height: 1.4 !important;
+    }
+
+    .feedback-citizenEmail {
+        max-width: 150px;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        color: #94a3b8;
+        font-size: 8px !important;
+        font-weight: 400 !important;
+        line-height: 1.4 !important;
+    }
+
+    /* =====================================================
+       COMPLAINT
+       ===================================================== */
+
+    .feedback-complaint {
+        min-width: 180px;
+        max-width: 230px;
+    }
+
+    .feedback-complaintTitle {
+        max-width: 220px;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        color: #334155;
+        font-size: 9.5px !important;
+        font-weight: 550 !important;
+        line-height: 1.4 !important;
+    }
+
+    .feedback-complaintId {
+        margin-top: 2px !important;
+
+        color: #94a3b8;
+        font-size: 7.5px !important;
+        font-weight: 400 !important;
+    }
+
+    /* =====================================================
+       RATING
+       ===================================================== */
+
+    .feedback-rating {
+        min-width: 115px;
+
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .feedback-rating .MuiRating-root {
+        font-size: 16px;
+    }
+
+    .feedback-rating span {
+        color: #475569;
+        font-size: 9px;
+        font-weight: 600;
+    }
+
+    /* =====================================================
+       COMMENT
+       ===================================================== */
+
+    .feedback-comment {
+        display: block;
+
+        max-width: 260px;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        color: #64748b;
+
+        font-size: 8.5px !important;
+        font-weight: 400 !important;
+        line-height: 1.5 !important;
+    }
+
+    /* =====================================================
+       STATUS
+       ===================================================== */
+
+    .feedback-status {
+        height: 24px !important;
+
+        border-radius: 7px !important;
+
+        font-family: "Poppins", sans-serif !important;
+        font-size: 7.5px !important;
+        font-weight: 600 !important;
+
+        .MuiChip-label {
+            padding: 0 8px !important;
+        }
+    }
+
+    .feedback-status-resolved {
+        background: #ecfdf5 !important;
+        color: #047857 !important;
+    }
+
+    .feedback-status-in_progress {
+        background: #eff6ff !important;
+        color: #2563eb !important;
+    }
+
+    .feedback-status-pending {
+        background: #fffbeb !important;
+        color: #b45309 !important;
+    }
+
+    .feedback-status-assigned {
+        background: #f5f3ff !important;
+        color: #7c3aed !important;
+    }
+
+    .feedback-status-rejected {
+        background: #fef2f2 !important;
+        color: #dc2626 !important;
+    }
+
+    /* =====================================================
+       DATE
+       ===================================================== */
+
+    .feedback-dateWrapper {
+        min-width: 90px;
+    }
+
+    .feedback-date {
+        color: #475569;
+        font-size: 8.5px !important;
+        font-weight: 500 !important;
+        line-height: 1.4 !important;
+        white-space: nowrap;
+    }
+
+    .feedback-time {
+        margin-top: 2px !important;
+
+        color: #94a3b8;
+        font-size: 7.5px !important;
+        font-weight: 400 !important;
+        white-space: nowrap;
+    }
+
+    /* =====================================================
+       EMPTY STATE
+       ===================================================== */
+
+    .adminFeedback-empty {
+        min-height: 210px;
+        padding: 30px 20px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        text-align: center;
+    }
+
+    .adminFeedback-emptyIcon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 50%;
+        background: #f1f5f9;
+        color: #94a3b8;
+
+        svg {
+            font-size: 22px;
+        }
+    }
+
+    .adminFeedback-emptyTitle {
+        color: #334155;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+    }
+
+    .adminFeedback-emptyText {
+        max-width: 350px;
+        margin-top: 4px !important;
+
+        color: #94a3b8;
+        font-size: 9px !important;
+        font-weight: 400 !important;
+    }
+
+    /* =====================================================
+       LOADING
+       ===================================================== */
+
+    .adminFeedback-loading {
+        min-height: 400px;
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #f8fafc;
+
+        .MuiCircularProgress-root {
+            color: #6366f1;
+        }
+    }
+}
+
+/* =========================================================
+   LARGE TABLET / SMALL DESKTOP
+   ========================================================= */
+
+@media (max-width: 1200px) {
+    .adminFeedback {
+        padding: 18px 18px 24px;
+
+        .adminFeedback-statsGrid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .adminFeedback-filters {
+            grid-template-columns: minmax(220px, 1fr) 140px 140px;
+        }
+
+        .adminFeedback-dateFilter:last-child {
+            grid-column: span 1;
+        }
+    }
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+    .adminFeedback {
+        padding: 16px;
+
+        .adminFeedback-pageHeader {
+            min-height: auto;
+            padding: 14px;
+        }
+
+        .adminFeedback-heading {
+            font-size: 19px !important;
+        }
+
+        .adminFeedback-subtitle {
+            font-size: 10.5px !important;
+        }
+
+        .adminFeedback-headerBadge {
+            min-width: 115px;
+        }
+
+        .adminFeedback-filters {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .adminFeedback-search {
+            grid-column: 1 / -1;
+        }
+
+        .adminFeedback-chart {
+            height: 230px;
+        }
+    }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+    .adminFeedback {
+        padding: 12px;
+
+        /* Header */
+        .adminFeedback-pageHeader {
+            padding: 13px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+            border-radius: 13px;
+        }
+
+        .adminFeedback-pageHeaderContent {
+            width: 100%;
+        }
+
+        .adminFeedback-titleIcon {
+            width: 40px;
+            height: 40px;
+            flex-basis: 40px;
+
+            svg {
+                font-size: 20px;
+            }
+        }
+
+        .adminFeedback-heading {
+            font-size: 17px !important;
+        }
+
+        .adminFeedback-subtitle {
+            margin-top: 2px !important;
+            font-size: 9.5px !important;
+        }
+
+        .adminFeedback-headerBadge {
+            width: 100%;
+            min-width: 0;
+            justify-content: flex-start;
+        }
+
+        /* Stats */
+        .adminFeedback-statsGrid {
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .adminFeedback-statCard {
+            min-height: 88px;
+            padding: 12px;
+        }
+
+        .adminFeedback-statIcon {
+            width: 38px;
+            height: 38px;
+            flex-basis: 38px;
+
+            svg {
+                font-size: 18px;
+            }
+        }
+
+        .adminFeedback-statValue {
+            font-size: 18px !important;
+        }
+
+        /* Cards */
+        .adminFeedback-card {
+            margin-top: 10px;
+            border-radius: 12px;
+        }
+
+        /* Chart */
+        .adminFeedback-cardHeader {
+            min-height: auto;
+            padding: 12px;
+            align-items: flex-start;
+        }
+
+        .adminFeedback-cardTitle {
+            font-size: 12px !important;
+        }
+
+        .adminFeedback-cardSubtitle {
+            font-size: 8.5px !important;
+        }
+
+        .adminFeedback-chartLegend {
+            display: none;
+        }
+
+        .adminFeedback-chart {
+            height: 215px;
+            padding: 2px 4px 6px;
+        }
+
+        /* Feedback header */
+        .adminFeedback-sectionHeader {
+            padding: 12px;
+        }
+
+        .adminFeedback-sectionTitleRow {
+            gap: 6px;
+        }
+
+        /* Filters */
+        .adminFeedback-filterWrapper {
+            margin: 10px 12px;
+            padding: 10px;
+        }
+
+        .adminFeedback-filters {
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .adminFeedback-search {
+            grid-column: auto;
+        }
+
+        .adminFeedback-filters .MuiOutlinedInput-root {
+            min-height: 38px;
+        }
+
+        /* Table */
+        .adminFeedback-tableContainer {
+            border-radius: 0 0 12px 12px;
+        }
+
+        .adminFeedback-table {
+            min-width: 950px;
+        }
+
+        .adminFeedback-tableRow {
+            .MuiTableCell-root {
+                height: 58px;
+                padding: 7px 10px;
+            }
+        }
+
+        .feedback-citizen {
+            min-width: 165px;
+        }
+
+        .feedback-complaint {
+            min-width: 170px;
+        }
+
+        .feedback-comment {
+            max-width: 220px;
+        }
+
+        /* Empty */
+        .adminFeedback-empty {
+            min-height: 180px;
+            padding: 25px 15px;
+        }
+    }
+}
+
+/* =========================================================
+   EXTRA SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+    .adminFeedback {
+        padding: 9px;
+
+        .adminFeedback-pageHeader {
+            padding: 11px;
+        }
+
+        .adminFeedback-titleIcon {
+            width: 36px;
+            height: 36px;
+            flex-basis: 36px;
+        }
+
+        .adminFeedback-heading {
+            font-size: 15.5px !important;
+        }
+
+        .adminFeedback-subtitle {
+            font-size: 8.5px !important;
+        }
+
+        .adminFeedback-statCard {
+            padding: 10px;
+        }
+
+        .adminFeedback-statIcon {
+            width: 36px;
+            height: 36px;
+            flex-basis: 36px;
+        }
+
+        .adminFeedback-filterWrapper {
+            margin-left: 9px;
+            margin-right: 9px;
+        }
+
+        .adminFeedback-table {
+            min-width: 900px;
+        }
     }
 }

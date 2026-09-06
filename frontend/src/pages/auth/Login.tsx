@@ -1,16 +1,25 @@
-import { Box, Button, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import {
+    Alert,
+    Box,
+    Button,
+    IconButton,
+    InputAdornment,
+    TextField,
+    Typography,
+} from "@mui/material";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { loginUser } from "../../services/authService";
+import {
+    Visibility,
+    VisibilityOff,
+    ArrowForward,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { loginUser } from "../../services/authService";
 import { login } from "../../store/authSlice";
-import { useState } from "react";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import LocationCityOutlinedIcon from "@mui/icons-material/LocationCityOutlined";
-import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
 import "./Auth.scss";
 
 interface LoginFormData {
@@ -18,10 +27,11 @@ interface LoginFormData {
     password: string;
 }
 
-const schema = yup.object({
+const loginSchema = yup.object({
     email: yup
         .string()
-        .email("Invalid email")
+        .trim()
+        .email("Please enter a valid email address")
         .required("Email is required"),
 
     password: yup
@@ -32,46 +42,81 @@ const schema = yup.object({
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [serverError, setServerError] = useState("");
+
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<LoginFormData>({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(loginSchema),
+        mode: "onBlur",
+        defaultValues: {
+            email: "",
+            password: "",
+        },
     });
 
+    const getErrorMessage = (error: any) => {
+        return (
+            error?.response?.data?.message ||
+            error?.response?.data?.error ||
+            error?.message ||
+            "Something went wrong. Please try again."
+        );
+    };
+
     const onSubmit = async (data: LoginFormData) => {
+        setServerError("");
+        setLoading(true);
+
         try {
-            setLoading(true);
             const response = await loginUser(data);
-            dispatch(
-                login({
-                    user: response.user,
-                    token: response.token,
-                })
-            );
+
+            if (!response?.token || !response?.user) {
+                throw new Error("Invalid server response. Please try again.");
+            }
 
             localStorage.setItem("token", response.token);
-            localStorage.setItem(
-                "user",
-                JSON.stringify(response.user)
+            localStorage.setItem("user", JSON.stringify(response.user));
+
+            dispatch(
+                login({
+                    token: response.token,
+                    user: response.user,
+                })
             );
 
             const role = response.user.role;
 
-            if (role === "citizen") {
-                navigate("/citizen/dashboard");
-            } else if (role === "admin") {
-                navigate("/admin/dashboard");
-            } else if (role === "worker") {
-                navigate("/worker/dashboard");
-            } else if (role === "officer") {
-                navigate("/officer/dashboard");
+            switch (role) {
+                case "citizen":
+                    navigate("/citizen/dashboard");
+                    break;
+
+                case "admin":
+                    navigate("/admin/dashboard");
+                    break;
+
+                case "worker":
+                    navigate("/worker/dashboard");
+                    break;
+
+                case "officer":
+                    navigate("/officer/dashboard");
+                    break;
+
+                default:
+                    setServerError(
+                        "Your account role is not configured correctly."
+                    );
+                    break;
             }
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            setServerError(getErrorMessage(error));
         } finally {
             setLoading(false);
         }
@@ -79,15 +124,13 @@ const Login = () => {
 
     return (
         <Box className="auth-page login-page">
-
-            {/* LEFT - LOGIN FORM */}
+            {/* FORM */}
             <Box className="auth-form-section">
-
                 <Box className="auth-form-container">
-
+                    {/* MOBILE BRAND */}
                     <Box className="mobile-brand">
                         <Box className="brand-icon">
-                            <LocationCityOutlinedIcon />
+                            <Typography>🏙️</Typography>
                         </Box>
 
                         <Typography className="mobile-brand-name">
@@ -101,20 +144,32 @@ const Login = () => {
                         </Typography>
 
                         <Typography className="auth-title">
-                            Welcome back!
+                            Sign in to your account
                         </Typography>
 
                         <Typography className="auth-description">
-                            Sign in to continue managing and tracking
-                            your city complaints.
+                            Access your dashboard and manage your city
+                            complaints.
                         </Typography>
                     </Box>
 
-                    <form
+                    {serverError && (
+                        <Alert
+                            severity="error"
+                            className="auth-error-alert"
+                            onClose={() => setServerError("")}
+                        >
+                            {serverError}
+                        </Alert>
+                    )}
+
+                    <Box
+                        component="form"
                         className="auth-form"
                         onSubmit={handleSubmit(onSubmit)}
+                        noValidate
                     >
-
+                        {/* EMAIL */}
                         <Box className="field-group">
                             <Typography className="field-label">
                                 Email Address
@@ -122,50 +177,67 @@ const Login = () => {
 
                             <TextField
                                 fullWidth
+                                className="auth-input"
+                                type="email"
                                 placeholder="Enter your email"
+                                autoComplete="email"
                                 {...register("email")}
                                 error={!!errors.email}
                                 helperText={errors.email?.message}
-                                className="auth-input"
+                                disabled={loading}
                             />
                         </Box>
 
+                        {/* PASSWORD */}
                         <Box className="field-group">
                             <Box className="password-label-row">
                                 <Typography className="field-label">
                                     Password
                                 </Typography>
 
-                                <Typography className="forgot-password">
+                                <Typography
+                                    className="forgot-password"
+                                    onClick={() => {
+                                        // Add forgot password route here later
+                                    }}
+                                >
                                     Forgot password?
                                 </Typography>
                             </Box>
 
                             <TextField
                                 fullWidth
-                                placeholder="Enter your password"
+                                className="auth-input"
                                 type={showPassword ? "text" : "password"}
+                                placeholder="Enter your password"
+                                autoComplete="current-password"
                                 {...register("password")}
                                 error={!!errors.password}
                                 helperText={errors.password?.message}
-                                className="auth-input"
+                                disabled={loading}
                                 slotProps={{
                                     input: {
                                         endAdornment: (
                                             <InputAdornment position="end">
                                                 <IconButton
+                                                    type="button"
+                                                    className="password-toggle"
                                                     onClick={() =>
                                                         setShowPassword(
-                                                            !showPassword
+                                                            (prev) => !prev
                                                         )
                                                     }
                                                     edge="end"
-                                                    className="password-toggle"
+                                                    aria-label={
+                                                        showPassword
+                                                            ? "Hide password"
+                                                            : "Show password"
+                                                    }
                                                 >
                                                     {showPassword ? (
-                                                        <VisibilityOffOutlinedIcon />
+                                                        <VisibilityOff />
                                                     ) : (
-                                                        <VisibilityOutlinedIcon />
+                                                        <Visibility />
                                                     )}
                                                 </IconButton>
                                             </InputAdornment>
@@ -178,46 +250,38 @@ const Login = () => {
                         <Button
                             fullWidth
                             type="submit"
-                            disabled={loading}
                             className="auth-submit"
+                            disabled={loading}
                             endIcon={
-                                !loading && (
-                                    <ArrowForwardRoundedIcon />
-                                )
+                                !loading ? <ArrowForward /> : undefined
                             }
                         >
-                            {loading ? "Signing in..." : "Sign In"}
+                            {loading ? "Signing in..." : "Sign in"}
                         </Button>
-
-                    </form>
+                    </Box>
 
                     <Typography className="auth-switch">
                         Don't have an account?
-                        <Box
-                            component="span"
-                            onClick={() => navigate("/register")}
-                        >
-                            Create an account
-                        </Box>
+                        <span onClick={() => navigate("/register")}>
+                            Create account
+                        </span>
                     </Typography>
 
                     <Typography className="auth-footer">
-                        © 2026 Smart City Complaint Management
+                        © {new Date().getFullYear()} Smart City Complaint
+                        Management System
                     </Typography>
-
                 </Box>
             </Box>
 
-            {/* RIGHT - VISUAL */}
+            {/* RIGHT VISUAL */}
             <Box className="auth-visual-section">
-
                 <Box className="visual-overlay" />
 
                 <Box className="visual-content">
-
                     <Box className="visual-brand">
                         <Box className="brand-icon">
-                            <LocationCityOutlinedIcon />
+                            <Typography>🏙️</Typography>
                         </Box>
 
                         <Box>
@@ -233,34 +297,26 @@ const Login = () => {
 
                     <Box className="visual-message">
                         <Typography className="visual-small-title">
-                            SMARTER CITY. BETTER LIVING.
+                            YOUR CITY. YOUR VOICE.
                         </Typography>
 
                         <Typography className="visual-title">
-                            Connect.
-                            <br />
-                            Report.
-                            <br />
-                            <span>Improve.</span>
+                            Together, we make <span>Karachi</span> better.
                         </Typography>
 
                         <Typography className="visual-description">
-                            Help make Karachi a cleaner, safer and
-                            better-connected city by reporting issues
-                            in your area.
+                            Report problems, follow their progress and play
+                            your part in building a smarter city.
                         </Typography>
                     </Box>
 
                     <Box className="visual-bottom">
                         <Box className="visual-line" />
-
                         <Typography>
-                            Together we can build a better city.
+                            Your voice can make a difference.
                         </Typography>
                     </Box>
-
                 </Box>
-
             </Box>
         </Box>
     );

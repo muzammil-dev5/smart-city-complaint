@@ -1,157 +1,657 @@
 .myComplaints {
-    .myComplaints_heading {
-        font-size: 20px;
-        font-weight: 600;
-        color: #000;
-        font-family: "Poppins", sans-serif;
+    width: 100%;
+    min-width: 0;
+    padding: 20px 24px 30px;
+    background: #f8fafc;
+    font-family: "Poppins", sans-serif !important;
+
+    * {
+        font-family: "Poppins", sans-serif !important;
+        box-sizing: border-box;
     }
 
-    .myComplaints_Table {
-        margin-top: 24px;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: none;
+    .myComplaints_header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 20px 22px;
+        margin-bottom: 20px;
+        background: #ffffff;
         border: 1px solid #d1fae5;
+        border-radius: 14px;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    }
 
-        .MuiTableContainer-root {
+    .myComplaints_headerContent {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 0;
+    }
+
+    .myComplaints_headerIcon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        background: #ecfdf5;
+        color: #047857;
+
+        svg {
+            font-size: 25px;
+        }
+    }
+
+    .myComplaints_heading {
+        margin: 0 !important;
+        color: #111827 !important;
+        font-size: 21px !important;
+        font-weight: 700 !important;
+        line-height: 1.3 !important;
+    }
+
+    .myComplaints_subtitle {
+        margin-top: 3px !important;
+        color: #6b7280 !important;
+        font-size: 13px !important;
+        font-weight: 400 !important;
+        line-height: 1.5 !important;
+    }
+
+    .myComplaints_count {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+        padding: 10px 16px;
+        border: 1px solid #bbf7d0;
+        border-radius: 10px;
+        background: #f0fdf4;
+    }
+
+    .myComplaints_countValue {
+        color: #047857 !important;
+        font-size: 19px !important;
+        font-weight: 700 !important;
+        line-height: 1 !important;
+    }
+
+    .myComplaints_countLabel {
+        color: #166534 !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+    }
+
+    .myComplaints_tableCard {
+        width: 100%;
+        overflow: hidden;
+        background: #ffffff;
+        border: 1px solid #d1fae5;
+        border-radius: 14px;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    }
+
+    .myComplaints_TableContainer {
+        width: 100%;
+        max-height: 650px;
+        overflow-x: auto;
+        overflow-y: auto;
+        border-radius: 14px;
+
+        &::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: #f0fdf4;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #a7f3d0;
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: #6ee7b7;
+        }
+    }
+
+    .myComplaints_DataTable {
+        width: 100%;
+        min-width: 1050px;
+        border-collapse: separate;
+        border-spacing: 0;
+        table-layout: fixed;
+
+        .MuiTableHead-root {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+
+            .MuiTableRow-root {
+                background: #047857;
+            }
+
+            .MuiTableCell-root {
+                padding: 15px 14px;
+                color: #ffffff !important;
+                background: #047857 !important;
+                border-bottom: 1px solid #065f46;
+                font-size: 14px !important;
+                font-weight: 600 !important;
+                line-height: 1.4 !important;
+                text-align: center;
+                white-space: nowrap;
+            }
+        }
+
+        .MuiTableBody-root {
+            .myComplaints_tableRow {
+                background: #ffffff;
+                cursor: pointer;
+                transition: background-color 0.2s ease, box-shadow 0.2s ease;
+
+                &:nth-of-type(even) {
+                    background: #f8fffb;
+                }
+
+                &:hover {
+                    background: #ecfdf5;
+                    box-shadow: inset 3px 0 0 #10b981;
+
+                    .complaint_title {
+                        color: #047857 !important;
+                    }
+
+                    .complaint_action {
+                        color: #047857 !important;
+                        background: #d1fae5;
+                    }
+                }
+
+                &:last-child {
+                    .MuiTableCell-root {
+                        border-bottom: none;
+                    }
+                }
+            }
+
+            .MuiTableCell-root {
+                padding: 15px 14px;
+                color: #374151 !important;
+                border-bottom: 1px solid #d1fae5;
+                font-size: 13.5px !important;
+                font-weight: 400 !important;
+                line-height: 1.5 !important;
+                text-align: center;
+                vertical-align: middle;
+            }
+        }
+    }
+
+    .complaint_title {
+        display: block;
+        max-width: 180px;
+        margin: 0 auto;
+        overflow: hidden;
+        color: #111827 !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        line-height: 1.4 !important;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .complaint_category {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 30px;
+        padding: 5px 10px;
+        border-radius: 7px;
+        background: #f0fdf4;
+        color: #047857 !important;
+        font-size: 12.5px !important;
+        font-weight: 600 !important;
+        white-space: nowrap;
+    }
+
+    .complaint_description {
+        display: -webkit-box;
+        max-width: 230px;
+        margin: 0 auto;
+        overflow: hidden;
+        color: #6b7280 !important;
+        font-size: 13px !important;
+        font-weight: 400 !important;
+        line-height: 1.5 !important;
+        text-align: left;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+
+    .complaintTable_imageWrapper {
+        position: relative;
+        width: 58px;
+        height: 58px;
+        margin: 0 auto;
+        overflow: hidden;
+        border: 1px solid #a7f3d0;
+        border-radius: 9px;
+        background: #f0fdf4;
+    }
+
+    .complaintTable_image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .complaintTable_imageCount {
+        position: absolute;
+        right: 4px;
+        bottom: 4px;
+        padding: 2px 6px;
+        border-radius: 10px;
+        background: rgba(0, 0, 0, 0.72);
+        color: #ffffff !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        line-height: 16px !important;
+    }
+
+    .complaintTable_noImageWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 58px;
+        height: 58px;
+        margin: 0 auto;
+        border: 1px dashed #a7f3d0;
+        border-radius: 9px;
+        background: #f0fdf4;
+    }
+
+    .complaintTable_noImage {
+        color: #9ca3af !important;
+        font-size: 11.5px !important;
+        font-weight: 500 !important;
+    }
+
+    .complaint-status {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        min-width: 82px;
+        padding: 6px 11px !important;
+        border-radius: 20px !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        line-height: 1.3 !important;
+        text-transform: capitalize !important;
+    }
+
+    .complaint-status-pending {
+        background: #fffbeb !important;
+        color: #b45309 !important;
+        border: 1px solid #fde68a;
+    }
+
+    .complaint-status-assigned {
+        background: #eff6ff !important;
+        color: #2563eb !important;
+        border: 1px solid #bfdbfe;
+    }
+
+    .complaint-status-in_progress {
+        background: #eef2ff !important;
+        color: #4f46e5 !important;
+        border: 1px solid #c7d2fe;
+    }
+
+    .complaint-status-resolved {
+        background: #ecfdf5 !important;
+        color: #047857 !important;
+        border: 1px solid #a7f3d0;
+    }
+
+    .complaint-status-rejected {
+        background: #fef2f2 !important;
+        color: #dc2626 !important;
+        border: 1px solid #fecaca;
+    }
+
+    .complaint_date {
+        color: #4b5563 !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        white-space: nowrap;
+    }
+
+    .complaint_action {
+        width: 36px !important;
+        height: 36px !important;
+        color: #6b7280 !important;
+        background: #f9fafb;
+        transition: all 0.2s ease !important;
+
+        svg {
+            font-size: 21px !important;
+        }
+
+        &:hover {
+            color: #047857 !important;
+            background: #d1fae5 !important;
+            transform: translateX(2px);
+        }
+    }
+
+    .myComplaints_empty {
+        padding: 70px 20px !important;
+        color: #9ca3af !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        text-align: center;
+    }
+
+    .myComplaints_mobileList {
+        display: none;
+    }
+
+    .myComplaints_mobileCard {
+        width: 100%;
+        padding: 16px;
+        background: #ffffff;
+        border: 1px solid #d1fae5;
+        border-radius: 13px;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:active {
+            transform: scale(0.99);
+        }
+    }
+
+    .mobileComplaint_top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .mobileComplaint_titleArea {
+        min-width: 0;
+    }
+
+    .mobileComplaint_title {
+        margin: 0 !important;
+        overflow: hidden;
+        color: #111827 !important;
+        font-size: 15px !important;
+        font-weight: 650 !important;
+        line-height: 1.45 !important;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .mobileComplaint_id {
+        margin-top: 3px !important;
+        color: #9ca3af !important;
+        font-size: 11px !important;
+        font-weight: 500 !important;
+    }
+
+    .mobileComplaint_description {
+        display: -webkit-box;
+        margin: 12px 0 !important;
+        overflow: hidden;
+        color: #6b7280 !important;
+        font-size: 13px !important;
+        font-weight: 400 !important;
+        line-height: 1.55 !important;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+
+    .mobileComplaint_imageWrapper {
+        position: relative;
+        width: 100%;
+        height: 145px;
+        margin-bottom: 13px;
+        overflow: hidden;
+        border-radius: 10px;
+        background: #f0fdf4;
+    }
+
+    .mobileComplaint_image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .mobileComplaint_imageCount {
+        position: absolute;
+        right: 8px;
+        bottom: 8px;
+        padding: 3px 8px;
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.7);
+        color: #ffffff !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+    }
+
+    .mobileComplaint_meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+        padding: 12px 0;
+        border-top: 1px solid #ecfdf5;
+        border-bottom: 1px solid #ecfdf5;
+    }
+
+    .mobileComplaint_metaItem {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        min-width: 0;
+        color: #6b7280 !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+
+        svg {
+            flex-shrink: 0;
+            color: #059669 !important;
+            font-size: 17px !important;
+        }
+
+        span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .mobileComplaint_action {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 12px;
+        color: #047857 !important;
+        font-size: 12.5px !important;
+        font-weight: 600 !important;
+
+        svg {
+            font-size: 20px !important;
+        }
+    }
+
+    .myComplaints_mobileEmpty {
+        padding: 55px 20px;
+        border: 1px solid #d1fae5;
+        border-radius: 13px;
+        background: #ffffff;
+        color: #9ca3af !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        text-align: center;
+    }
+
+    @media (max-width: 1100px) {
+        padding: 18px 20px 28px;
+
+        .myComplaints_DataTable {
+            min-width: 1000px;
+        }
+
+        .myComplaints_DataTable .MuiTableCell-root {
+            padding: 13px 10px;
+            font-size: 13px !important;
+        }
+
+        .myComplaints_DataTable .MuiTableHead-root .MuiTableCell-root {
+            font-size: 13px !important;
+        }
+
+        .complaint_title {
+            max-width: 150px;
+        }
+
+        .complaint_description {
+            max-width: 190px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        padding: 16px 16px 25px;
+
+        .myComplaints_header {
+            padding: 17px;
+        }
+
+        .myComplaints_heading {
+            font-size: 19px !important;
+        }
+
+        .myComplaints_subtitle {
+            font-size: 12.5px !important;
+        }
+
+        .myComplaints_count {
+            padding: 9px 13px;
+        }
+
+        .myComplaints_countValue {
+            font-size: 17px !important;
+        }
+
+        .myComplaints_countLabel {
+            font-size: 12px !important;
+        }
+    }
+
+    @media (max-width: 600px) {
+        padding: 14px 12px 24px;
+
+        .myComplaints_header {
+            align-items: flex-start;
+            padding: 15px;
+            margin-bottom: 14px;
+            border-radius: 12px;
+        }
+
+        .myComplaints_headerContent {
+            gap: 11px;
+        }
+
+        .myComplaints_headerIcon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+
+            svg {
+                font-size: 21px;
+            }
+        }
+
+        .myComplaints_heading {
+            font-size: 17px !important;
+        }
+
+        .myComplaints_subtitle {
+            margin-top: 2px !important;
+            font-size: 11.5px !important;
+        }
+
+        .myComplaints_count {
+            gap: 6px;
+            padding: 8px 10px;
             border-radius: 8px;
         }
 
-        .myComplaints_TableContainer {
-            width: 100%;
-            max-height: 650px;
-            overflow-y: auto;
-            overflow-x: auto;
+        .myComplaints_countValue {
+            font-size: 16px !important;
+        }
 
-            .myComplaints_DataTable {
-                width: 100%;
-                table-layout: fixed;
-                border-collapse: separate;
-                border-spacing: 0;
+        .myComplaints_countLabel {
+            display: none;
+        }
 
-                .MuiTableHead-root {
-                    position: sticky;
-                    top: 0;
-                    z-index: 9;
+        .myComplaints_tableCard {
+            display: none;
+        }
 
-                    tr {
-                        th {
-                            padding: 14px 16px;
-                            font-size: 15px;
-                            font-weight: 600;
-                            color: #ffffff;
-                            font-family: "Poppins", sans-serif;
-                            background-color: #047857;
-                            border-bottom: 1px solid #d1fae5;
-                            white-space: nowrap;
-                            text-align: center;
-                        }
-                    }
-                }
+        .myComplaints_mobileList {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+    }
 
-                .MuiTableBody-root {
-                    tr {
-                        background-color: #ffffff;
-                        cursor: pointer;
+    @media (max-width: 380px) {
+        padding: 12px 10px 20px;
 
-                        transition:
-                            background-color 0.2s ease,
-                            box-shadow 0.2s ease;
+        .myComplaints_header {
+            padding: 13px;
+        }
 
-                        td {
-                            padding: 14px 16px;
-                            font-size: 14px;
-                            font-weight: 400;
-                            color: #1f2937;
-                            font-family: "Poppins", sans-serif;
-                            border-bottom: 1px solid #d1fae5;
-                            white-space: nowrap;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            text-align: center;
-                            transition: color 0.2s ease, background-color 0.2s ease;
-                        }
+        .myComplaints_headerIcon {
+            width: 36px;
+            height: 36px;
+        }
 
-                        &:nth-of-type(even) {
-                            background-color: #f0fdf4;
-                        }
+        .myComplaints_heading {
+            font-size: 16px !important;
+        }
 
-                        &:hover {
-                            background-color: #ecfdf5;
+        .myComplaints_subtitle {
+            display: none;
+        }
 
-                            td {
-                                background-color: #ecfdf5;
-                            }
+        .mobileComplaint_title {
+            font-size: 14px !important;
+        }
 
-                            td:first-child {
-                                color: #047857;
-                                font-weight: 500;
-                            }
+        .mobileComplaint_description {
+            font-size: 12.5px !important;
+        }
 
-                            .MuiSvgIcon-root {
-                                color: #047857;
-                            }
-                        }
+        .mobileComplaint_imageWrapper {
+            height: 125px;
+        }
 
-                        &:last-child {
-                            td {
-                                border-bottom: none;
-                            }
-                        }
-                    }
-                }
-
-                .MuiIconButton-root {
-                    width: 32px;
-                    height: 32px;
-                    color: #6b7280;
-                    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-
-                    &:hover {
-                        color: #047857;
-                        background-color: #d1fae5;
-                        transform: translateX(2px);
-                    }
-                }
-
-                .complaintTable_imageWrapper {
-                    position: relative;
-                    width: 52px;
-                    height: 52px;
-                    margin: 0 auto;
-                    border-radius: 8px;
-                    overflow: hidden;
-                    border: 1px solid #d1fae5;
-                    background-color: #f0fdf4;
-                }
-
-                .complaintTable_image {
-                    display: block;
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
-
-                .complaintTable_imageCount {
-                    position: absolute;
-                    right: 4px;
-                    bottom: 4px;
-                    padding: 1px 5px;
-                    border-radius: 10px;
-                    background-color: rgba(0, 0, 0, 0.7);
-                    color: #ffffff;
-                    font-size: 10px;
-                    line-height: 16px;
-                    font-weight: 500;
-                    font-family: "Poppins", sans-serif;
-                }
-
-                .complaintTable_noImage {
-                    font-size: 12px;
-                    color: #9ca3af;
-                    font-family: "Poppins", sans-serif;
-                }
-            }
+        .mobileComplaint_metaItem {
+            font-size: 11.5px !important;
         }
     }
 }

@@ -1,4 +1,5 @@
 import {
+    Alert,
     Box,
     Button,
     IconButton,
@@ -6,16 +7,13 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { registerUser } from "../../services/authService";
+import { Visibility, VisibilityOff, ArrowForward } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import LocationCityOutlinedIcon from "@mui/icons-material/LocationCityOutlined";
-import ArrowForwardRoundedIcon from "@mui/icons-material/ArrowForwardRounded";
+import { registerUser } from "../../services/authService";
 import "./Auth.scss";
 
 interface RegisterFormData {
@@ -24,20 +22,25 @@ interface RegisterFormData {
     password: string;
 }
 
-const schema = yup.object({
+const registerSchema = yup.object({
     name: yup
         .string()
-        .required("Name is required"),
+        .trim()
+        .required("Name is required")
+        .min(2, "Name must be at least 2 characters")
+        .max(50, "Name must not exceed 50 characters"),
 
     email: yup
         .string()
-        .email("Invalid email")
+        .trim()
+        .email("Please enter a valid email address")
         .required("Email is required"),
 
     password: yup
         .string()
+        .required("Password is required")
         .min(6, "Password must be at least 6 characters")
-        .required("Password is required"),
+        .max(50, "Password must not exceed 50 characters"),
 });
 
 const Register = () => {
@@ -45,26 +48,45 @@ const Register = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [serverError, setServerError] = useState("");
 
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<RegisterFormData>({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(registerSchema),
+        mode: "onBlur",
+        defaultValues: {
+            name: "",
+            email: "",
+            password: "",
+        },
     });
 
-    const onSubmit = async (data: RegisterFormData) => {
-        try {
-            setLoading(true);
+    const getErrorMessage = (error: any) => {
+        return (
+            error?.response?.data?.message ||
+            error?.response?.data?.error ||
+            error?.message ||
+            "Something went wrong. Please try again."
+        );
+    };
 
+    const onSubmit = async (data: RegisterFormData) => {
+        setServerError("");
+        setLoading(true);
+
+        try {
             const response = await registerUser(data);
 
-            localStorage.setItem("token", response.token);
+            if (response?.token) {
+                localStorage.setItem("token", response.token);
+            }
 
             navigate("/login");
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            setServerError(getErrorMessage(error));
         } finally {
             setLoading(false);
         }
@@ -72,17 +94,14 @@ const Register = () => {
 
     return (
         <Box className="auth-page register-page">
-
-            {/* LEFT - VISUAL */}
+            {/* LEFT VISUAL */}
             <Box className="auth-visual-section">
-
                 <Box className="visual-overlay" />
 
                 <Box className="visual-content">
-
                     <Box className="visual-brand">
                         <Box className="brand-icon">
-                            <LocationCityOutlinedIcon />
+                            <Typography>🏙️</Typography>
                         </Box>
 
                         <Box>
@@ -102,40 +121,31 @@ const Register = () => {
                         </Typography>
 
                         <Typography className="visual-title">
-                            Be part of
-                            <br />
-                            a <span>better</span>
-                            <br />
-                            Karachi.
+                            Build a <span>better</span> Karachi.
                         </Typography>
 
                         <Typography className="visual-description">
-                            Join your community and help authorities
-                            identify, manage and resolve everyday
-                            problems around the city.
+                            Report city issues, track complaints and help
+                            create a cleaner, safer and smarter community.
                         </Typography>
                     </Box>
 
                     <Box className="visual-bottom">
                         <Box className="visual-line" />
-
                         <Typography>
-                            Every report can make a difference.
+                            Together we make our city better.
                         </Typography>
                     </Box>
-
                 </Box>
-
             </Box>
 
-            {/* RIGHT - REGISTER FORM */}
+            {/* FORM */}
             <Box className="auth-form-section">
-
                 <Box className="auth-form-container">
-
+                    {/* MOBILE BRAND */}
                     <Box className="mobile-brand">
                         <Box className="brand-icon">
-                            <LocationCityOutlinedIcon />
+                            <Typography>🏙️</Typography>
                         </Box>
 
                         <Typography className="mobile-brand-name">
@@ -153,16 +163,28 @@ const Register = () => {
                         </Typography>
 
                         <Typography className="auth-description">
-                            Create an account and become part of
-                            building a better city.
+                            Join the Smart City community and help improve
+                            your city.
                         </Typography>
                     </Box>
 
-                    <form
+                    {serverError && (
+                        <Alert
+                            severity="error"
+                            className="auth-error-alert"
+                            onClose={() => setServerError("")}
+                        >
+                            {serverError}
+                        </Alert>
+                    )}
+
+                    <Box
+                        component="form"
                         className="auth-form"
                         onSubmit={handleSubmit(onSubmit)}
+                        noValidate
                     >
-
+                        {/* NAME */}
                         <Box className="field-group">
                             <Typography className="field-label">
                                 Full Name
@@ -170,14 +192,17 @@ const Register = () => {
 
                             <TextField
                                 fullWidth
+                                className="auth-input"
                                 placeholder="Enter your full name"
+                                autoComplete="name"
                                 {...register("name")}
                                 error={!!errors.name}
                                 helperText={errors.name?.message}
-                                className="auth-input"
+                                disabled={loading}
                             />
                         </Box>
 
+                        {/* EMAIL */}
                         <Box className="field-group">
                             <Typography className="field-label">
                                 Email Address
@@ -185,14 +210,18 @@ const Register = () => {
 
                             <TextField
                                 fullWidth
+                                className="auth-input"
+                                type="email"
                                 placeholder="Enter your email"
+                                autoComplete="email"
                                 {...register("email")}
                                 error={!!errors.email}
                                 helperText={errors.email?.message}
-                                className="auth-input"
+                                disabled={loading}
                             />
                         </Box>
 
+                        {/* PASSWORD */}
                         <Box className="field-group">
                             <Typography className="field-label">
                                 Password
@@ -200,29 +229,37 @@ const Register = () => {
 
                             <TextField
                                 fullWidth
-                                placeholder="Create a password"
+                                className="auth-input"
                                 type={showPassword ? "text" : "password"}
+                                placeholder="Create a password"
+                                autoComplete="new-password"
                                 {...register("password")}
                                 error={!!errors.password}
                                 helperText={errors.password?.message}
-                                className="auth-input"
+                                disabled={loading}
                                 slotProps={{
                                     input: {
                                         endAdornment: (
                                             <InputAdornment position="end">
                                                 <IconButton
+                                                    type="button"
+                                                    className="password-toggle"
                                                     onClick={() =>
                                                         setShowPassword(
-                                                            !showPassword
+                                                            (prev) => !prev
                                                         )
                                                     }
                                                     edge="end"
-                                                    className="password-toggle"
+                                                    aria-label={
+                                                        showPassword
+                                                            ? "Hide password"
+                                                            : "Show password"
+                                                    }
                                                 >
                                                     {showPassword ? (
-                                                        <VisibilityOffOutlinedIcon />
+                                                        <VisibilityOff />
                                                     ) : (
-                                                        <VisibilityOutlinedIcon />
+                                                        <Visibility />
                                                     )}
                                                 </IconButton>
                                             </InputAdornment>
@@ -235,38 +272,29 @@ const Register = () => {
                         <Button
                             fullWidth
                             type="submit"
-                            disabled={loading}
                             className="auth-submit"
+                            disabled={loading}
                             endIcon={
-                                !loading && (
-                                    <ArrowForwardRoundedIcon />
-                                )
+                                !loading ? <ArrowForward /> : undefined
                             }
                         >
-                            {loading
-                                ? "Creating account..."
-                                : "Create Account"}
+                            {loading ? "Creating account..." : "Create account"}
                         </Button>
-
-                    </form>
+                    </Box>
 
                     <Typography className="auth-switch">
                         Already have an account?
-                        <Box
-                            component="span"
-                            onClick={() => navigate("/login")}
-                        >
+                        <span onClick={() => navigate("/login")}>
                             Sign in
-                        </Box>
+                        </span>
                     </Typography>
 
                     <Typography className="auth-footer">
-                        © 2026 Smart City Complaint Management
+                        © {new Date().getFullYear()} Smart City Complaint
+                        Management System
                     </Typography>
-
                 </Box>
             </Box>
-
         </Box>
     );
 };

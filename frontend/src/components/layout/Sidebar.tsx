@@ -1,16 +1,32 @@
+import {
+    Box,
+    IconButton,
+    Tooltip,
+    Typography,
+} from "@mui/material";
 
-import { Button, Box, Typography } from "@mui/material";
+import MenuOpenRoundedIcon from "@mui/icons-material/MenuOpenRounded";
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import CircleRoundedIcon from "@mui/icons-material/CircleRounded";
+
 import {
     adminMenu,
     citizenMenu,
     officerMenu,
     workerMenu,
 } from "../../constants/sidebarMenu";
+
 import type { MenuItem } from "../../constants/sidebarMenu";
 import { NavLink } from "react-router-dom";
+
 import "./Sidebar.scss";
 
-const Sidebar = () => {
+interface SidebarProps {
+    open: boolean;
+    onToggle: () => void;
+}
+
+const Sidebar = ({ open, onToggle }: SidebarProps) => {
     const user = JSON.parse(localStorage.getItem("user") || "null");
 
     const role = user?.role;
@@ -27,66 +43,163 @@ const Sidebar = () => {
         menuItems = workerMenu;
     }
 
+    const roleName =
+        role === "admin"
+            ? "Administrator"
+            : role === "officer"
+                ? "Department Officer"
+                : role === "worker"
+                    ? "Field Worker"
+                    : "Citizen";
+
     return (
-        <Box className={`sidebar sidebar-${role}`}>
+        <Box className={`sidebar sidebar-${role} ${open ? "is-open" : "is-collapsed"}`}>
 
-            {/* Brand / Header */}
+            {/* =====================================
+                HEADER
+            ===================================== */}
+
             <Box className="sidebar-header">
-                <Box className="sidebar-logo">
-                    SC
+
+                <Box className="sidebar-brand-wrapper">
+
+                    <Box className="sidebar-logo">
+                        SC
+                    </Box>
+
+                    <Box className="sidebar-brand">
+
+                        <Typography className="sidebar-brand-title">
+                            Smart City
+                        </Typography>
+
+                        <Typography className="sidebar-brand-subtitle">
+                            Complaint Management
+                        </Typography>
+
+                    </Box>
+
                 </Box>
 
-                <Box className="sidebar-brand">
-                    <Typography className="sidebar-brand-title">
-                        Smart City
-                    </Typography>
+                <Tooltip
+                    title={open ? "Collapse sidebar" : "Expand sidebar"}
+                    placement="right"
+                    arrow
+                >
+                    <IconButton
+                        onClick={onToggle}
+                        className="sidebar-toggle"
+                    >
+                        {open ? (
+                            <MenuOpenRoundedIcon />
+                        ) : (
+                            <MenuRoundedIcon />
+                        )}
+                    </IconButton>
+                </Tooltip>
 
-                    <Typography className="sidebar-brand-subtitle">
-                        Complaint Management
-                    </Typography>
-                </Box>
             </Box>
 
-            {/* Navigation Label */}
+
+            {/* =====================================
+                ROLE
+            ===================================== */}
+
+            <Box className="sidebar-role">
+
+                <Box className="sidebar-role-indicator" />
+
+                <Typography className="sidebar-role-text">
+                    {roleName}
+                </Typography>
+
+            </Box>
+
+
+            {/* =====================================
+                MENU TITLE
+            ===================================== */}
+
             <Typography className="sidebar-section-title">
-                MENU
+                NAVIGATION
             </Typography>
 
-            {/* Navigation */}
+
+            {/* =====================================
+                NAVIGATION
+            ===================================== */}
+
             <Box className="sidebar-navigation">
-                {menuItems.map((item) => (
-                    <Box
-                        className="sidebar-item"
-                        key={item.path}
-                    >
-                        <Button
+
+                {menuItems.map((item) => {
+
+                    const button = (
+                        <Box
                             component={NavLink}
                             to={item.path}
-                            variant="contained"
-                            startIcon={item.icon}
                             className="sidebar-button"
                         >
-                            <span className="sidebar-label">
+
+                            <Box className="sidebar-icon">
+                                {item.icon}
+                            </Box>
+
+                            <Typography className="sidebar-label">
                                 {item.label}
-                            </span>
-                        </Button>
-                    </Box>
-                ))}
+                            </Typography>
+
+                        </Box>
+                    );
+
+                    return (
+                        <Box
+                            className="sidebar-item"
+                            key={item.path}
+                        >
+
+                            {!open ? (
+                                <Tooltip
+                                    title={item.label}
+                                    placement="right"
+                                    arrow
+                                >
+                                    {button}
+                                </Tooltip>
+                            ) : (
+                                button
+                            )}
+
+                        </Box>
+                    );
+                })}
+
             </Box>
 
-            {/* Bottom Info */}
-            <Box className="sidebar-bottom">
 
-                <Box className="sidebar-status-dot" />
+            {/* =====================================
+                SYSTEM STATUS
+            ===================================== */}
 
-                <Box>
-                    <Typography className="sidebar-status-title">
-                        System Online
-                    </Typography>
+            <Box className="sidebar-footer">
 
-                    <Typography className="sidebar-status-text">
-                        City services are active
-                    </Typography>
+                <Box className="sidebar-status">
+
+                    <Box className="sidebar-status-icon">
+                        <CircleRoundedIcon />
+                    </Box>
+
+                    <Box className="sidebar-status-content">
+
+                        <Typography className="sidebar-status-title">
+                            System Online
+                        </Typography>
+
+                        <Typography className="sidebar-status-text">
+                            City services active
+                        </Typography>
+
+                    </Box>
+
                 </Box>
 
             </Box>

@@ -1,52 +1,52 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { Box } from "@mui/material";
+
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
-import { Box } from "@mui/material";
+
+import "./MainLayout.scss";
 
 const MainLayout = () => {
     const user = JSON.parse(localStorage.getItem("user") || "null");
     const role = user?.role;
 
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+
+    const handleSidebarToggle = () => {
+        setSidebarOpen((prev) => !prev);
+    };
+
     return (
-        <Box sx={{ minHeight: "100vh" }}>
+        <Box className="main-layout">
             <Navbar />
 
-            <Box
-                sx={{
-                    display: "grid",
-                    gap: "16px",
-                    gridTemplateColumns: {
-                        xs: "1fr",
-                        md: "15% 84%",
-                    },
-                    minHeight: "calc(100vh - 65px)",
-                    padding: "16px",
-                }}
-            >
-                {/* Sidebar */}
+            <Box className="main-layout-body">
+
+                {/* SIDEBAR */}
                 <Box
-                    sx={{
-                        width: "100%",
-                        minWidth: 0,
-                    }}>
-                    <Sidebar />
+                    className={`main-layout-sidebar ${
+                        sidebarOpen
+                            ? "sidebar-expanded"
+                            : "sidebar-collapsed"
+                    }`}
+                >
+                    <Sidebar
+                        open={sidebarOpen}
+                        onToggle={handleSidebarToggle}
+                    />
                 </Box>
 
-                {/* Main Content */}
+                {/* MAIN CONTENT */}
                 <Box
-                    className={`${role}-Dashboard`}
-                    sx={{
-                        width: "100%",
-                        minWidth: 0,
-                        overflowX: "hidden",
-                    }}
+                    className={`main-layout-content ${role}-Dashboard`}
                 >
                     <Outlet />
                 </Box>
-            </Box>
 
+            </Box>
         </Box>
     );
-}
+};
 
 export default MainLayout;

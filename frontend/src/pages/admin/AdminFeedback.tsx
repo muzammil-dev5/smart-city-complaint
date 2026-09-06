@@ -380,8 +380,7 @@ const AdminFeedback = () => {
                             {
                                 scaleType: "band",
                                 data: ratingDistribution.map(
-                                    (item) =>
-                                        `${item.rating} Star`
+                                    (item) => `${item.rating} Star`
                                 ),
                             },
                         ]}
@@ -393,13 +392,9 @@ const AdminFeedback = () => {
                                 label: "Feedback",
                             },
                         ]}
-                        height={300}
-                        margin={{
-                            left: 45,
-                            right: 20,
-                            top: 25,
-                            bottom: 45,
-                        }}
+                        height={240}
+                        margin={{ left: 45, right: 20, top: 20, bottom: 40 }}
+
                     />
                 </Box>
 
