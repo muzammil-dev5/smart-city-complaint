@@ -5,6 +5,7 @@ import PersonIcon from "@mui/icons-material/Person";
 // import GroupIcon from "@mui/icons-material/Group";
 import SettingsIcon from "@mui/icons-material/Settings";
 // import DescriptionIcon from "@mui/icons-material/Description";
+import AssessmentOutlined from "@mui/icons-material/AssessmentOutlined";
 import FeedbackOutlinedIcon from "@mui/icons-material/FeedbackOutlined";
 
 export type MenuItem = {
@@ -62,11 +63,11 @@ export const adminMenu: MenuItem[] = [
         path: "/admin/feedback",
         icon: <FeedbackOutlinedIcon />
     },
-    // {
-    //     label: "Reports",
-    //     path: "/admin/reports",
-    //     icon: <DescriptionIcon />
-    // }
+    {
+        label: "Reports",
+        path: "/admin/reports",
+        icon: <AssessmentOutlined />
+    }
 ];
 
 export const officerMenu: MenuItem[] = [
@@ -118,9 +119,9 @@ export const workerMenu: MenuItem[] = [
         path: "/worker/complaints",
         icon: <NoteAltIcon />
     },
-    // {
-    //     label: "Reports",
-    //     path: "/reports",
-    //     icon: <DescriptionIcon />
-    // }
+    {
+        label: "Reports",
+        path: "/admin/reports",
+        icon: <AssessmentOutlined />
+    }
 ];

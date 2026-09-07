@@ -1,0 +1,184 @@
+.reports-page {
+    padding: 24px;
+    font-family: "Poppins", sans-serif;
+}
+
+.reports-header {
+    margin-bottom: 24px;
+}
+
+.reports-title {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+}
+
+.reports-subtitle {
+    margin-top: 4px !important;
+    color: #64748b;
+    font-size: 14px !important;
+}
+
+.reports-filter-card {
+    margin-bottom: 28px;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+}
+
+.reports-filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.reports-filters {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.reports-filters .MuiTextField-root {
+    min-width: 190px;
+}
+
+.reports-section-title {
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    margin-bottom: 16px !important;
+}
+
+.reports-summary {
+    margin-bottom: 28px;
+}
+
+.report-stat-card {
+    border-radius: 16px !important;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+    transition: 0.2s ease;
+}
+
+.report-stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.report-stat-label {
+    color: #64748b;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+.report-stat-value {
+    margin-top: 8px !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+}
+
+.report-stat-card.pending {
+    border-left: 4px solid #f59e0b;
+}
+
+.report-stat-card.assigned {
+    border-left: 4px solid #6366f1;
+}
+
+.report-stat-card.progress {
+    border-left: 4px solid #2563eb;
+}
+
+.report-stat-card.resolved {
+    border-left: 4px solid #10b981;
+}
+
+.report-stat-card.rejected {
+    border-left: 4px solid #ef4444;
+}
+
+.reports-charts {
+    margin-bottom: 28px;
+}
+
+.report-chart-card {
+    height: 100%;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+}
+
+.no-report-data {
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+}
+
+.department-report-card {
+    border-radius: 16px !important;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+}
+
+.department-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.department-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+.department-table th {
+    text-align: left;
+    padding: 14px 16px;
+    background: #f8fafc;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.department-table td {
+    padding: 14px 16px;
+    color: #334155;
+    font-size: 14px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.department-table tbody tr {
+    transition: 0.2s ease;
+}
+
+.department-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.reports-loading,
+.reports-error {
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+}
+
+@media (max-width: 768px) {
+    .reports-page {
+        padding: 16px;
+    }
+
+    .reports-title {
+        font-size: 23px !important;
+    }
+
+    .reports-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .reports-filters .MuiTextField-root,
+    .reports-filters button {
+        width: 100%;
+    }
+}

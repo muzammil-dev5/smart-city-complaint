@@ -772,6 +772,240 @@ const getComplaintAnalytics = async (req, res) => {
     }
 }
 
+const getComplaintReports = async (req, res) => {
+    try {
+        const { fromDate, toDate } = req.query;
+
+        // Build date filter
+        const dateFilter = {};
+
+        if (fromDate || toDate) {
+            dateFilter.createdAt = {};
+
+            if (fromDate) {
+                dateFilter.createdAt.$gte = new Date(`${fromDate}T00:00:00.000Z`);
+            }
+
+            if (toDate) {
+                dateFilter.createdAt.$lte = new Date(`${toDate}T23:59:59.999Z`);
+            }
+        }
+
+        // --------------------------------
+        // SUMMARY
+        // --------------------------------
+
+        const total = await Complaint.countDocuments(dateFilter);
+
+        const pending = await Complaint.countDocuments({
+            ...dateFilter,
+            status: "pending"
+        });
+
+        const assigned = await Complaint.countDocuments({
+            ...dateFilter,
+            status: "assigned"
+        });
+
+        const inProgress = await Complaint.countDocuments({
+            ...dateFilter,
+            status: "in_progress"
+        });
+
+        const resolved = await Complaint.countDocuments({
+            ...dateFilter,
+            status: "resolved"
+        });
+
+        const rejected = await Complaint.countDocuments({
+            ...dateFilter,
+            status: "rejected"
+        });
+
+        // --------------------------------
+        // CATEGORY REPORT
+        // --------------------------------
+
+        const categoryReport = await Complaint.aggregate([
+            {
+                $match: dateFilter
+            },
+            {
+                $group: {
+                    _id: "$category",
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: {
+                    count: -1
+                }
+            }
+        ]);
+
+        // --------------------------------
+        // STATUS REPORT
+        // --------------------------------
+
+        const statusReport = await Complaint.aggregate([
+            {
+                $match: dateFilter
+            },
+            {
+                $group: {
+                    _id: "$status",
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: {
+                    count: -1
+                }
+            }
+        ]);
+
+        // --------------------------------
+        // DEPARTMENT REPORT
+        // --------------------------------
+
+        const departmentReport = await Complaint.aggregate([
+            {
+                $match: {
+                    ...dateFilter,
+                    department: { $ne: null }
+                }
+            },
+            {
+                $group: {
+                    _id: "$department",
+                    totalComplaints: { $sum: 1 },
+
+                    resolved: {
+                        $sum: {
+                            $cond: [
+                                { $eq: ["$status", "resolved"] },
+                                1,
+                                0
+                            ]
+                        }
+                    },
+
+                    pending: {
+                        $sum: {
+                            $cond: [
+                                { $eq: ["$status", "pending"] },
+                                1,
+                                0
+                            ]
+                        }
+                    },
+
+                    inProgress: {
+                        $sum: {
+                            $cond: [
+                                { $eq: ["$status", "in_progress"] },
+                                1,
+                                0
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                $lookup: {
+                    from: "departments",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "department"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$department",
+                    preserveNullAndEmptyArrays: true
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    departmentName: "$department.name",
+                    totalComplaints: 1,
+                    resolved: 1,
+                    pending: 1,
+                    inProgress: 1
+                }
+            },
+            {
+                $sort: {
+                    totalComplaints: -1
+                }
+            }
+        ]);
+
+        // --------------------------------
+        // DATE-WISE REPORT
+        // --------------------------------
+
+        const dateWiseReport = await Complaint.aggregate([
+            {
+                $match: dateFilter
+            },
+            {
+                $group: {
+                    _id: {
+                        $dateToString: {
+                            format: "%Y-%m-%d",
+                            date: "$createdAt"
+                        }
+                    },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: {
+                    _id: 1
+                }
+            }
+        ]);
+
+        return res.status(200).json({
+            report: {
+                dateRange: {
+                    fromDate: fromDate || null,
+                    toDate: toDate || null
+                },
+
+                summary: {
+                    total,
+                    pending,
+                    assigned,
+                    inProgress,
+                    resolved,
+                    rejected
+                },
+
+                categoryReport,
+
+                statusReport,
+
+                departmentReport,
+
+                dateWiseReport
+            }
+        });
+
+    } catch (error) {
+        console.error(
+            "Get complaint reports error:",
+            error
+        );
+
+        return res.status(500).json({
+            message: "Server error while generating complaint report"
+        });
+    }
+};
+
 const getComplaintActivities = async (req, res) => {
     try {
         const activities =
@@ -818,5 +1052,6 @@ module.exports = {
     getWorkerComplaintById,
     updateWorkerComplaintStatus,
     getComplaintAnalytics,
-    getComplaintActivities
+    getComplaintActivities,
+    getComplaintReports
 };

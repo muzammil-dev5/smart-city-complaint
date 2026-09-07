@@ -36,6 +36,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminComplaints from "./pages/admin/AdminComplaints";
 import AdminDepartments from "./pages/department/AdminDepartments";
 import AdminFeedback from "./pages/admin/AdminFeedback";
+import Reports from "./pages/admin/Reports";
 
 // Profile
 import Profile from "./pages/Profile/Profile";
@@ -200,6 +201,9 @@ function App() {
                 path="/admin/feedback"
                 element={<AdminFeedback />}
               />
+              <Route
+                path="/admin/reports"
+                element={<Reports />} />
 
             </Route>
           </Route>
