@@ -1,7 +1,7 @@
 import HomeIcon from "@mui/icons-material/Home";
 import NoteAltIcon from "@mui/icons-material/NoteAlt";
 import AddIcon from "@mui/icons-material/Add";
-// import PersonIcon from "@mui/icons-material/Person";
+import PersonIcon from "@mui/icons-material/Person";
 // import GroupIcon from "@mui/icons-material/Group";
 import SettingsIcon from "@mui/icons-material/Settings";
 // import DescriptionIcon from "@mui/icons-material/Description";
@@ -18,7 +18,6 @@ export const citizenMenu: MenuItem[] = [
         label: "Citizen Dashboard",
         path: "/citizen/dashboard",
         icon: <HomeIcon />,
-
     },
     {
         label: "My Complaints",
@@ -30,11 +29,11 @@ export const citizenMenu: MenuItem[] = [
         path: "/citizen/complaints/create",
         icon: <AddIcon />
     },
-    // {
-    //     label: "Profile",
-    //     path: "/profile",
-    //     icon: <PersonIcon />
-    // }
+    {
+        label: "Profile",
+        path: "/profile",
+        icon: <PersonIcon />
+    }
 ];
 
 export const adminMenu: MenuItem[] = [

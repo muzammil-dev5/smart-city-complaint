@@ -1,27 +1,9 @@
-import {
-    Avatar,
-    Badge,
-    Box,
-    Button,
-    Divider,
-    IconButton,
-    Menu,
-    MenuItem,
-    Typography
-} from "@mui/material";
+import { Avatar, Badge, Box, Button, Divider, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./Navbar.scss";
-
-import {
-    getMyNotifications,
-    getUnreadNotificationCount,
-    markAllNotificationsAsRead,
-    markNotificationAsRead
-} from "../../services/notificationService";
-
+import { getMyNotifications, getUnreadNotificationCount, markAllNotificationsAsRead, markNotificationAsRead } from "../../services/notificationService";
 import type { Notification } from "../../services/notificationService";
-
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
@@ -39,21 +21,12 @@ interface User {
 
 const Navbar = () => {
     const navigate = useNavigate();
-
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
-
-    const [notificationAnchor, setNotificationAnchor] =
-        useState<null | HTMLElement>(null);
-
+    const [notificationAnchor, setNotificationAnchor] = useState<null | HTMLElement>(null);
     const notificationOpen = Boolean(notificationAnchor);
-
     const storedUser = localStorage.getItem("user");
-
-    const user: User | null = storedUser
-        ? JSON.parse(storedUser)
-        : null;
-
+    const user: User | null = storedUser ? JSON.parse(storedUser) : null;
     const logout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
@@ -63,39 +36,17 @@ const Navbar = () => {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const [
-                    notificationsResponse,
-                    unreadResponse
-                ] = await Promise.all([
-                    getMyNotifications(),
-                    getUnreadNotificationCount()
-                ]);
-
-                setNotifications(
-                    notificationsResponse.notifications
-                );
-
-                setUnreadCount(
-                    unreadResponse.count
-                );
-
+                const [notificationsResponse, unreadResponse] = await Promise.all([getMyNotifications(), getUnreadNotificationCount()]);
+                setNotifications(notificationsResponse.notifications);
+                setUnreadCount(unreadResponse.count);
             } catch (error) {
-                console.error(
-                    "Failed to fetch notifications:",
-                    error
-                );
+                console.error("Failed to fetch notifications:", error);
             }
         };
 
         fetchNotifications();
-
-        const interval = setInterval(
-            fetchNotifications,
-            10000
-        );
-
+        const interval = setInterval( fetchNotifications, 10000);
         return () => clearInterval(interval);
-
     }, []);
 
     const handleNotificationOpen = (

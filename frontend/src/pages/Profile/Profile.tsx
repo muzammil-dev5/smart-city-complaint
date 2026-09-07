@@ -22,7 +22,6 @@ import {
     CloseOutlined,
     EmailOutlined,
     PhoneOutlined,
-    LocationOnOutlined,
 } from "@mui/icons-material";
 
 import { useEffect, useState } from "react";
@@ -53,7 +52,6 @@ const Profile = () => {
 
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
-    const [address, setAddress] = useState("");
 
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -83,7 +81,6 @@ const Profile = () => {
         setProfile(user);
         setName(user.name ?? "");
         setPhone(user.phone ?? "");
-        setAddress(user.address ?? "");
     };
 
     // =========================
@@ -163,8 +160,6 @@ const Profile = () => {
     const handleCancelEdit = () => {
         setName(profile?.name ?? "");
         setPhone(profile?.phone ?? "");
-        setAddress(profile?.address ?? "");
-
         setEditMode(false);
     };
 
@@ -184,7 +179,6 @@ const Profile = () => {
             const response = await updateMyProfile({
                 name: name.trim(),
                 phone: phone.trim(),
-                address: address.trim(),
             });
 
             const updatedUser = response.user;
@@ -548,41 +542,6 @@ const Profile = () => {
                             )}
 
                         </Box>
-
-                        {/* Address */}
-
-                        <Box className="profile-field profile-field-full">
-
-                            <Typography className="field-label">
-                                Address
-                            </Typography>
-
-                            {editMode ? (
-                                <TextField
-                                    fullWidth
-                                    multiline
-                                    minRows={2}
-                                    value={address}
-                                    onChange={(event) =>
-                                        setAddress(event.target.value)
-                                    }
-                                    placeholder="Enter your address"
-                                />
-                            ) : (
-                                <Box className="field-with-icon">
-
-                                    <LocationOnOutlined />
-
-                                    <Typography className="field-value">
-                                        {profile.address ||
-                                            "Not provided"}
-                                    </Typography>
-
-                                </Box>
-                            )}
-
-                        </Box>
-
                     </Box>
 
                     {/* Edit Actions */}

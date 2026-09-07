@@ -2,9 +2,11 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
 
+
+// ================= REGISTER =================
+
 const registerUser = async (req, res) => {
     try {
-
         const { name, email, password } = req.body;
 
         const existingUser = await User.findOne({ email });
@@ -46,9 +48,11 @@ const registerUser = async (req, res) => {
     }
 };
 
+
+// ================= LOGIN =================
+
 const loginUser = async (req, res) => {
     try {
-
         const { email, password } = req.body;
 
         const user = await User.findOne({ email });
@@ -100,6 +104,8 @@ const loginUser = async (req, res) => {
 };
 
 
+// ================= GET MY PROFILE =================
+
 const getMyProfile = async (req, res) => {
     try {
         const user = await User.findById(req.user.id)
@@ -126,6 +132,9 @@ const getMyProfile = async (req, res) => {
         });
     }
 };
+
+
+// ================= UPDATE PROFILE =================
 
 const updateMyProfile = async (req, res) => {
     try {
@@ -177,6 +186,8 @@ const updateMyProfile = async (req, res) => {
     }
 };
 
+
+// ================= CHANGE PASSWORD =================
 
 const changePassword = async (req, res) => {
     try {

@@ -16,6 +16,8 @@ const authMiddleware =
     require("../middleware/authMiddleware");
 
 
+// ================= AUTH =================
+
 router.post(
     "/register",
     registerUser
@@ -25,6 +27,9 @@ router.post(
     "/login",
     loginUser
 );
+
+
+// ================= PROFILE =================
 
 router.get(
     "/me",
@@ -43,6 +48,9 @@ router.put(
     authMiddleware,
     changePassword
 );
+
+
+// ================= TEST ROUTES =================
 
 router.get(
     "/citizen-test",
