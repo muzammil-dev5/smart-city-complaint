@@ -4,35 +4,95 @@
     padding: 20px 24px 28px;
 
     background: #f8fafc;
-    font-family: "Poppins", sans-serif;
+    font-family: "Poppins", sans-serif !important;
     box-sizing: border-box;
 
     *,
     *::before,
     *::after {
         box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
+        font-family: "Poppins", sans-serif !important;
     }
 
     /* =====================================================
-       PAGE HEADER
+       MAIN GRID
+       -----------------------------------------------------
+       | header (title, badge, description — full width)   |
+       |-----------------------------------------------------|
+       | table (rating data)   |  stat cards (2x2)           |
+       |                        |  chart (rating chart)       |
        ===================================================== */
 
-    .adminFeedback-pageHeader {
+    .adminFeedback-mainGrid {
         width: 100%;
-        min-height: 82px;
-        padding: 15px 18px;
 
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
+        display: grid;
+        grid-template-columns: 1fr 32px 1fr;
+        grid-template-rows: auto 1px minmax(600px, 1fr);
+        grid-template-areas:
+            "header  header  header"
+            "hline   hline   hline"
+            "table   vdiv    right";
 
         background: #ffffff;
         border: 1px solid #e2e8f0;
         border-radius: 16px;
 
         box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+
+        overflow: hidden;
+    }
+
+    /* =====================================================
+       DIVIDERS
+       ===================================================== */
+
+    .adminFeedback-vDivider {
+        grid-area: vdiv;
+
+        width: 1px;
+        margin: 24px 0;
+
+        background: linear-gradient(to bottom,
+                transparent 0%,
+                #e2e8f0 8%,
+                #e2e8f0 92%,
+                transparent 100%);
+    }
+
+    .adminFeedback-hDivider {
+        grid-area: hline;
+
+        height: 1px;
+
+        background: #e2e8f0;
+    }
+
+    .adminFeedback-innerDivider {
+        height: 1px;
+        margin: 4px 24px 0;
+
+        background: #e2e8f0;
+    }
+
+    /* =====================================================
+       HEADER (full width, top)
+       ===================================================== */
+
+    .adminFeedback-headerCell {
+        grid-area: header;
+
+        min-width: 0;
+        padding: 24px 28px;
+    }
+
+    .adminFeedback-headerTop {
+        min-width: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
     }
 
     .adminFeedback-pageHeaderContent {
@@ -40,24 +100,24 @@
 
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 16px;
     }
 
     .adminFeedback-titleIcon {
-        width: 44px;
-        height: 44px;
-        flex: 0 0 44px;
+        width: 50px;
+        height: 50px;
+        flex: 0 0 50px;
 
         display: flex;
         align-items: center;
         justify-content: center;
 
-        border-radius: 12px;
+        border-radius: 13px;
         background: #eef2ff;
         color: #6366f1;
 
         svg {
-            font-size: 22px;
+            font-size: 25px;
         }
     }
 
@@ -65,38 +125,42 @@
         margin: 0 !important;
 
         color: #0f172a;
-        font-size: 21px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 24px !important;
         font-weight: 700 !important;
         line-height: 1.25 !important;
         letter-spacing: -0.3px;
     }
 
     .adminFeedback-subtitle {
-        margin-top: 3px !important;
+        max-width: 520px;
+        margin-top: 4px !important;
 
         color: #64748b;
-        font-size: 11.5px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 13px !important;
         font-weight: 400 !important;
-        line-height: 1.5 !important;
+        line-height: 1.6 !important;
     }
 
     .adminFeedback-headerBadge {
-        min-width: 125px;
-        padding: 8px 11px;
+        flex: 0 0 auto;
+        min-width: 140px;
+        padding: 11px 16px;
 
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 7px;
+        gap: 10px;
 
         background: #f0fdf4;
         border: 1px solid #bbf7d0;
-        border-radius: 10px;
+        border-radius: 12px;
 
         color: #15803d;
 
         svg {
-            font-size: 17px;
+            font-size: 20px;
             flex-shrink: 0;
         }
     }
@@ -105,73 +169,85 @@
         display: block;
 
         color: #64748b;
-        font-size: 8.5px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 10px !important;
         font-weight: 500 !important;
-        line-height: 1.2 !important;
+        line-height: 1.3 !important;
     }
 
     .adminFeedback-badgeValue {
         display: block;
 
         color: #15803d;
-        font-size: 12px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 15px !important;
         font-weight: 700 !important;
-        line-height: 1.2 !important;
+        line-height: 1.25 !important;
     }
 
     /* =====================================================
-       STATS / KPI CARDS
+       STAT CARDS (top of right column)
        ===================================================== */
 
-    .adminFeedback-statsGrid {
-        width: 100%;
-        margin-top: 14px;
+    .adminFeedback-rightCell {
+        grid-area: right;
+
+        min-width: 0;
+        min-height: 0;
+
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .adminFeedback-statsGrid2 {
+        padding: 22px 24px 18px;
 
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: repeat(2, minmax(0, 1fr));
         gap: 14px;
     }
 
     .adminFeedback-statCard {
         min-width: 0;
-        min-height: 104px;
         padding: 15px;
 
         display: flex;
         align-items: center;
         gap: 12px;
 
-        background: #ffffff;
+        background: #f8fafc;
         border: 1px solid #e2e8f0;
-        border-radius: 14px;
-
-        box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
+        border-radius: 12px;
 
         transition:
             transform 0.2s ease,
             box-shadow 0.2s ease,
-            border-color 0.2s ease;
+            border-color 0.2s ease,
+            background 0.2s ease;
 
         &:hover {
             transform: translateY(-2px);
+            background: #ffffff;
             border-color: #cbd5e1;
-            box-shadow: 0 7px 18px rgba(15, 23, 42, 0.07);
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
         }
     }
 
     .adminFeedback-statIcon {
-        width: 42px;
-        height: 42px;
-        flex: 0 0 42px;
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
 
         display: flex;
         align-items: center;
         justify-content: center;
 
-        border-radius: 11px;
+        border-radius: 10px;
 
         svg {
-            font-size: 20px;
+            font-size: 19px;
         }
 
         &.purple {
@@ -204,9 +280,14 @@
         margin: 0 0 4px !important;
 
         color: #64748b;
-        font-size: 10px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 10.5px !important;
         font-weight: 500 !important;
         line-height: 1.3 !important;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .adminFeedback-statRating {
@@ -219,6 +300,7 @@
 
     .adminFeedback-statValue {
         color: #0f172a;
+        font-family: "Poppins", sans-serif !important;
         font-size: 20px !important;
         font-weight: 700 !important;
         line-height: 1.1 !important;
@@ -226,86 +308,25 @@
     }
 
     .adminFeedback-statRating .MuiRating-root {
-        font-size: 17px;
-    }
-
-    .adminFeedback-statHint {
-        margin-top: 4px !important;
-
-        color: #94a3b8;
-        font-size: 8.5px !important;
-        font-weight: 400 !important;
-        line-height: 1.3 !important;
+        font-size: 16px;
     }
 
     /* =====================================================
-       COMMON CARD
+       CHART (bottom of right column)
        ===================================================== */
 
-    .adminFeedback-card {
-        width: 100%;
-        margin-top: 14px;
-
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 15px;
-
-        box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
-    }
-
-    /* =====================================================
-       CHART
-       ===================================================== */
-
-    .adminFeedback-chartCard {
-        overflow: hidden;
-    }
-
-    .adminFeedback-cardHeader {
-        min-height: 63px;
-        padding: 14px 18px;
+    .adminFeedback-chartInner {
+        min-height: 0;
+        flex: 1;
 
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-
-        border-bottom: 1px solid #f1f5f9;
-    }
-
-    .adminFeedback-cardTitle {
-        margin: 0 !important;
-
-        color: #0f172a;
-        font-size: 13px !important;
-        font-weight: 650 !important;
-        line-height: 1.3 !important;
-    }
-
-    .adminFeedback-cardSubtitle {
-        margin-top: 3px !important;
-
-        color: #94a3b8;
-        font-size: 9.5px !important;
-        font-weight: 400 !important;
-        line-height: 1.4 !important;
-    }
-
-    .adminFeedback-chartLegend {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-
-        color: #64748b;
-        font-size: 9px;
-        font-weight: 500;
-        white-space: nowrap;
+        flex-direction: column;
     }
 
     .adminFeedback-chart {
         width: 100%;
-        height: 245px;
-        padding: 3px 8px 8px;
+        flex: 1;
+        padding: 6px 24px 20px;
 
         overflow: hidden;
 
@@ -315,21 +336,23 @@
 
         svg text {
             font-family: "Poppins", sans-serif !important;
+            font-size: 11px !important;
         }
     }
 
     /* =====================================================
-       FEEDBACK SECTION
+       SHARED CARD HEADER (chart + table sections)
        ===================================================== */
 
-    .adminFeedback-feedbackCard {
-        overflow: hidden;
-    }
+    .adminFeedback-sectionHeader,
+    .adminFeedback-cardHeader {
+        min-width: 0;
+        padding: 20px 24px 14px;
 
-    .adminFeedback-sectionHeader {
-        padding: 15px 18px 13px;
-
-        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
     }
 
     .adminFeedback-sectionTitleRow {
@@ -338,32 +361,78 @@
         display: flex;
         align-items: center;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 10px;
+    }
+
+    .adminFeedback-cardTitle {
+        margin: 0 !important;
+
+        color: #0f172a;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 15px !important;
+        font-weight: 650 !important;
+        line-height: 1.3 !important;
+    }
+
+    .adminFeedback-cardSubtitle {
+        margin-top: 4px !important;
+
+        color: #94a3b8;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 11px !important;
+        font-weight: 400 !important;
+        line-height: 1.45 !important;
     }
 
     .adminFeedback-resultChip {
-        height: 22px !important;
+        height: 24px !important;
 
         background: #eef2ff !important;
         color: #4f46e5 !important;
 
         font-family: "Poppins", sans-serif !important;
-        font-size: 8.5px !important;
+        font-size: 10px !important;
         font-weight: 600 !important;
 
         .MuiChip-label {
-            padding: 0 8px !important;
+            padding: 0 9px !important;
         }
     }
 
+    .adminFeedback-chartLegend {
+        flex: 0 0 auto;
+
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        color: #64748b;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 10.5px !important;
+        font-weight: 500 !important;
+        white-space: nowrap;
+    }
+
     /* =====================================================
-       FILTERS
+       TABLE CELL (bottom-left)
        ===================================================== */
 
-    .adminFeedback-filterWrapper {
-        margin: 14px 18px;
+    .adminFeedback-tableCell {
+        grid-area: table;
 
-        padding: 12px;
+        min-width: 0;
+        min-height: 0;
+
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    /* Filters */
+
+    .adminFeedback-filterWrapper {
+        margin: 4px 24px 16px;
+        padding: 14px;
 
         background: #f8fafc;
         border: 1px solid #e2e8f0;
@@ -371,7 +440,7 @@
     }
 
     .adminFeedback-filterHeader {
-        margin-bottom: 9px;
+        margin-bottom: 10px;
 
         display: flex;
         align-items: center;
@@ -383,21 +452,23 @@
         content: "Filters";
 
         color: #334155;
-        font-size: 10px;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 11.5px;
         font-weight: 600;
     }
 
     .adminFeedback-clearFilter {
         min-width: auto !important;
-        padding: 2px 6px !important;
+        padding: 3px 7px !important;
 
         color: #6366f1 !important;
 
         font-family: "Poppins", sans-serif !important;
-        font-size: 9px !important;
+        font-size: 10.5px !important;
         font-weight: 500 !important;
 
         text-transform: none !important;
+        cursor: pointer;
 
         &:hover {
             background: #eef2ff !important;
@@ -408,9 +479,13 @@
         width: 100%;
 
         display: grid;
-        grid-template-columns: minmax(220px, 1fr) 145px 145px 145px;
-        gap: 9px;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
         align-items: center;
+    }
+
+    .adminFeedback-search {
+        grid-column: 1 / -1;
     }
 
     .adminFeedback-search,
@@ -426,13 +501,13 @@
     }
 
     .adminFeedback-filters .MuiOutlinedInput-root {
-        min-height: 36px;
+        min-height: 40px;
 
         background: #ffffff;
         border-radius: 8px;
 
         font-family: "Poppins", sans-serif !important;
-        font-size: 10px !important;
+        font-size: 11.5px !important;
 
         fieldset {
             border-color: #e2e8f0;
@@ -449,36 +524,35 @@
     }
 
     .adminFeedback-filters .MuiInputBase-input {
-        padding: 8px 10px !important;
+        padding: 9px 12px !important;
 
         font-family: "Poppins", sans-serif !important;
-        font-size: 10px !important;
+        font-size: 11.5px !important;
     }
 
     .adminFeedback-filters .MuiInputLabel-root {
         font-family: "Poppins", sans-serif !important;
-        font-size: 9.5px !important;
+        font-size: 11px !important;
     }
 
     .adminFeedback-filters .MuiSelect-select {
-        padding: 8px 30px 8px 10px !important;
+        padding: 9px 32px 9px 12px !important;
 
         font-family: "Poppins", sans-serif !important;
-        font-size: 10px !important;
+        font-size: 11.5px !important;
     }
 
     .adminFeedback-filters .MuiSvgIcon-root {
-        font-size: 18px;
+        font-size: 19px;
     }
 
-    /* =====================================================
-       TABLE
-       ===================================================== */
+    /* Table */
 
     .adminFeedback-tableContainer {
         width: 100%;
-        overflow-x: auto;
-        overflow-y: visible;
+        flex: 1;
+
+        overflow: auto;
 
         border-top: 1px solid #f1f5f9;
 
@@ -486,6 +560,7 @@
         scrollbar-color: #cbd5e1 transparent;
 
         &::-webkit-scrollbar {
+            width: 6px;
             height: 6px;
         }
 
@@ -501,7 +576,7 @@
 
     .adminFeedback-table {
         width: 100%;
-        min-width: 1050px;
+        min-width: 900px;
 
         border-collapse: separate;
         border-spacing: 0;
@@ -514,8 +589,8 @@
 
         thead {
             .MuiTableCell-root {
-                height: 42px;
-                padding: 8px 12px;
+                height: 44px;
+                padding: 9px 16px;
 
                 background: #f8fafc;
 
@@ -523,7 +598,8 @@
 
                 color: #64748b;
 
-                font-size: 9px !important;
+                font-family: "Poppins", sans-serif !important;
+                font-size: 11px !important;
                 font-weight: 600 !important;
                 line-height: 1.2 !important;
 
@@ -546,28 +622,27 @@
         }
 
         .MuiTableCell-root {
-            height: 62px;
-            padding: 8px 12px;
+            height: 64px;
+            padding: 9px 16px;
 
             border-bottom: 1px solid #f1f5f9;
 
             color: #334155;
 
-            font-size: 9.5px !important;
+            font-family: "Poppins", sans-serif !important;
+            font-size: 11.5px !important;
             vertical-align: middle;
         }
     }
 
-    /* =====================================================
-       CITIZEN
-       ===================================================== */
+    /* Citizen */
 
     .feedback-citizen {
-        min-width: 180px;
+        min-width: 170px;
 
         display: flex;
         align-items: center;
-        gap: 9px;
+        gap: 10px;
     }
 
     .feedback-citizenAvatar {
@@ -579,7 +654,7 @@
         color: #6366f1 !important;
 
         font-family: "Poppins", sans-serif !important;
-        font-size: 10px !important;
+        font-size: 10.5px !important;
         font-weight: 700 !important;
     }
 
@@ -588,49 +663,50 @@
     }
 
     .feedback-citizenName {
-        max-width: 150px;
+        max-width: 145px;
 
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
 
         color: #1e293b;
-        font-size: 9.5px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 11.5px !important;
         font-weight: 600 !important;
         line-height: 1.4 !important;
     }
 
     .feedback-citizenEmail {
-        max-width: 150px;
+        max-width: 145px;
 
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
 
         color: #94a3b8;
-        font-size: 8px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 10px !important;
         font-weight: 400 !important;
         line-height: 1.4 !important;
     }
 
-    /* =====================================================
-       COMPLAINT
-       ===================================================== */
+    /* Complaint */
 
     .feedback-complaint {
-        min-width: 180px;
-        max-width: 230px;
+        min-width: 160px;
+        max-width: 210px;
     }
 
     .feedback-complaintTitle {
-        max-width: 220px;
+        max-width: 200px;
 
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
 
         color: #334155;
-        font-size: 9.5px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 11.5px !important;
         font-weight: 550 !important;
         line-height: 1.4 !important;
     }
@@ -639,20 +715,19 @@
         margin-top: 2px !important;
 
         color: #94a3b8;
-        font-size: 7.5px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 9.5px !important;
         font-weight: 400 !important;
     }
 
-    /* =====================================================
-       RATING
-       ===================================================== */
+    /* Rating */
 
     .feedback-rating {
-        min-width: 115px;
+        min-width: 112px;
 
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 6px;
     }
 
     .feedback-rating .MuiRating-root {
@@ -661,18 +736,17 @@
 
     .feedback-rating span {
         color: #475569;
-        font-size: 9px;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 11px;
         font-weight: 600;
     }
 
-    /* =====================================================
-       COMMENT
-       ===================================================== */
+    /* Comment */
 
     .feedback-comment {
         display: block;
 
-        max-width: 260px;
+        max-width: 220px;
 
         overflow: hidden;
         text-overflow: ellipsis;
@@ -680,26 +754,25 @@
 
         color: #64748b;
 
-        font-size: 8.5px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 10.5px !important;
         font-weight: 400 !important;
         line-height: 1.5 !important;
     }
 
-    /* =====================================================
-       STATUS
-       ===================================================== */
+    /* Status */
 
     .feedback-status {
-        height: 24px !important;
+        height: 25px !important;
 
         border-radius: 7px !important;
 
         font-family: "Poppins", sans-serif !important;
-        font-size: 7.5px !important;
+        font-size: 9.5px !important;
         font-weight: 600 !important;
 
         .MuiChip-label {
-            padding: 0 8px !important;
+            padding: 0 9px !important;
         }
     }
 
@@ -728,17 +801,16 @@
         color: #dc2626 !important;
     }
 
-    /* =====================================================
-       DATE
-       ===================================================== */
+    /* Date */
 
     .feedback-dateWrapper {
-        min-width: 90px;
+        min-width: 92px;
     }
 
     .feedback-date {
         color: #475569;
-        font-size: 8.5px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 10.5px !important;
         font-weight: 500 !important;
         line-height: 1.4 !important;
         white-space: nowrap;
@@ -748,18 +820,17 @@
         margin-top: 2px !important;
 
         color: #94a3b8;
-        font-size: 7.5px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 9.5px !important;
         font-weight: 400 !important;
         white-space: nowrap;
     }
 
-    /* =====================================================
-       EMPTY STATE
-       ===================================================== */
+    /* Empty state */
 
     .adminFeedback-empty {
-        min-height: 210px;
-        padding: 30px 20px;
+        min-height: 280px;
+        padding: 34px 20px;
 
         display: flex;
         flex-direction: column;
@@ -770,9 +841,9 @@
     }
 
     .adminFeedback-emptyIcon {
-        width: 48px;
-        height: 48px;
-        margin-bottom: 10px;
+        width: 52px;
+        height: 52px;
+        margin-bottom: 12px;
 
         display: flex;
         align-items: center;
@@ -783,22 +854,24 @@
         color: #94a3b8;
 
         svg {
-            font-size: 22px;
+            font-size: 24px;
         }
     }
 
     .adminFeedback-emptyTitle {
         color: #334155;
-        font-size: 12px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 14px !important;
         font-weight: 600 !important;
     }
 
     .adminFeedback-emptyText {
-        max-width: 350px;
-        margin-top: 4px !important;
+        max-width: 340px;
+        margin-top: 5px !important;
 
         color: #94a3b8;
-        font-size: 9px !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 10.5px !important;
         font-weight: 400 !important;
     }
 
@@ -816,6 +889,8 @@
 
         background: #f8fafc;
 
+        font-family: "Poppins", sans-serif !important;
+
         .MuiCircularProgress-root {
             color: #6366f1;
         }
@@ -830,16 +905,46 @@
     .adminFeedback {
         padding: 18px 18px 24px;
 
-        .adminFeedback-statsGrid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+        .adminFeedback-statsGrid2 {
+            gap: 12px;
         }
 
-        .adminFeedback-filters {
-            grid-template-columns: minmax(220px, 1fr) 140px 140px;
+        .adminFeedback-statCard {
+            padding: 13px;
+        }
+    }
+}
+
+/* =========================================================
+   STACK TO SINGLE COLUMN
+   ========================================================= */
+
+@media (max-width: 980px) {
+    .adminFeedback {
+        .adminFeedback-mainGrid {
+            grid-template-columns: 1fr;
+            grid-template-rows: auto 1px auto auto;
+            grid-template-areas:
+                "header"
+                "hline"
+                "table"
+                "right";
         }
 
-        .adminFeedback-dateFilter:last-child {
-            grid-column: span 1;
+        .adminFeedback-vDivider {
+            display: none;
+        }
+
+        .adminFeedback-headerCell {
+            padding: 20px 20px 18px;
+        }
+
+        .adminFeedback-headerTop {
+            flex-wrap: wrap;
+        }
+
+        .adminFeedback-chartInner {
+            min-height: 340px;
         }
     }
 }
@@ -848,37 +953,25 @@
    TABLET
    ========================================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 780px) {
     .adminFeedback {
         padding: 16px;
 
-        .adminFeedback-pageHeader {
-            min-height: auto;
-            padding: 14px;
-        }
-
         .adminFeedback-heading {
-            font-size: 19px !important;
+            font-size: 20px !important;
         }
 
         .adminFeedback-subtitle {
-            font-size: 10.5px !important;
+            max-width: none;
+            font-size: 12px !important;
         }
 
-        .adminFeedback-headerBadge {
-            min-width: 115px;
+        .adminFeedback-statsGrid2 {
+            grid-template-columns: 1fr 1fr;
         }
 
         .adminFeedback-filters {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .adminFeedback-search {
-            grid-column: 1 / -1;
-        }
-
-        .adminFeedback-chart {
-            height: 230px;
+            grid-template-columns: 1fr 1fr;
         }
     }
 }
@@ -891,36 +984,12 @@
     .adminFeedback {
         padding: 12px;
 
-        /* Header */
-        .adminFeedback-pageHeader {
-            padding: 13px;
-            flex-direction: column;
-            align-items: stretch;
-            gap: 12px;
+        .adminFeedback-mainGrid {
             border-radius: 13px;
         }
 
-        .adminFeedback-pageHeaderContent {
-            width: 100%;
-        }
-
-        .adminFeedback-titleIcon {
-            width: 40px;
-            height: 40px;
-            flex-basis: 40px;
-
-            svg {
-                font-size: 20px;
-            }
-        }
-
-        .adminFeedback-heading {
-            font-size: 17px !important;
-        }
-
-        .adminFeedback-subtitle {
-            margin-top: 2px !important;
-            font-size: 9.5px !important;
+        .adminFeedback-headerCell {
+            padding: 16px;
         }
 
         .adminFeedback-headerBadge {
@@ -929,122 +998,69 @@
             justify-content: flex-start;
         }
 
-        /* Stats */
-        .adminFeedback-statsGrid {
-            grid-template-columns: 1fr;
+        .adminFeedback-statsGrid2 {
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-top: 10px;
+            padding: 16px 16px 14px;
         }
 
         .adminFeedback-statCard {
-            min-height: 88px;
-            padding: 12px;
+            padding: 11px;
+            gap: 9px;
         }
 
         .adminFeedback-statIcon {
-            width: 38px;
-            height: 38px;
-            flex-basis: 38px;
-
-            svg {
-                font-size: 18px;
-            }
+            width: 34px;
+            height: 34px;
+            flex-basis: 34px;
         }
 
         .adminFeedback-statValue {
-            font-size: 18px !important;
+            font-size: 16px !important;
         }
 
-        /* Cards */
-        .adminFeedback-card {
-            margin-top: 10px;
-            border-radius: 12px;
-        }
-
-        /* Chart */
+        .adminFeedback-sectionHeader,
         .adminFeedback-cardHeader {
-            min-height: auto;
-            padding: 12px;
+            padding: 16px 16px 12px;
+            flex-direction: column;
             align-items: flex-start;
-        }
-
-        .adminFeedback-cardTitle {
-            font-size: 12px !important;
-        }
-
-        .adminFeedback-cardSubtitle {
-            font-size: 8.5px !important;
         }
 
         .adminFeedback-chartLegend {
             display: none;
         }
 
-        .adminFeedback-chart {
-            height: 215px;
-            padding: 2px 4px 6px;
-        }
-
-        /* Feedback header */
-        .adminFeedback-sectionHeader {
-            padding: 12px;
-        }
-
-        .adminFeedback-sectionTitleRow {
-            gap: 6px;
-        }
-
-        /* Filters */
         .adminFeedback-filterWrapper {
-            margin: 10px 12px;
-            padding: 10px;
+            margin: 4px 16px 14px;
+            padding: 12px;
         }
 
         .adminFeedback-filters {
             grid-template-columns: 1fr;
-            gap: 8px;
-        }
-
-        .adminFeedback-search {
-            grid-column: auto;
+            gap: 9px;
         }
 
         .adminFeedback-filters .MuiOutlinedInput-root {
-            min-height: 38px;
-        }
-
-        /* Table */
-        .adminFeedback-tableContainer {
-            border-radius: 0 0 12px 12px;
+            min-height: 40px;
         }
 
         .adminFeedback-table {
-            min-width: 950px;
+            min-width: 820px;
         }
 
         .adminFeedback-tableRow {
             .MuiTableCell-root {
                 height: 58px;
-                padding: 7px 10px;
+                padding: 8px 12px;
             }
         }
 
-        .feedback-citizen {
-            min-width: 165px;
+        .adminFeedback-chart {
+            padding: 4px 16px 16px;
         }
 
-        .feedback-complaint {
-            min-width: 170px;
-        }
-
-        .feedback-comment {
-            max-width: 220px;
-        }
-
-        /* Empty */
-        .adminFeedback-empty {
-            min-height: 180px;
-            padding: 25px 15px;
+        .adminFeedback-chartInner {
+            min-height: 300px;
         }
     }
 }
@@ -1057,41 +1073,12 @@
     .adminFeedback {
         padding: 9px;
 
-        .adminFeedback-pageHeader {
-            padding: 11px;
-        }
-
-        .adminFeedback-titleIcon {
-            width: 36px;
-            height: 36px;
-            flex-basis: 36px;
-        }
-
-        .adminFeedback-heading {
-            font-size: 15.5px !important;
-        }
-
-        .adminFeedback-subtitle {
-            font-size: 8.5px !important;
-        }
-
-        .adminFeedback-statCard {
-            padding: 10px;
-        }
-
-        .adminFeedback-statIcon {
-            width: 36px;
-            height: 36px;
-            flex-basis: 36px;
-        }
-
-        .adminFeedback-filterWrapper {
-            margin-left: 9px;
-            margin-right: 9px;
+        .adminFeedback-statsGrid2 {
+            grid-template-columns: 1fr;
         }
 
         .adminFeedback-table {
-            min-width: 900px;
+            min-width: 760px;
         }
     }
 }
