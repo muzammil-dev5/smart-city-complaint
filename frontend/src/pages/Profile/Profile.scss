@@ -1,1190 +1,1146 @@
-.complaintForm {
+.profile-page {
     width: 100%;
-    max-width: 100%;
+    min-height: 100%;
+    padding: 28px 32px 40px;
+
     font-family: "Poppins", sans-serif !important;
+    background: #f8fafc;
+    box-sizing: border-box;
 
-    &_heading {
-        display: flex;
-        align-items: center;
-        gap: 14px;
+    *,
+    *::before,
+    *::after {
+        font-family: "Poppins", sans-serif !important;
+        box-sizing: border-box;
+    }
+}
 
-        margin-bottom: 20px;
-        padding: 4px 2px;
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.profile-header {
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.back-button {
+    width: 42px !important;
+    height: 42px !important;
+
+    color: #475569 !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+
+    border-radius: 10px !important;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease !important;
+
+    svg {
+        font-size: 21px;
     }
 
-    &_headingIcon {
-        width: 46px;
-        height: 46px;
+    &:hover {
+        background: #f1f5f9 !important;
+        border-color: #cbd5e1 !important;
+        transform: translateX(-2px);
+    }
+}
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+.header-text {
+    min-width: 0;
+}
 
+.profile-title {
+    color: #0f172a !important;
+    font-size: 25px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.3px !important;
+}
+
+.profile-subtitle {
+    margin-top: 4px !important;
+
+    color: #64748b !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+}
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.profile-content {
+    width: 100%;
+    max-width: 1180px;
+
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.profile-card {
+    width: 100%;
+
+    background: #ffffff !important;
+
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+
+    box-shadow:
+        0 1px 2px rgba(15, 23, 42, 0.03),
+        0 6px 20px rgba(15, 23, 42, 0.025) !important;
+
+    overflow: hidden;
+}
+
+.profile-section {
+    padding: 28px;
+}
+
+/* =========================================================
+   PROFILE OVERVIEW
+   ========================================================= */
+
+.overview-card {
+    overflow: visible !important;
+}
+
+.overview-content {
+    min-height: 145px;
+
+    display: flex;
+    align-items: center;
+    gap: 22px;
+
+    padding: 28px 30px;
+}
+
+.profile-avatar {
+    width: 86px !important;
+    height: 86px !important;
+
+    flex-shrink: 0;
+
+    color: #ffffff !important;
+    background: linear-gradient(135deg,
+            #10b981 0%,
+            #059669 100%) !important;
+
+    font-size: 32px !important;
+    font-weight: 700 !important;
+
+    border: 5px solid #ecfdf5;
+
+    box-shadow:
+        0 5px 15px rgba(16, 185, 129, 0.18);
+}
+
+.profile-user-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.profile-name {
+    color: #0f172a !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    line-height: 1.35 !important;
+
+    word-break: break-word;
+}
+
+.email-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    margin-top: 6px;
+
+    min-width: 0;
+
+    svg {
         flex-shrink: 0;
 
-        color: #047857;
-        background: #ecfdf5;
+        color: #94a3b8;
+        font-size: 18px;
+    }
+}
 
-        border: 1px solid #d1fae5;
-        border-radius: 12px;
+.profile-email {
+    color: #64748b !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
 
+    word-break: break-all;
+}
+
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    margin-top: 11px;
+    padding: 5px 11px;
+
+    color: #047857;
+
+    background: #ecfdf5;
+
+    border: 1px solid #a7f3d0;
+    border-radius: 20px;
+
+    svg {
+        font-size: 15px;
+    }
+
+    p,
+    span {
+        margin: 0;
+
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        line-height: 1.4 !important;
+    }
+}
+
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.section-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    min-width: 0;
+}
+
+.section-heading {
+    min-width: 0;
+}
+
+.section-icon {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #059669;
+
+    background: #ecfdf5;
+
+    border: 1px solid #d1fae5;
+    border-radius: 10px;
+
+    svg {
+        font-size: 20px;
+    }
+}
+
+.security-icon {
+    color: #2563eb;
+    background: #eff6ff;
+    border-color: #dbeafe;
+}
+
+.account-icon {
+    color: #7c3aed;
+    background: #f5f3ff;
+    border-color: #ede9fe;
+}
+
+.section-title {
+    color: #0f172a !important;
+    font-size: 16px !important;
+    font-weight: 650 !important;
+    line-height: 1.4 !important;
+}
+
+.section-description {
+    margin-top: 2px !important;
+
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+}
+
+.section-divider {
+    margin: 22px 0 !important;
+
+    border-color: #f1f5f9 !important;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.primary-button {
+    min-height: 40px !important;
+
+    padding: 8px 17px !important;
+
+    color: #ffffff !important;
+    background: #059669 !important;
+
+    border-radius: 8px !important;
+
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+
+    box-shadow: none !important;
+
+    &:hover {
+        background: #047857 !important;
+        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.18) !important;
+    }
+
+    &:disabled {
+        opacity: 0.65;
+    }
+
+    .MuiButton-startIcon {
         svg {
-            font-size: 23px;
+            font-size: 18px;
         }
     }
+}
 
-    &_headingTitle {
-        font-family: "Poppins", sans-serif !important;
-        font-size: 20px !important;
-        font-weight: 650 !important;
-        color: #111827 !important;
-        line-height: 1.3 !important;
-        margin-bottom: 3px !important;
+.secondary-button {
+    min-height: 40px !important;
+
+    padding: 8px 16px !important;
+
+    color: #475569 !important;
+    background: #ffffff !important;
+
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+
+    box-shadow: none !important;
+
+    &:hover {
+        color: #047857 !important;
+        background: #f0fdf4 !important;
+        border-color: #6ee7b7 !important;
     }
 
-    &_headingText {
-        font-family: "Poppins", sans-serif !important;
-        font-size: 12.5px !important;
-        font-weight: 400 !important;
-        color: #6b7280 !important;
-        line-height: 1.5 !important;
+    .MuiButton-startIcon {
+        svg {
+            font-size: 18px;
+        }
     }
+}
 
-    // =====================================================
-    // MAIN CARD
-    // =====================================================
+/* =========================================================
+   PROFILE FIELDS
+   ========================================================= */
 
-    &_card {
-        width: 100%;
+.profile-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 24px 28px;
+}
+
+.profile-field {
+    min-width: 0;
+
+    &:last-child {
+        grid-column: 1 / -1;
+    }
+}
+
+.field-label {
+    margin-bottom: 8px !important;
+
+    color: #334155 !important;
+
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    line-height: 1.5 !important;
+}
+
+.field-value {
+    color: #1e293b !important;
+
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 1.5 !important;
+
+    word-break: break-word;
+}
+
+.field-with-icon {
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 9px 12px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+
+    svg {
+        flex-shrink: 0;
+
+        color: #64748b;
+        font-size: 18px;
+    }
+}
+
+.field-helper {
+    margin-top: 6px !important;
+
+    color: #94a3b8 !important;
+
+    font-size: 10.5px !important;
+    font-weight: 400 !important;
+    line-height: 1.45 !important;
+}
+
+.profile-input {
+    .MuiOutlinedInput-root {
+        min-height: 44px;
+
+        border-radius: 8px;
 
         background: #ffffff;
 
-        border: 1px solid #e5e7eb;
-        border-radius: 16px;
+        font-size: 13px;
 
-        box-shadow:
-            0 2px 5px rgba(15, 23, 42, 0.025),
-            0 8px 25px rgba(15, 23, 42, 0.035);
+        color: #1e293b;
 
-        overflow: hidden;
-    }
+        transition: all 0.2s ease;
 
-    // =====================================================
-    // CARD HEADER
-    // =====================================================
+        fieldset {
+            border-color: #cbd5e1;
+        }
 
-    &_cardHeader {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        &:hover fieldset {
+            border-color: #94a3b8;
+        }
 
-        gap: 20px;
-
-        padding: 20px 24px;
-
-        background:
-            linear-gradient(180deg,
-                #ffffff 0%,
-                #fbfdfc 100%);
-
-        border-bottom: 1px solid #e5e7eb;
-    }
-
-    &_cardTitle {
-        font-family: "Poppins", sans-serif !important;
-        font-size: 16px !important;
-        font-weight: 600 !important;
-        color: #111827 !important;
-        margin-bottom: 3px !important;
-    }
-
-    &_cardSubtitle {
-        font-family: "Poppins", sans-serif !important;
-        font-size: 11.5px !important;
-        font-weight: 400 !important;
-        color: #6b7280 !important;
-    }
-
-    &_required {
-        padding: 6px 10px;
-
-        white-space: nowrap;
-
-        font-family: "Poppins", sans-serif !important;
-        font-size: 10.5px !important;
-        font-weight: 500 !important;
-
-        color: #6b7280;
-
-        background: #f8fafc;
-
-        border: 1px solid #e5e7eb;
-        border-radius: 20px;
-
-        span {
-            color: #ef4444;
-            margin-right: 2px;
+        &.Mui-focused fieldset {
+            border-color: #059669;
+            border-width: 1px;
         }
     }
 
-    // =====================================================
-    // 60 / 40 CONTENT
-    // =====================================================
+    .MuiInputBase-input {
+        padding: 11px 13px;
 
-    &_content {
-        display: grid;
-
-        grid-template-columns:
-            minmax(0, 3fr) minmax(0, 2fr);
-
-        gap: 0;
-
-        min-width: 0;
+        font-size: 13px;
+        font-weight: 400;
     }
 
-    // =====================================================
-    // LEFT COLUMN
-    // =====================================================
+    .MuiInputLabel-root {
+        font-size: 13px;
+    }
 
-    &_left {
-        min-width: 0;
+    .MuiInputLabel-root.Mui-focused {
+        color: #059669;
+    }
+}
+
+/* =========================================================
+   EDIT ACTIONS
+   ========================================================= */
+
+.edit-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+
+    margin-top: 26px;
+    padding-top: 20px;
+
+    border-top: 1px solid #f1f5f9;
+}
+
+/* =========================================================
+   PASSWORD FORM
+   ========================================================= */
+
+.password-form {
+    margin-top: 24px;
+}
+
+.password-alert {
+    margin-bottom: 22px !important;
+
+    border-radius: 9px !important;
+
+    font-size: 12px !important;
+
+    .MuiAlert-icon {
+        font-size: 20px;
+    }
+
+    .MuiAlert-message {
+        font-size: 12px !important;
+        font-weight: 400 !important;
+    }
+}
+
+.password-fields {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.password-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+
+    margin-top: 24px;
+    padding-top: 20px;
+
+    border-top: 1px solid #f1f5f9;
+}
+
+/* =========================================================
+   ACCOUNT INFORMATION
+   ========================================================= */
+
+.account-header {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.account-info {
+    width: 100%;
+}
+
+.account-row {
+    min-height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 12px 4px;
+
+    border-bottom: 1px solid #f1f5f9;
+
+    &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    &:first-child {
+        padding-top: 0;
+    }
+}
+
+.account-label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    color: #64748b;
+
+    svg {
+        color: #94a3b8;
+        font-size: 18px;
+    }
+
+    p {
+        color: #475569 !important;
+
+        font-size: 12px !important;
+        font-weight: 500 !important;
+    }
+}
+
+.account-value {
+    color: #1e293b !important;
+
+    font-size: 12px !important;
+    font-weight: 600 !important;
+
+    text-align: right;
+}
+
+.role-value {
+    padding: 5px 10px;
+
+    color: #047857 !important;
+    background: #ecfdf5;
+
+    border-radius: 6px;
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.profile-loading {
+    width: 100%;
+    min-height: 60vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    background: #f8fafc;
+}
+
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    .MuiCircularProgress-root {
+        color: #059669;
+    }
+}
+
+.loading-title {
+    margin-top: 16px !important;
+
+    color: #0f172a !important;
+
+    font-size: 15px !important;
+    font-weight: 600 !important;
+}
+
+.loading-text {
+    margin-top: 5px !important;
+
+    color: #64748b !important;
+
+    font-size: 11px !important;
+    font-weight: 400 !important;
+}
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.profile-error {
+    width: 100%;
+    min-height: 60vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    background: #f8fafc;
+}
+
+.error-content {
+    max-width: 380px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+}
+
+.error-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #64748b;
+    background: #f1f5f9;
+
+    border-radius: 50%;
+
+    svg {
+        font-size: 27px;
+    }
+}
+
+.error-title {
+    margin-top: 16px !important;
+
+    color: #0f172a !important;
+
+    font-size: 17px !important;
+    font-weight: 650 !important;
+}
+
+.error-description {
+    margin-top: 6px !important;
+    margin-bottom: 18px !important;
+
+    color: #64748b !important;
+
+    font-size: 12px !important;
+    line-height: 1.6 !important;
+}
+
+/* =========================================================
+   SNACKBAR
+   ========================================================= */
+
+.profile-snackbar {
+    font-family: "Poppins", sans-serif !important;
+
+    .MuiAlert-message {
+        font-size: 12px !important;
+        font-weight: 500 !important;
+    }
+}
+
+/* =========================================================
+   LARGE TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+    .profile-page {
+        padding: 24px;
+    }
+
+    .profile-content {
+        max-width: 100%;
+    }
+
+    .password-fields {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .profile-page {
+        padding: 20px 18px 32px;
+    }
+
+    .profile-header {
+        margin-bottom: 20px;
+    }
+
+    .profile-title {
+        font-size: 22px !important;
+    }
+
+    .profile-subtitle {
+        font-size: 12px !important;
+    }
+
+    .overview-content {
+        min-height: auto;
 
         padding: 24px;
 
-        border-right: 1px solid #e5e7eb;
-
-        background: #ffffff;
+        gap: 18px;
     }
 
-    // =====================================================
-    // RIGHT COLUMN
-    // =====================================================
+    .profile-avatar {
+        width: 74px !important;
+        height: 74px !important;
 
-    &_right {
-        min-width: 0;
-
-        padding: 20px;
-
-        background: #f8fafc;
+        font-size: 27px !important;
     }
 
-    // =====================================================
-    // FIELDS
-    // =====================================================
-
-    &_field {
-        width: 100%;
-
-        margin-bottom: 20px;
+    .profile-name {
+        font-size: 19px !important;
     }
 
-    &_field:last-of-type {
-        margin-bottom: 0;
+    .profile-section {
+        padding: 24px;
     }
 
-    &_label {
-        display: flex;
-        align-items: center;
+    .profile-fields {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
 
-        gap: 7px;
+    .profile-field:last-child {
+        grid-column: auto;
+    }
 
-        margin-bottom: 8px;
+    .password-fields {
+        grid-template-columns: 1fr;
+    }
+}
 
-        font-family: "Poppins", sans-serif !important;
-        font-size: 12.5px !important;
-        font-weight: 600 !important;
+/* =========================================================
+   MOBILE
+   ========================================================= */
 
-        color: #374151 !important;
+@media (max-width: 576px) {
+    .profile-page {
+        padding: 16px 12px 26px;
+    }
+
+    .profile-content {
+        gap: 14px;
+    }
+
+    .profile-header {
+        margin-bottom: 16px;
+    }
+
+    .header-content {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .back-button {
+        width: 38px !important;
+        height: 38px !important;
+
+        margin-top: 1px;
 
         svg {
-            color: #10b981;
-            font-size: 18px;
-        }
-
-        span {
-            color: #ef4444;
-            margin-left: 1px;
+            font-size: 19px;
         }
     }
 
-    // =====================================================
-    // MUI INPUTS
-    // =====================================================
+    .profile-title {
+        font-size: 20px !important;
+        line-height: 1.35 !important;
+    }
 
-    .MuiTextField-root {
+    .profile-subtitle {
+        max-width: 280px;
+
+        margin-top: 3px !important;
+
+        font-size: 11px !important;
+        line-height: 1.5 !important;
+    }
+
+    .profile-card {
+        border-radius: 11px !important;
+    }
+
+    /* Overview */
+
+    .overview-content {
+        flex-direction: column;
+
+        align-items: center;
+
+        padding: 24px 18px;
+
+        text-align: center;
+    }
+
+    .profile-avatar {
+        width: 72px !important;
+        height: 72px !important;
+
+        font-size: 26px !important;
+
+        border-width: 4px;
+    }
+
+    .profile-user-info {
+        align-items: center;
         width: 100%;
+    }
 
-        .MuiInputBase-root {
-            min-height: 50px;
+    .profile-name {
+        max-width: 100%;
 
-            font-family: "Poppins", sans-serif !important;
-            font-size: 12.5px !important;
+        font-size: 18px !important;
+        text-align: center;
+    }
 
-            color: #1f2937;
+    .email-row {
+        justify-content: center;
 
-            background: #ffffff;
+        max-width: 100%;
+    }
 
-            border-radius: 9px;
+    .profile-email {
+        max-width: 250px;
 
-            transition:
-                border-color 0.2s ease,
-                box-shadow 0.2s ease,
-                background-color 0.2s ease;
+        font-size: 11.5px !important;
+    }
+
+    .role-badge {
+        margin-top: 9px;
+    }
+
+    /* Sections */
+
+    .profile-section {
+        padding: 20px 17px;
+    }
+
+    .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .section-title-wrapper {
+        width: 100%;
+        gap: 10px;
+    }
+
+    .section-icon {
+        width: 36px;
+        height: 36px;
+
+        border-radius: 9px;
+
+        svg {
+            font-size: 18px;
+        }
+    }
+
+    .section-title {
+        font-size: 14px !important;
+    }
+
+    .section-description {
+        font-size: 10.5px !important;
+    }
+
+    .section-header>.secondary-button {
+        width: 100%;
+    }
+
+    .section-divider {
+        margin: 19px 0 !important;
+    }
+
+    /* Fields */
+
+    .profile-fields {
+        gap: 18px;
+    }
+
+    .field-label {
+        margin-bottom: 7px !important;
+
+        font-size: 11px !important;
+    }
+
+    .field-value {
+        font-size: 12px !important;
+    }
+
+    .field-with-icon {
+        min-height: 40px;
+
+        padding: 8px 10px;
+
+        svg {
+            font-size: 17px;
+        }
+    }
+
+    .field-helper {
+        font-size: 9.5px !important;
+    }
+
+    .profile-input {
+        .MuiOutlinedInput-root {
+            min-height: 42px;
         }
 
         .MuiInputBase-input {
-            padding: 14px;
+            padding: 10px 11px;
 
-            font-family: "Poppins", sans-serif !important;
-            font-size: 12.5px !important;
+            font-size: 12px;
         }
 
-        .MuiInputBase-input::placeholder {
-            font-family: "Poppins", sans-serif !important;
-            font-size: 12px !important;
-
-            color: #9ca3af;
-            opacity: 1;
-        }
-
-        .MuiSelect-select {
-            font-family: "Poppins", sans-serif !important;
-            font-size: 12.5px !important;
-        }
-
-        .MuiMenuItem-root {
-            font-family: "Poppins", sans-serif !important;
-            font-size: 12.5px !important;
-        }
-
-        textarea {
-            line-height: 1.65;
-            resize: vertical;
-
-            font-family: "Poppins", sans-serif !important;
-            font-size: 12.5px !important;
-        }
-
-        .MuiOutlinedInput-root {
-            .MuiOutlinedInput-notchedOutline {
-                border-color: #d1d5db;
-                border-width: 1px;
-
-                transition:
-                    border-color 0.2s ease,
-                    box-shadow 0.2s ease;
-            }
-
-            &:hover {
-                background: #ffffff;
-
-                .MuiOutlinedInput-notchedOutline {
-                    border-color: #9ca3af;
-                }
-            }
-
-            &.Mui-focused {
-                background: #ffffff;
-
-                .MuiOutlinedInput-notchedOutline {
-                    border-color: #10b981;
-                    border-width: 1.5px;
-                }
-
-                box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.07);
-            }
-
-            &.Mui-error {
-                .MuiOutlinedInput-notchedOutline {
-                    border-color: #ef4444;
-                }
-
-                &.Mui-focused {
-                    box-shadow:
-                        0 0 0 3px rgba(239, 68, 68, 0.07);
-                }
-            }
-        }
-
-        .MuiFormHelperText-root {
-            margin: 5px 3px 0;
-
-            font-family: "Poppins", sans-serif !important;
-            font-size: 10.5px !important;
-
-            line-height: 1.4;
-        }
-    }
-
-    // =====================================================
-    // ADDRESS
-    // =====================================================
-
-    &_address {
-        display: flex;
-        align-items: flex-start;
-
-        gap: 9px;
-
-        .MuiTextField-root {
-            flex: 1;
-            min-width: 0;
-        }
-    }
-
-    &_searchButton {
-        flex-shrink: 0;
-
-        min-width: 125px !important;
-        height: 50px !important;
-
-        padding: 0 14px !important;
-
-        font-family: "Poppins", sans-serif !important;
-        font-size: 11.5px !important;
-        font-weight: 500 !important;
-
-        text-transform: none !important;
-
-        color: #ffffff !important;
-
-        background: #047857 !important;
-
-        border-radius: 9px !important;
-
-        box-shadow: none !important;
-
-        transition: all 0.2s ease !important;
-
-        &:hover {
-            background: #065f46 !important;
-
-            box-shadow:
-                0 5px 14px rgba(4, 120, 87, 0.18) !important;
-
-            transform: translateY(-1px);
-        }
-
-        &:active {
-            transform: translateY(0);
-        }
-
-        &:disabled {
-            color: #ffffff !important;
-            background: #86efac !important;
-        }
-    }
-
-    // =====================================================
-    // LEFT HELPER
-    // =====================================================
-
-    &_leftHelper {
-        display: flex;
-        align-items: center;
-
-        gap: 7px;
-
-        margin-top: 20px;
-        padding: 10px 12px;
-
-        background: #f0fdf4;
-
-        border: 1px solid #dcfce7;
-        border-radius: 8px;
-
-        svg {
-            flex-shrink: 0;
-
-            color: #10b981;
-            font-size: 16px;
-        }
-
-        p {
-            font-family: "Poppins", sans-serif !important;
-
-            font-size: 10.5px !important;
-            line-height: 1.5;
-
-            color: #52736a;
-        }
-    }
-
-    // =====================================================
-    // MAP CARD
-    // =====================================================
-
-    &_mapCard {
-        overflow: hidden;
-
-        background: #ffffff;
-
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-
-        box-shadow:
-            0 2px 6px rgba(15, 23, 42, 0.025);
-    }
-
-    &_mapHeader {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        gap: 10px;
-
-        padding: 14px;
-
-        border-bottom: 1px solid #e5e7eb;
-    }
-
-    &_mapTitle {
-        font-family: "Poppins", sans-serif !important;
-        font-size: 12.5px !important;
-        font-weight: 600 !important;
-        color: #1f2937 !important;
-        margin-bottom: 2px !important;
-    }
-
-    &_mapSubtitle {
-        font-family: "Poppins", sans-serif !important;
-        font-size: 10px !important;
-        font-weight: 400 !important;
-        color: #6b7280 !important;
-        line-height: 1.4 !important;
-    }
-
-    &_mapBadge {
-        display: inline-flex;
-        align-items: center;
-
-        gap: 4px;
-
-        padding: 5px 8px;
-
-        white-space: nowrap;
-
-        color: #047857;
-
-        background: #ecfdf5;
-
-        border: 1px solid #d1fae5;
-        border-radius: 20px;
-
-        font-family: "Poppins", sans-serif !important;
-        font-size: 9px !important;
-        font-weight: 500 !important;
-
-        svg {
+        .MuiInputLabel-root {
             font-size: 12px;
         }
     }
 
-    &_map {
-        width: 100%;
+    /* Actions */
 
-        .leaflet-container {
+    .edit-actions {
+        flex-direction: column-reverse;
+
+        gap: 8px;
+
+        margin-top: 22px;
+        padding-top: 17px;
+
+        .primary-button,
+        .secondary-button {
             width: 100%;
-            height: 270px;
-            min-height: 270px;
-
-            border: none;
-            border-radius: 0;
         }
     }
 
-    // =====================================================
-    // COORDINATES
-    // =====================================================
+    /* Security */
 
-    &_coordinates {
-        display: grid;
+    .password-form {
+        margin-top: 20px;
+    }
 
-        grid-template-columns: 1fr 1fr;
+    .password-alert {
+        margin-bottom: 18px !important;
 
-        gap: 10px;
+        padding: 9px 12px !important;
 
-        padding: 10px 12px;
-
-        background: #f8fafc;
-
-        border-top: 1px solid #e5e7eb;
-
-        >div {
-            display: flex;
-            flex-direction: column;
-
-            gap: 2px;
+        .MuiAlert-message {
+            font-size: 10.5px !important;
         }
 
-        span {
-            font-family: "Poppins", sans-serif !important;
-            font-size: 8.5px !important;
-            font-weight: 500;
-
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-
-            color: #9ca3af;
-        }
-
-        strong {
-            font-family: "Poppins", sans-serif !important;
-            font-size: 10px !important;
-            font-weight: 600;
-
-            color: #374151;
+        .MuiAlert-icon {
+            font-size: 18px;
         }
     }
 
-    // =====================================================
-    // IMAGE CARD
-    // =====================================================
-
-    &_imageCard {
-        margin-top: 16px;
-
-        padding: 14px;
-
-        background: #ffffff;
-
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-
-        box-shadow:
-            0 2px 6px rgba(15, 23, 42, 0.025);
+    .password-fields {
+        gap: 14px;
     }
 
-    &_imageHeader {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    .password-actions {
+        flex-direction: column-reverse;
 
-        gap: 10px;
+        gap: 8px;
 
-        margin-bottom: 12px;
-    }
+        margin-top: 20px;
+        padding-top: 17px;
 
-    &_imageTitle {
-        font-family: "Poppins", sans-serif !important;
-        font-size: 12.5px !important;
-        font-weight: 600 !important;
-        color: #1f2937 !important;
-        margin-bottom: 2px !important;
-    }
-
-    &_imageSubtitle {
-        font-family: "Poppins", sans-serif !important;
-        font-size: 10px !important;
-        color: #6b7280 !important;
-    }
-
-    &_imageCount {
-        min-width: 38px;
-        height: 24px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        padding: 0 7px;
-
-        color: #047857;
-
-        background: #ecfdf5;
-
-        border: 1px solid #d1fae5;
-        border-radius: 20px;
-
-        font-family: "Poppins", sans-serif !important;
-        font-size: 9.5px !important;
-        font-weight: 600 !important;
-    }
-
-    // =====================================================
-    // UPLOAD
-    // =====================================================
-
-    &_upload {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-
-        padding: 18px 12px;
-
-        text-align: center;
-
-        background:
-            linear-gradient(180deg,
-                #f8fffc 0%,
-                #ffffff 100%);
-
-        border: 1px dashed #a7f3d0;
-        border-radius: 10px;
-
-        transition: all 0.2s ease;
-
-        &:hover {
-            border-color: #10b981;
-            background: #f5fdf9;
-        }
-    }
-
-    &_uploadIcon {
-        width: 42px;
-        height: 42px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        margin-bottom: 8px;
-
-        color: #047857;
-
-        background: #ecfdf5;
-
-        border: 1px solid #d1fae5;
-        border-radius: 11px;
-
-        svg {
-            font-size: 21px;
-        }
-    }
-
-    &_uploadTitle {
-        font-family: "Poppins", sans-serif !important;
-        font-size: 11.5px !important;
-        font-weight: 600 !important;
-        color: #1f2937 !important;
-
-        margin-bottom: 2px !important;
-    }
-
-    &_uploadText {
-        font-family: "Poppins", sans-serif !important;
-        font-size: 9.5px !important;
-        color: #6b7280 !important;
-
-        margin-bottom: 12px !important;
-    }
-
-    &_uploadButtons {
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        gap: 7px;
-
-        width: 100%;
-    }
-
-    &_cameraButton,
-    &_galleryButton {
-        min-height: 34px !important;
-
-        padding: 0 11px !important;
-
-        font-family: "Poppins", sans-serif !important;
-
-        font-size: 10px !important;
-        font-weight: 500 !important;
-
-        text-transform: none !important;
-
-        border-radius: 7px !important;
-
-        transition: all 0.2s ease !important;
-
-        .MuiButton-startIcon {
-            margin-right: 5px;
-
-            svg {
-                font-size: 15px;
-            }
-        }
-    }
-
-    &_cameraButton {
-        color: #ffffff !important;
-
-        background: #047857 !important;
-
-        box-shadow: none !important;
-
-        &:hover {
-            background: #065f46 !important;
-
-            box-shadow:
-                0 4px 10px rgba(4, 120, 87, 0.18) !important;
-
-            transform: translateY(-1px);
-        }
-    }
-
-    &_galleryButton {
-        color: #047857 !important;
-
-        background: #ffffff !important;
-
-        border-color: #a7f3d0 !important;
-
-        &:hover {
-            background: #ecfdf5 !important;
-
-            border-color: #10b981 !important;
-        }
-    }
-
-    &_uploadHint {
-        margin-top: 9px !important;
-
-        font-family: "Poppins", sans-serif !important;
-        font-size: 8.5px !important;
-
-        color: #9ca3af !important;
-    }
-
-    // =====================================================
-    // IMAGE PREVIEWS
-    // =====================================================
-
-    &_previewSection {
-        margin-top: 14px;
-    }
-
-    &_previewTitle {
-        margin-bottom: 8px !important;
-
-        font-family: "Poppins", sans-serif !important;
-        font-size: 10.5px !important;
-        font-weight: 600 !important;
-
-        color: #374151 !important;
-    }
-
-    &_imageGrid {
-        display: grid;
-
-        grid-template-columns:
-            repeat(3, minmax(0, 1fr));
-
-        gap: 7px;
-    }
-
-    &_preview {
-        position: relative;
-
-        overflow: hidden;
-
-        aspect-ratio: 1 / 1;
-
-        background: #f3f4f6;
-
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-
-        img {
+        .primary-button,
+        .secondary-button {
             width: 100%;
-            height: 100%;
-
-            display: block;
-
-            object-fit: cover;
-
-            transition:
-                transform 0.25s ease;
-        }
-
-        &:hover {
-            img {
-                transform: scale(1.04);
-            }
-
-            .complaintForm_deleteButton {
-                opacity: 1;
-            }
-        }
-
-        >span {
-            position: absolute;
-
-            left: 5px;
-            bottom: 5px;
-
-            padding: 3px 5px;
-
-            color: #ffffff;
-
-            background:
-                rgba(17, 24, 39, 0.72);
-
-            border-radius: 4px;
-
-            font-family: "Poppins", sans-serif !important;
-            font-size: 7.5px !important;
-            font-weight: 500 !important;
         }
     }
 
-    &_deleteButton {
-        position: absolute !important;
+    /* Account */
 
-        top: 4px;
-        right: 4px;
-
-        width: 25px !important;
-        height: 25px !important;
-
-        padding: 0 !important;
-
-        opacity: 0;
-
-        color: #dc2626 !important;
-
-        background:
-            rgba(255, 255, 255, 0.94) !important;
-
-        box-shadow:
-            0 2px 7px rgba(0, 0, 0, 0.14);
-
-        transition:
-            opacity 0.2s ease !important;
-
-        &:hover {
-            color: #b91c1c !important;
-
-            background: #ffffff !important;
-        }
-
-        svg {
-            font-size: 14px;
-        }
+    .account-header {
+        align-items: flex-start;
+        gap: 10px;
     }
 
-    // =====================================================
-    // FOOTER
-    // =====================================================
+    .account-row {
+        min-height: 54px;
 
-    &_footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        gap: 20px;
-
-        padding: 17px 24px;
-
-        background: #fbfcfc;
-
-        border-top: 1px solid #e5e7eb;
+        gap: 12px;
     }
 
-    &_footerInfo {
-        display: flex;
-        align-items: center;
-
+    .account-label {
         gap: 7px;
 
         svg {
-            flex-shrink: 0;
-
-            color: #10b981;
             font-size: 16px;
         }
 
         p {
-            font-family: "Poppins", sans-serif !important;
-
-            font-size: 10.5px !important;
-
-            color: #6b7280;
-        }
-    }
-
-    // =====================================================
-    // ACTION BUTTONS
-    // =====================================================
-
-    &_actions {
-        display: flex;
-        align-items: center;
-
-        gap: 9px;
-    }
-
-    &_cancelButton,
-    &_submitButton {
-        min-width: 115px !important;
-        height: 40px !important;
-
-        padding: 0 17px !important;
-
-        font-family: "Poppins", sans-serif !important;
-
-        font-size: 11.5px !important;
-        font-weight: 500 !important;
-
-        text-transform: none !important;
-
-        border-radius: 8px !important;
-
-        transition: all 0.2s ease !important;
-    }
-
-    &_cancelButton {
-        color: #4b5563 !important;
-
-        background: #ffffff !important;
-
-        border-color: #d1d5db !important;
-
-        &:hover {
-            color: #374151 !important;
-
-            background: #f9fafb !important;
-
-            border-color: #9ca3af !important;
-        }
-    }
-
-    &_submitButton {
-        color: #ffffff !important;
-
-        background: #047857 !important;
-
-        border: 1px solid #047857 !important;
-
-        box-shadow: none !important;
-
-        &:hover {
-            background: #065f46 !important;
-
-            border-color: #065f46 !important;
-
-            box-shadow:
-                0 5px 13px rgba(4, 120, 87, 0.2) !important;
-
-            transform: translateY(-1px);
-        }
-
-        &:active {
-            transform: translateY(0);
-        }
-    }
-
-    // =====================================================
-    // RESPONSIVE — TABLET
-    // =====================================================
-
-    @media (max-width: 1000px) {
-        &_content {
-            grid-template-columns:
-                minmax(0, 1fr) minmax(0, 0.75fr);
-        }
-
-        &_left {
-            padding: 20px;
-        }
-
-        &_right {
-            padding: 16px;
-        }
-
-        &_map {
-            .leaflet-container {
-                height: 250px;
-                min-height: 250px;
-            }
-        }
-
-        &_searchButton {
-            min-width: 115px !important;
-        }
-    }
-
-    // =====================================================
-    // RESPONSIVE — MOBILE
-    // =====================================================
-
-    @media (max-width: 800px) {
-        &_content {
-            grid-template-columns: 1fr;
-        }
-
-        &_left {
-            border-right: none;
-
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        &_right {
-            padding: 20px;
-        }
-
-        &_map {
-            .leaflet-container {
-                height: 300px;
-                min-height: 300px;
-            }
-        }
-    }
-
-    // =====================================================
-    // SMALL MOBILE
-    // =====================================================
-
-    @media (max-width: 600px) {
-        &_heading {
-            margin-bottom: 16px;
-        }
-
-        &_headingIcon {
-            width: 42px;
-            height: 42px;
-
-            svg {
-                font-size: 21px;
-            }
-        }
-
-        &_headingTitle {
-            font-size: 17px !important;
-        }
-
-        &_headingText {
             font-size: 11px !important;
         }
-
-        &_cardHeader {
-            align-items: flex-start;
-            flex-direction: column;
-
-            padding: 17px;
-        }
-
-        &_left,
-        &_right {
-            padding: 17px;
-        }
-
-        &_required {
-            align-self: flex-start;
-        }
-
-        &_address {
-            flex-direction: column;
-
-            .MuiTextField-root {
-                width: 100%;
-            }
-        }
-
-        &_searchButton {
-            width: 100%;
-        }
-
-        &_uploadButtons {
-            flex-direction: column;
-
-            button {
-                width: 100%;
-            }
-        }
-
-        &_imageGrid {
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-        }
-
-        &_footer {
-            align-items: stretch;
-            flex-direction: column;
-
-            padding: 16px 17px;
-        }
-
-        &_footerInfo {
-            align-items: flex-start;
-        }
-
-        &_actions {
-            width: 100%;
-
-            button {
-                flex: 1;
-            }
-        }
     }
 
-    // =====================================================
-    // VERY SMALL MOBILE
-    // =====================================================
-
-    @media (max-width: 420px) {
-        &_cardTitle {
-            font-size: 15px !important;
-        }
-
-        &_cardSubtitle {
-            font-size: 10.5px !important;
-        }
-
-        &_label {
-            font-size: 11.5px !important;
-        }
-
-        .MuiTextField-root {
-            .MuiInputBase-root {
-                font-size: 11.5px !important;
-            }
-
-            .MuiInputBase-input {
-                font-size: 11.5px !important;
-            }
-
-            .MuiInputBase-input::placeholder {
-                font-size: 11px !important;
-            }
-        }
-
-        &_right {
-            padding: 14px;
-        }
-
-        &_mapHeader {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        &_map {
-            .leaflet-container {
-                height: 260px;
-                min-height: 260px;
-            }
-        }
-
-        &_coordinates {
-            grid-template-columns: 1fr;
-
-            gap: 7px;
-        }
-
-        &_footerInfo {
-            p {
-                font-size: 9.5px !important;
-            }
-        }
-
-        &_actions {
-            flex-direction: column;
-
-            button {
-                width: 100%;
-            }
-        }
+    .account-value {
+        font-size: 11px !important;
     }
 
+    .role-value {
+        padding: 4px 8px;
+    }
 
+    /* Buttons */
+
+    .primary-button,
+    .secondary-button {
+        min-height: 39px !important;
+
+        padding: 7px 13px !important;
+
+        font-size: 11px !important;
+    }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 380px) {
+    .profile-page {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .profile-section {
+        padding: 18px 14px;
+    }
+
+    .overview-content {
+        padding: 21px 14px;
+    }
+
+    .profile-name {
+        font-size: 17px !important;
+    }
+
+    .profile-email {
+        max-width: 220px;
+        font-size: 10.5px !important;
+    }
+
+    .section-title {
+        font-size: 13px !important;
+    }
+
+    .section-description {
+        font-size: 10px !important;
+    }
 }
