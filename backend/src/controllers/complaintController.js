@@ -654,6 +654,98 @@ const getWorkerComplaintById = async (req, res) => {
     }
 };
 
+const completeWorkerComplaint = async (req, res) => {
+
+    try {
+        const { id } = req.params;
+
+        const complaint = await Complaint.findOne({
+            _id: id,
+            worker: req.user.id
+        });
+
+        if (!complaint) {
+            return res.status(404).json({
+                message: "Complaint not found or not assigned to you"
+            });
+        }
+
+        // Only in-progress complaints can be completed
+        if (complaint.status !== "in_progress") {
+            return res.status(400).json({
+                message: "Only complaints in progress can be completed"
+            });
+        }
+
+        // Completion proof is required
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({
+                message: "At least one completion image is required"
+            });
+        }
+
+        // Cloudinary URLs from uploadMiddleware
+        const completionImageUrls = req.files.map(
+            (file) => file.path
+        );
+
+        // Save completion images separately
+        complaint.completionImages = completionImageUrls;
+
+        // Mark complaint as resolved
+        complaint.status = "resolved";
+
+        complaint.statusHistory.push({
+            status: "resolved",
+            changedAt: new Date()
+        });
+
+        await complaint.save();
+
+        // Activity
+        await ComplaintActivity.create({
+            complaint: complaint._id,
+            action: "complaint_resolved",
+            performedBy: req.user.id,
+            role: req.user.role
+        });
+
+        // Notify citizen
+        await Notification.create({
+            recipient: complaint.citizen,
+            complaint: complaint._id,
+            type: "complaint_resolved",
+            message: `Your complaint "${complaint.title}" has been resolved.`
+        });
+
+        // Notify officer
+        if (complaint.assignedOfficer) {
+            await Notification.create({
+                recipient: complaint.assignedOfficer,
+                complaint: complaint._id,
+                type: "complaint_resolved",
+                message: `Complaint "${complaint.title}" has been resolved by the worker.`
+            });
+        }
+
+        return res.status(200).json({
+            message: "Complaint completed successfully",
+            complaint
+        });
+
+    } catch (error) {
+        console.error(
+            "Worker complaint completion error:",
+            error
+        );
+
+        return res.status(500).json({
+            message: "Server error while completing complaint"
+        });
+    }
+};
+
+
 const updateWorkerComplaintStatus = async (req, res) => {
     try {
         const { id } = req.params;
@@ -1050,6 +1142,7 @@ module.exports = {
     getWorkerComplaints,
     assignWorker,
     getWorkerComplaintById,
+    completeWorkerComplaint,
     updateWorkerComplaintStatus,
     getComplaintAnalytics,
     getComplaintActivities,

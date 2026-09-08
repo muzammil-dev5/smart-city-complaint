@@ -196,6 +196,18 @@ export const updateWorkerComplaintStatus = async (id: string, status: string) =>
     return response.data;
 };
 
+
+export const completeWorkerComplaint = async (id: string, images: File[]) => {
+    const formData = new FormData();
+
+    images.forEach((image) => {
+        formData.append("completionImages", image);
+    });
+
+    const response = await api.patch(`/complaints/worker/${id}/complete`, formData);
+    return response.data;
+};
+
 export const getComplaintAnalytics = async () => {
     const response = await api.get("/complaints/analytics");
 

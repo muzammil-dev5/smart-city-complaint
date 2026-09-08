@@ -104,34 +104,14 @@ const ComplaintDetails = () => {
                     const feedbackResponse = await getComplaintFeedback(id);
 
                     if (feedbackResponse.feedback) {
-                        setFeedback(feedbackResponse.feedback);
+                        setFeedback(feedbackResponse.feedback); 
                         setFeedbackSubmitted(true);
                     } else {
                         setFeedbackSubmitted(false);
                     }
 
                 } catch (error: unknown) {
-                    if (
-                        axios.isAxiosError(error) &&
-                        error.response?.status === 404
-                    ) {
-                        setFeedbackSubmitted(false);
-                    } else {
-                        console.error("Get feedback error:", error);
-                    }
-                } try {
-                    const feedbackResponse = await getComplaintFeedback(id);
-
-                    setFeedbackSubmitted(
-                        Boolean(feedbackResponse.feedback)
-                    );
-
-                } catch (error: unknown) {
-
-                    if (
-                        axios.isAxiosError(error) &&
-                        error.response?.status === 404
-                    ) {
+                    if (axios.isAxiosError(error) && error.response?.status === 404) {
                         setFeedbackSubmitted(false);
                     } else {
                         console.error("Get feedback error:", error);
@@ -300,7 +280,11 @@ const ComplaintDetails = () => {
                 {complaint.images && complaint.images.length > 0 && (
                     <Box className="complaintDetails_imagesSection">
                         <Typography className="complaintDetails_label">
-                            Complaint Images
+                            Before — Reported Images
+                        </Typography>
+
+                        <Typography className="complaintDetails_imageDescription">
+                            Images submitted when the complaint was reported.
                         </Typography>
 
                         <Box className="complaintDetails_images">
@@ -308,17 +292,55 @@ const ComplaintDetails = () => {
                                 <Box
                                     key={image}
                                     className="complaintDetails_imageWrapper"
-                                    onClick={() => setSelectedImage(image)} >
+                                    onClick={() => setSelectedImage(image)}
+                                >
                                     <img
                                         src={image}
-                                        alt={`Complaint ${index + 1}`}
+                                        alt={`Reported complaint ${index + 1}`}
                                         className="complaintDetails_image"
                                     />
+
+                                    <Box className="complaintDetails_imageBadge">
+                                        Before
+                                    </Box>
                                 </Box>
                             ))}
                         </Box>
                     </Box>
                 )}
+
+                {complaint.completionImages &&
+                    complaint.completionImages.length > 0 && (
+                        <Box className="complaintDetails_imagesSection complaintDetails_completionSection">
+                            <Typography className="complaintDetails_label">
+                                After — Completed Work
+                            </Typography>
+
+                            <Typography className="complaintDetails_imageDescription">
+                                Photos uploaded by the worker after completing the work.
+                            </Typography>
+
+                            <Box className="complaintDetails_images">
+                                {complaint.completionImages.map((image, index) => (
+                                    <Box
+                                        key={image}
+                                        className="complaintDetails_imageWrapper complaintDetails_completionImageWrapper"
+                                        onClick={() => setSelectedImage(image)}
+                                    >
+                                        <img
+                                            src={image}
+                                            alt={`Completed work ${index + 1}`}
+                                            className="complaintDetails_image"
+                                        />
+
+                                        <Box className="complaintDetails_imageBadge complaintDetails_afterBadge">
+                                            After
+                                        </Box>
+                                    </Box>
+                                ))}
+                            </Box>
+                        </Box>
+                    )}
 
                 <Box className="complaintDetails_grid">
                     <Box className="complaintDetails_field">

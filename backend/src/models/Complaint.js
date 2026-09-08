@@ -105,7 +105,13 @@ const complaintSchema = new mongoose.Schema(
             {
                 type: String
             }
-        ]
+        ],
+
+        completionImages: [
+            {
+                type: String
+            }
+        ],
     },
     {
         timestamps: true

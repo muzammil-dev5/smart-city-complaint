@@ -7,6 +7,7 @@ const upload = require("../middleware/uploadMiddleware");
 const {
     createComplaint,
     getMyComplaints,
+    completeWorkerComplaint,
     getComplaintById,
     updateComplaint,
     deleteComplaint,
@@ -135,6 +136,14 @@ router.patch(
     authMiddleware,
     roleMiddleware("worker"),
     updateWorkerComplaintStatus
+);
+
+router.patch(
+    "/worker/:id/complete",
+    authMiddleware,
+    roleMiddleware("worker"),
+    upload.array("completionImages", 5),
+    completeWorkerComplaint
 );
 
 router.delete(
