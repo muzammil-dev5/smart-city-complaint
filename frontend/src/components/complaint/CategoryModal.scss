@@ -1,0 +1,168 @@
+.categoryModal .categoryModal_paper {
+    overflow: hidden;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.18);
+}
+
+.categoryModal_header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px 26px 18px;
+    border-bottom: 1px solid #edf1f5;
+}
+
+.categoryModal_title {
+    color: #172033;
+    font-size: 19px !important;
+    font-weight: 700 !important;
+}
+
+.categoryModal_subtitle {
+    margin-top: 4px !important;
+    color: #718096;
+    font-size: 12px !important;
+}
+
+.categoryModal_close {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    margin: -3px -5px 0 0 !important;
+    color: #667085 !important;
+}
+
+.categoryModal_close:hover {
+    background: #f2f4f7 !important;
+}
+
+.categoryModal_content {
+    padding: 22px 26px 26px !important;
+}
+
+.categoryModal_grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 13px;
+}
+
+.categoryModal_card {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 17px;
+    border: 1px solid #e4e7ec;
+    border-radius: 13px;
+    outline: none;
+    background: #fff;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease,
+        transform 0.18s ease, background 0.18s ease;
+}
+
+.categoryModal_card:hover {
+    border-color: #10b981;
+    background: #fcfffd;
+    box-shadow: 0 7px 20px rgba(15, 23, 42, 0.07);
+    transform: translateY(-2px);
+}
+
+.categoryModal_card:focus-visible {
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16);
+}
+
+.categoryModal_card--selected {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.055);
+    box-shadow: 0 0 0 1px #10b981;
+}
+
+.categoryModal_icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: #f2f4f7;
+    color: #475467;
+    transition: background 0.18s ease, color 0.18s ease;
+}
+
+.categoryModal_card:hover .categoryModal_icon,
+.categoryModal_card--selected .categoryModal_icon {
+    background: rgba(16, 185, 129, 0.12);
+    color: #059669;
+}
+
+.categoryModal_icon svg {
+    font-size: 25px;
+}
+
+.categoryModal_cardText {
+    min-width: 0;
+    width: 100%;
+}
+
+.categoryModal_name {
+    overflow: hidden;
+    color: #344054;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.categoryModal_urdu {
+    margin-top: 5px !important;
+    color: #667085;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    direction: rtl;
+    text-align: left;
+    font-family: "Noto Nastaliq Urdu", "Noto Naskh Arabic",
+        "Jameel Noori Nastaleeq", serif;
+}
+
+@media (max-width: 1100px) {
+    .categoryModal_grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+
+    .categoryModal_header,
+    .categoryModal_content {
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+    }
+
+    .categoryModal_grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .categoryModal_grid {
+        grid-template-columns: 1fr;
+    }
+
+    .categoryModal_card {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .categoryModal_cardText {
+        flex: 1;
+    }
+}

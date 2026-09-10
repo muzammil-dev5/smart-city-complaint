@@ -1,1148 +1,473 @@
+/* Complaint Form */
 .complaintForm {
     width: 100%;
-    max-width: 100%;
-    font-family: "Poppins", sans-serif;
-
-    // =====================================================
-    // MAIN HEADING
-    // =====================================================
-
-    &_heading {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-
-        margin-bottom: 20px;
-        padding: 4px 2px;
-    }
-
-    &_headingIcon {
-        width: 46px;
-        height: 46px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        flex-shrink: 0;
-
-        color: #047857;
-        background: #ecfdf5;
-
-        border: 1px solid #d1fae5;
-        border-radius: 12px;
-
-        svg {
-            font-size: 23px;
-        }
-    }
-
-    &_headingTitle {
-        font-size: 19px !important;
-        font-weight: 650 !important;
-        color: #111827 !important;
-        line-height: 1.3 !important;
-        margin-bottom: 3px !important;
-    }
-
-    &_headingText {
-        font-size: 11.5px !important;
-        font-weight: 400 !important;
-        color: #6b7280 !important;
-        line-height: 1.5 !important;
-    }
-
-    // =====================================================
-    // MAIN CARD
-    // =====================================================
-
-    &_card {
-        width: 100%;
-
-        background: #ffffff;
-
-        border: 1px solid #e5e7eb;
-        border-radius: 16px;
-
-        box-shadow:
-            0 2px 5px rgba(15, 23, 42, 0.025),
-            0 8px 25px rgba(15, 23, 42, 0.035);
-
-        overflow: hidden;
-    }
-
-    // =====================================================
-    // CARD HEADER
-    // =====================================================
-
-    &_cardHeader {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        gap: 20px;
-
-        padding: 20px 24px;
-
-        background:
-            linear-gradient(180deg,
-                #ffffff 0%,
-                #fbfdfc 100%);
-
-        border-bottom: 1px solid #e5e7eb;
-    }
-
-    &_cardTitle {
-        font-size: 15px !important;
-        font-weight: 600 !important;
-        color: #111827 !important;
-        margin-bottom: 3px !important;
-    }
-
-    &_cardSubtitle {
-        font-size: 10.5px !important;
-        font-weight: 400 !important;
-        color: #6b7280 !important;
-    }
-
-    &_required {
-        padding: 6px 10px;
-
-        white-space: nowrap;
-
-        font-size: 9.5px;
-        font-weight: 500;
-
-        color: #6b7280;
-
-        background: #f8fafc;
-
-        border: 1px solid #e5e7eb;
-        border-radius: 20px;
-
-        span {
-            color: #ef4444;
-            margin-right: 2px;
-        }
-    }
-
-    // =====================================================
-    // 60 / 40 CONTENT
-    // =====================================================
-
-    &_content {
-        display: grid;
-
-        grid-template-columns:
-            minmax(0, 3fr) minmax(0, 2fr);
-
-        gap: 0;
-
-        min-width: 0;
-    }
-
-    // =====================================================
-    // LEFT COLUMN — 60%
-    // =====================================================
-
-    &_left {
-        min-width: 0;
-
-        padding: 24px;
-
-        border-right: 1px solid #e5e7eb;
-
-        background: #ffffff;
-    }
-
-    // =====================================================
-    // RIGHT COLUMN — 40%
-    // =====================================================
-
-    &_right {
-        min-width: 0;
-
-        padding: 20px;
-
-        background: #f8fafc;
-    }
-
-    // =====================================================
-    // FIELDS
-    // =====================================================
-
-    &_field {
-        width: 100%;
-
-        margin-bottom: 20px;
-    }
-
-    &_field:last-of-type {
-        margin-bottom: 0;
-    }
-
-    &_label {
-        display: flex;
-        align-items: center;
-
-        gap: 7px;
-
-        margin-bottom: 8px;
-
-        font-family: "Poppins", sans-serif !important;
-        font-size: 11.5px !important;
-        font-weight: 600 !important;
-
-        color: #374151 !important;
-
-        svg {
-            color: #10b981;
-            font-size: 18px;
-        }
-
-        span {
-            color: #ef4444;
-            margin-left: 1px;
-        }
-    }
-
-    // =====================================================
-    // MUI INPUTS
-    // =====================================================
-
-    .MuiTextField-root {
-        width: 100%;
-
-        .MuiInputBase-root {
-            min-height: 50px;
-
-            font-family: "Poppins", sans-serif;
-            font-size: 11.5px;
-
-            color: #1f2937;
-
-            background: #ffffff;
-
-            border-radius: 9px;
-
-            transition:
-                border-color 0.2s ease,
-                box-shadow 0.2s ease,
-                background-color 0.2s ease;
-        }
-
-        .MuiInputBase-input {
-            padding: 14px;
-        }
-
-        .MuiInputBase-input::placeholder {
-            color: #9ca3af;
-            opacity: 1;
-        }
-
-        textarea {
-            line-height: 1.65;
-            resize: vertical;
-        }
-
-        .MuiOutlinedInput-root {
-            .MuiOutlinedInput-notchedOutline {
-                border-color: #d1d5db;
-                border-width: 1px;
-
-                transition:
-                    border-color 0.2s ease,
-                    box-shadow 0.2s ease;
-            }
-
-            &:hover {
-                background: #ffffff;
-
-                .MuiOutlinedInput-notchedOutline {
-                    border-color: #9ca3af;
-                }
-            }
-
-            &.Mui-focused {
-                background: #ffffff;
-
-                .MuiOutlinedInput-notchedOutline {
-                    border-color: #10b981;
-                    border-width: 1.5px;
-                }
-
-                box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.07);
-            }
-
-            &.Mui-error {
-                .MuiOutlinedInput-notchedOutline {
-                    border-color: #ef4444;
-                }
-
-                &.Mui-focused {
-                    box-shadow:
-                        0 0 0 3px rgba(239, 68, 68, 0.07);
-                }
-            }
-        }
-
-        .MuiFormHelperText-root {
-            margin: 5px 3px 0;
-
-            font-family: "Poppins", sans-serif;
-
-            font-size: 10px;
-
-            line-height: 1.4;
-        }
-    }
-
-    // =====================================================
-    // ADDRESS
-    // =====================================================
-
-    &_address {
-        display: flex;
-        align-items: flex-start;
-
-        gap: 9px;
-
-        .MuiTextField-root {
-            flex: 1;
-            min-width: 0;
-        }
-    }
-
-    &_searchButton {
-        flex-shrink: 0;
-
-        min-width: 125px !important;
-        height: 50px !important;
-
-        padding: 0 14px !important;
-
-        font-family: "Poppins", sans-serif !important;
-        font-size: 10.5px !important;
-        font-weight: 500 !important;
-
-        text-transform: none !important;
-
-        color: #ffffff !important;
-
-        background: #047857 !important;
-
-        border-radius: 9px !important;
-
-        box-shadow: none !important;
-
-        transition: all 0.2s ease !important;
-
-        &:hover {
-            background: #065f46 !important;
-
-            box-shadow:
-                0 5px 14px rgba(4, 120, 87, 0.18) !important;
-
-            transform: translateY(-1px);
-        }
-
-        &:active {
-            transform: translateY(0);
-        }
-
-        &:disabled {
-            color: #ffffff !important;
-            background: #86efac !important;
-        }
-    }
-
-    // =====================================================
-    // LEFT HELPER
-    // =====================================================
-
-    &_leftHelper {
-        display: flex;
-        align-items: center;
-
-        gap: 7px;
-
-        margin-top: 20px;
-        padding: 10px 12px;
-
-        background: #f0fdf4;
-
-        border: 1px solid #dcfce7;
-        border-radius: 8px;
-
-        svg {
-            flex-shrink: 0;
-
-            color: #10b981;
-            font-size: 16px;
-        }
-
-        p {
-            font-family: "Poppins", sans-serif;
-
-            font-size: 9.5px;
-            line-height: 1.5;
-
-            color: #52736a;
-        }
-    }
-
-    // =====================================================
-    // MAP CARD
-    // =====================================================
-
-    &_mapCard {
-        overflow: hidden;
-
-        background: #ffffff;
-
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-
-        box-shadow:
-            0 2px 6px rgba(15, 23, 42, 0.025);
-    }
-
-    &_mapHeader {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        gap: 10px;
-
-        padding: 14px;
-
-        border-bottom: 1px solid #e5e7eb;
-    }
-
-    &_mapTitle {
-        font-size: 11.5px !important;
-        font-weight: 600 !important;
-        color: #1f2937 !important;
-        margin-bottom: 2px !important;
-    }
-
-    &_mapSubtitle {
-        font-size: 9px !important;
-        font-weight: 400 !important;
-        color: #6b7280 !important;
-        line-height: 1.4 !important;
-    }
-
-    &_mapBadge {
-        display: inline-flex;
-        align-items: center;
-
-        gap: 4px;
-
-        padding: 5px 8px;
-
-        white-space: nowrap;
-
-        color: #047857;
-
-        background: #ecfdf5;
-
-        border: 1px solid #d1fae5;
-        border-radius: 20px;
-
-        font-size: 8px;
-        font-weight: 500;
-
-        svg {
-            font-size: 12px;
-        }
-    }
-
-    &_map {
-        width: 100%;
-
-        .leaflet-container {
-            width: 100%;
-            height: 270px;
-            min-height: 270px;
-
-            border: none;
-            border-radius: 0;
-        }
-    }
-
-    // =====================================================
-    // COORDINATES
-    // =====================================================
-
-    &_coordinates {
-        display: grid;
-
-        grid-template-columns: 1fr 1fr;
-
-        gap: 10px;
-
-        padding: 10px 12px;
-
-        background: #f8fafc;
-
-        border-top: 1px solid #e5e7eb;
-
-        >div {
-            display: flex;
-            flex-direction: column;
-
-            gap: 2px;
-        }
-
-        span {
-            font-size: 7.5px;
-            font-weight: 500;
-
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-
-            color: #9ca3af;
-        }
-
-        strong {
-            font-size: 9px;
-            font-weight: 600;
-
-            color: #374151;
-        }
-    }
-
-    // =====================================================
-    // IMAGE CARD
-    // =====================================================
-
-    &_imageCard {
-        margin-top: 16px;
-
-        padding: 14px;
-
-        background: #ffffff;
-
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-
-        box-shadow:
-            0 2px 6px rgba(15, 23, 42, 0.025);
-    }
-
-    &_imageHeader {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        gap: 10px;
-
-        margin-bottom: 12px;
-    }
-
-    &_imageTitle {
-        font-size: 11.5px !important;
-        font-weight: 600 !important;
-        color: #1f2937 !important;
-        margin-bottom: 2px !important;
-    }
-
-    &_imageSubtitle {
-        font-size: 9px !important;
-        color: #6b7280 !important;
-    }
-
-    &_imageCount {
-        min-width: 38px;
-        height: 24px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        padding: 0 7px;
-
-        color: #047857;
-
-        background: #ecfdf5;
-
-        border: 1px solid #d1fae5;
-        border-radius: 20px;
-
-        font-size: 8.5px;
-        font-weight: 600;
-    }
-
-    // =====================================================
-    // UPLOAD
-    // =====================================================
-
-    &_upload {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-
-        padding: 18px 12px;
-
-        text-align: center;
-
-        background:
-            linear-gradient(180deg,
-                #f8fffc 0%,
-                #ffffff 100%);
-
-        border: 1px dashed #a7f3d0;
-        border-radius: 10px;
-
-        transition: all 0.2s ease;
-
-        &:hover {
-            border-color: #10b981;
-            background: #f5fdf9;
-        }
-    }
-
-    &_uploadIcon {
-        width: 42px;
-        height: 42px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        margin-bottom: 8px;
-
-        color: #047857;
-
-        background: #ecfdf5;
-
-        border: 1px solid #d1fae5;
-        border-radius: 11px;
-
-        svg {
-            font-size: 21px;
-        }
-    }
-
-    &_uploadTitle {
-        font-size: 10.5px !important;
-        font-weight: 600 !important;
-        color: #1f2937 !important;
-
-        margin-bottom: 2px !important;
-    }
-
-    &_uploadText {
-        font-size: 8.5px !important;
-        color: #6b7280 !important;
-
-        margin-bottom: 12px !important;
-    }
-
-    &_uploadButtons {
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        gap: 7px;
-
-        width: 100%;
-    }
-
-    &_cameraButton,
-    &_galleryButton {
-        min-height: 34px !important;
-
-        padding: 0 11px !important;
-
-        font-family: "Poppins", sans-serif !important;
-
-        font-size: 9px !important;
-        font-weight: 500 !important;
-
-        text-transform: none !important;
-
-        border-radius: 7px !important;
-
-        transition: all 0.2s ease !important;
-
-        .MuiButton-startIcon {
-            margin-right: 5px;
-
-            svg {
-                font-size: 15px;
-            }
-        }
-    }
-
-    &_cameraButton {
-        color: #ffffff !important;
-
-        background: #047857 !important;
-
-        box-shadow: none !important;
-
-        &:hover {
-            background: #065f46 !important;
-
-            box-shadow:
-                0 4px 10px rgba(4, 120, 87, 0.18) !important;
-
-            transform: translateY(-1px);
-        }
-    }
-
-    &_galleryButton {
-        color: #047857 !important;
-
-        background: #ffffff !important;
-
-        border-color: #a7f3d0 !important;
-
-        &:hover {
-            background: #ecfdf5 !important;
-
-            border-color: #10b981 !important;
-        }
-    }
-
-    &_uploadHint {
-        margin-top: 9px !important;
-
-        font-size: 7.5px !important;
-
-        color: #9ca3af !important;
-    }
-
-    // =====================================================
-    // IMAGE PREVIEWS
-    // =====================================================
-
-    &_previewSection {
-        margin-top: 14px;
-    }
-
-    &_previewTitle {
-        margin-bottom: 8px !important;
-
-        font-size: 9.5px !important;
-        font-weight: 600 !important;
-
-        color: #374151 !important;
-    }
-
-    &_imageGrid {
-        display: grid;
-
-        grid-template-columns:
-            repeat(3, minmax(0, 1fr));
-
-        gap: 7px;
-    }
-
-    &_preview {
-        position: relative;
-
-        overflow: hidden;
-
-        aspect-ratio: 1 / 1;
-
-        background: #f3f4f6;
-
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-
-        img {
-            width: 100%;
-            height: 100%;
-
-            display: block;
-
-            object-fit: cover;
-
-            transition:
-                transform 0.25s ease;
-        }
-
-        &:hover {
-            img {
-                transform: scale(1.04);
-            }
-
-            .complaintForm_deleteButton {
-                opacity: 1;
-            }
-        }
-
-        >span {
-            position: absolute;
-
-            left: 5px;
-            bottom: 5px;
-
-            padding: 3px 5px;
-
-            color: #ffffff;
-
-            background:
-                rgba(17, 24, 39, 0.72);
-
-            border-radius: 4px;
-
-            font-size: 6.5px;
-            font-weight: 500;
-        }
-    }
-
-    &_deleteButton {
-        position: absolute !important;
-
-        top: 4px;
-        right: 4px;
-
-        width: 25px !important;
-        height: 25px !important;
-
-        padding: 0 !important;
-
-        opacity: 0;
-
-        color: #dc2626 !important;
-
-        background:
-            rgba(255, 255, 255, 0.94) !important;
-
-        box-shadow:
-            0 2px 7px rgba(0, 0, 0, 0.14);
-
-        transition:
-            opacity 0.2s ease !important;
-
-        &:hover {
-            color: #b91c1c !important;
-
-            background: #ffffff !important;
-        }
-
-        svg {
-            font-size: 14px;
-        }
-    }
-
-    // =====================================================
-    // FOOTER
-    // =====================================================
-
-    &_footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        gap: 20px;
-
-        padding: 17px 24px;
-
-        background: #fbfcfc;
-
-        border-top: 1px solid #e5e7eb;
-    }
-
-    &_footerInfo {
-        display: flex;
-        align-items: center;
-
-        gap: 7px;
-
-        svg {
-            flex-shrink: 0;
-
-            color: #10b981;
-            font-size: 16px;
-        }
-
-        p {
-            font-family: "Poppins", sans-serif;
-
-            font-size: 9.5px;
-
-            color: #6b7280;
-        }
-    }
-
-    // =====================================================
-    // ACTION BUTTONS
-    // =====================================================
-
-    &_actions {
-        display: flex;
-        align-items: center;
-
-        gap: 9px;
-    }
-
-    &_cancelButton,
-    &_submitButton {
-        min-width: 115px !important;
-        height: 40px !important;
-
-        padding: 0 17px !important;
-
-        font-family: "Poppins", sans-serif !important;
-
-        font-size: 10.5px !important;
-        font-weight: 500 !important;
-
-        text-transform: none !important;
-
-        border-radius: 8px !important;
-
-        transition: all 0.2s ease !important;
-    }
-
-    &_cancelButton {
-        color: #4b5563 !important;
-
-        background: #ffffff !important;
-
-        border-color: #d1d5db !important;
-
-        &:hover {
-            color: #374151 !important;
-
-            background: #f9fafb !important;
-
-            border-color: #9ca3af !important;
-        }
-    }
-
-    &_submitButton {
-        color: #ffffff !important;
-
-        background: #047857 !important;
-
-        border: 1px solid #047857 !important;
-
-        box-shadow: none !important;
-
-        &:hover {
-            background: #065f46 !important;
-
-            border-color: #065f46 !important;
-
-            box-shadow:
-                0 5px 13px rgba(4, 120, 87, 0.2) !important;
-
-            transform: translateY(-1px);
-        }
-
-        &:active {
-            transform: translateY(0);
-        }
-    }
-
-    // =====================================================
-    // RESPONSIVE — TABLET
-    // =====================================================
-
-    @media (max-width: 1000px) {
-        &_content {
-            grid-template-columns:
-                minmax(0, 1fr) minmax(0, 0.75fr);
-        }
-
-        &_left {
-            padding: 20px;
-        }
-
-        &_right {
-            padding: 16px;
-        }
-
-        &_map {
-            .leaflet-container {
-                height: 250px;
-                min-height: 250px;
-            }
-        }
-
-        &_searchButton {
-            min-width: 115px !important;
-        }
-    }
-
-    // =====================================================
-    // RESPONSIVE — MOBILE
-    // =====================================================
-
-    @media (max-width: 800px) {
-        &_content {
-            grid-template-columns: 1fr;
-        }
-
-        &_left {
-            border-right: none;
-
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        &_right {
-            padding: 20px;
-        }
-
-        &_map {
-            .leaflet-container {
-                height: 300px;
-                min-height: 300px;
-            }
-        }
-    }
-
-    // =====================================================
-    // SMALL MOBILE
-    // =====================================================
-
-    @media (max-width: 600px) {
-        &_heading {
-            margin-bottom: 16px;
-        }
-
-        &_headingIcon {
-            width: 42px;
-            height: 42px;
-
-            svg {
-                font-size: 21px;
-            }
-        }
-
-        &_headingTitle {
-            font-size: 16px !important;
-        }
-
-        &_headingText {
-            font-size: 10px !important;
-        }
-
-        &_cardHeader {
-            align-items: flex-start;
-            flex-direction: column;
-
-            padding: 17px;
-        }
-
-        &_left,
-        &_right {
-            padding: 17px;
-        }
-
-        &_required {
-            align-self: flex-start;
-        }
-
-        &_address {
-            flex-direction: column;
-
-            .MuiTextField-root {
-                width: 100%;
-            }
-        }
-
-        &_searchButton {
-            width: 100%;
-        }
-
-        &_uploadButtons {
-            flex-direction: column;
-
-            button {
-                width: 100%;
-            }
-        }
-
-        &_imageGrid {
-            grid-template-columns:
-                repeat(2, minmax(0, 1fr));
-        }
-
-        &_footer {
-            align-items: stretch;
-            flex-direction: column;
-
-            padding: 16px 17px;
-        }
-
-        &_footerInfo {
-            align-items: flex-start;
-        }
-
-        &_actions {
-            width: 100%;
-
-            button {
-                flex: 1;
-            }
-        }
-    }
-
-    // =====================================================
-    // VERY SMALL MOBILE
-    // =====================================================
-
-    @media (max-width: 420px) {
-        &_cardTitle {
-            font-size: 14px !important;
-        }
-
-        &_cardSubtitle {
-            font-size: 9.5px !important;
-        }
-
-        &_label {
-            font-size: 10.5px !important;
-        }
-
-        .MuiTextField-root {
-            .MuiInputBase-root {
-                font-size: 10.5px;
-            }
-        }
-
-        &_right {
-            padding: 14px;
-        }
-
-        &_mapHeader {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        &_map {
-            .leaflet-container {
-                height: 260px;
-                min-height: 260px;
-            }
-        }
-
-        &_coordinates {
-            grid-template-columns: 1fr;
-
-            gap: 7px;
-        }
-
-        &_footerInfo {
-            p {
-                font-size: 8.5px;
-            }
-        }
-
-        &_actions {
-            flex-direction: column;
-
-            button {
-                width: 100%;
-            }
-        }
-    }
+    max-width: 1400px;
+    margin: 0 auto
+}
+
+.complaintForm_heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px
+}
+
+.complaintForm_headingIcon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 48px;
+    border-radius: 12px;
+    background: rgba(16, 185, 129, .1);
+    color: #10b981
+}
+
+.complaintForm_headingIcon svg {
+    font-size: 25px
+}
+
+.complaintForm_headingTitle,
+.complaintForm_cardTitle,
+.complaintForm_mapTitle,
+.complaintForm_imageTitle,
+.complaintForm_previewTitle {
+    font-weight: 700 !important;
+    color: #172033
+}
+
+.complaintForm_headingTitle {
+    font-size: 22px !important;
+    line-height: 1.35 !important
+}
+
+.complaintForm_headingText,
+.complaintForm_cardSubtitle,
+.complaintForm_mapSubtitle,
+.complaintForm_imageSubtitle,
+.complaintForm_uploadText {
+    color: #718096
+}
+
+.complaintForm_headingText {
+    margin-top: 3px !important;
+    font-size: 14px !important
+}
+
+.complaintForm_card {
+    overflow: hidden;
+    border: 1px solid #e8edf3;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, .05)
+}
+
+.complaintForm_cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px 28px;
+    border-bottom: 1px solid #edf1f5
+}
+
+.complaintForm_cardTitle {
+    font-size: 18px !important
+}
+
+.complaintForm_cardSubtitle {
+    margin-top: 4px !important;
+    font-size: 13px !important
+}
+
+.complaintForm_required {
+    white-space: nowrap;
+    font-size: 12px;
+    color: #718096
+}
+
+.complaintForm_required span,
+.complaintForm_label span {
+    color: #ef4444
+}
+
+.complaintForm_content {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(340px, 1fr);
+    gap: 28px;
+    padding: 28px
+}
+
+.complaintForm_left,
+.complaintForm_right {
+    min-width: 0
+}
+
+.complaintForm_left {
+    display: flex;
+    flex-direction: column;
+    gap: 22px
+}
+
+.complaintForm_right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px
+}
+
+.complaintForm_field {
+    width: 100%
+}
+
+.complaintForm_label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 8px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #344054
+}
+
+.complaintForm_label svg {
+    font-size: 18px;
+    color: #667085
+}
+
+.complaintForm_field .MuiTextField-root {
+    width: 100%
+}
+
+.complaintForm_field .MuiOutlinedInput-root {
+    min-height: 46px;
+    border-radius: 10px;
+    background: #fff
+}
+
+.complaintForm_field .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #aab4c2
+}
+
+.complaintForm_field .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-width: 1px
+}
+
+.complaintForm_field .MuiInputBase-input {
+    font-size: 14px
+}
+
+.complaintForm_field textarea.MuiInputBase-input {
+    line-height: 1.55
+}
+
+.complaintForm_field .MuiFormHelperText-root {
+    margin-left: 2px;
+    font-size: 12px
+}
+
+/* Category selector */
+.complaintForm_categoryInput {
+    cursor: pointer !important
+}
+
+.complaintForm_categoryInput .MuiInputBase-input {
+    cursor: pointer
+}
+
+.complaintForm_categoryInput .MuiInputBase-input:placeholder-shown {
+    color: #98a2b3
+}
+
+.complaintForm_categoryInput:hover {
+    background: #fafbfc
+}
+
+/* Address */
+.complaintForm_address {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: start
+}
+
+.complaintForm_searchButton {
+    min-height: 46px !important;
+    padding: 0 16px !important;
+    border-radius: 10px !important;
+    text-transform: none !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    box-shadow: none !important
+}
+
+.complaintForm_leftHelper,
+.complaintForm_footerInfo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #667085
+}
+
+.complaintForm_leftHelper {
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #f8fafc
+}
+
+.complaintForm_leftHelper svg,
+.complaintForm_footerInfo svg {
+    flex: 0 0 auto;
+    color: #10b981;
+    font-size: 18px
+}
+
+.complaintForm_leftHelper .MuiTypography-root,
+.complaintForm_footerInfo .MuiTypography-root {
+    font-size: 12px !important
+}
+
+/* Map */
+.complaintForm_mapCard,
+.complaintForm_imageCard {
+    border: 1px solid #e8edf3;
+    border-radius: 14px;
+    background: #fff
+}
+
+.complaintForm_mapHeader,
+.complaintForm_imageHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 18px
+}
+
+.complaintForm_mapTitle,
+.complaintForm_imageTitle {
+    font-size: 15px !important
+}
+
+.complaintForm_mapSubtitle,
+.complaintForm_imageSubtitle {
+    margin-top: 3px !important;
+    font-size: 12px !important
+}
+
+.complaintForm_mapBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    padding: 6px 9px;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, .09);
+    color: #059669;
+    font-size: 11px;
+    font-weight: 600
+}
+
+.complaintForm_mapBadge svg {
+    font-size: 15px
+}
+
+.complaintForm_map {
+    overflow: hidden;
+    height: 280px;
+    border-top: 1px solid #edf1f5;
+    border-bottom: 1px solid #edf1f5
+}
+
+.complaintForm_map>* {
+    height: 100%
+}
+
+.complaintForm_coordinates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: #edf1f5
+}
+
+.complaintForm_coordinates>div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 11px 14px;
+    background: #fff
+}
+
+.complaintForm_coordinates span {
+    color: #98a2b3;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .04em
+}
+
+.complaintForm_coordinates strong {
+    color: #344054;
+    font-size: 12px;
+    font-weight: 600
+}
+
+/* Images */
+.complaintForm_imageCount {
+    min-width: 38px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: #f2f4f7;
+    color: #475467;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700
+}
+
+.complaintForm_upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 18px 18px;
+    padding: 24px 16px;
+    border: 1.5px dashed #d0d5dd;
+    border-radius: 12px;
+    background: #fafbfc;
+    text-align: center
+}
+
+.complaintForm_uploadIcon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 9px;
+    border-radius: 10px;
+    background: rgba(16, 185, 129, .09);
+    color: #10b981
+}
+
+.complaintForm_uploadIcon svg {
+    font-size: 22px
+}
+
+.complaintForm_uploadTitle {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #344054
+}
+
+.complaintForm_uploadText {
+    margin-top: 3px !important;
+    font-size: 12px !important
+}
+
+.complaintForm_uploadButtons {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px
+}
+
+.complaintForm_cameraButton,
+.complaintForm_galleryButton {
+    min-height: 38px !important;
+    padding: 0 14px !important;
+    border-radius: 9px !important;
+    text-transform: none !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    box-shadow: none !important
+}
+
+.complaintForm_uploadHint {
+    margin-top: 12px !important;
+    color: #98a2b3;
+    font-size: 10px !important
+}
+
+.complaintForm_previewSection {
+    padding: 0 18px 18px
+}
+
+.complaintForm_previewTitle {
+    margin-bottom: 10px !important;
+    font-size: 12px !important
+}
+
+.complaintForm_imageGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 9px
+}
+
+.complaintForm_preview {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border: 1px solid #e4e7ec;
+    border-radius: 10px;
+    background: #f8fafc
+}
+
+.complaintForm_preview>img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover
+}
+
+.complaintForm_deleteButton {
+    position: absolute !important;
+    top: 6px;
+    right: 6px;
+    width: 30px;
+    height: 30px;
+    padding: 0 !important;
+    background: rgba(255, 255, 255, .94) !important;
+    color: #ef4444 !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, .12)
+}
+
+.complaintForm_deleteButton svg {
+    font-size: 17px
+}
+
+.complaintForm_preview>span {
+    position: absolute;
+    left: 7px;
+    bottom: 7px;
+    padding: 3px 6px;
+    border-radius: 5px;
+    background: rgba(15, 23, 42, .68);
+    color: #fff;
+    font-size: 9px;
+    line-height: 1.2
+}
+
+/* Footer */
+.complaintForm_footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px 28px;
+    border-top: 1px solid #edf1f5;
+    background: #fcfcfd
+}
+
+.complaintForm_actions {
+    display: flex;
+    align-items: center;
+    gap: 10px
+}
+
+.complaintForm_cancelButton,
+.complaintForm_submitButton {
+    min-height: 40px !important;
+    padding: 0 18px !important;
+    border-radius: 9px !important;
+    text-transform: none !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    box-shadow: none !important
 }

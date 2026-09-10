@@ -1,7 +1,6 @@
 import {
     Box,
     Button,
-    MenuItem,
     TextField,
     Typography,
     IconButton,
@@ -23,6 +22,7 @@ import {
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { useState } from "react";
+import CategoryModal from "./CategoryModal";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import LocationPicker from "./LocationPicker";
@@ -76,6 +76,15 @@ const ComplaintForm = ({
 
     const [isSearching, setIsSearching] =
         useState(false);
+
+    const [isCategoryModalOpen, setIsCategoryModalOpen] =
+        useState(false);
+
+    const [selectedCategory, setSelectedCategory] =
+        useState(initialData?.category || "");
+
+    const [selectedCategoryName, setSelectedCategoryName] =
+        useState("");
 
     const {
         register,
@@ -299,10 +308,6 @@ const ComplaintForm = ({
                 handleFormSubmit
             )}
         >
-            {/* =====================================
-                FORM HEADING
-            ====================================== */}
-
             <Box className="complaintForm_heading">
                 <Box className="complaintForm_headingIcon">
                     <DescriptionOutlined />
@@ -321,13 +326,7 @@ const ComplaintForm = ({
                 </Box>
             </Box>
 
-            {/* =====================================
-                MAIN FORM CARD
-            ====================================== */}
-
             <Box className="complaintForm_card">
-                {/* CARD HEADER */}
-
                 <Box className="complaintForm_cardHeader">
                     <Box>
                         <Typography className="complaintForm_cardTitle">
@@ -345,18 +344,10 @@ const ComplaintForm = ({
                     </Box>
                 </Box>
 
-                {/* =================================
-                    60 / 40 CONTENT
-                ================================== */}
-
                 <Box className="complaintForm_content">
-                    {/* =================================
-                        LEFT COLUMN — 60%
-                    ================================== */}
-
                     <Box className="complaintForm_left">
-                        {/* TITLE */}
 
+                        {/* TITLE */}
                         <Box className="complaintForm_field">
                             <Typography className="complaintForm_label">
                                 <TitleOutlined />
@@ -385,7 +376,6 @@ const ComplaintForm = ({
                         </Box>
 
                         {/* DESCRIPTION */}
-
                         <Box className="complaintForm_field">
                             <Typography className="complaintForm_label">
                                 <DescriptionOutlined />
@@ -409,15 +399,13 @@ const ComplaintForm = ({
                                     !!errors.description
                                 }
                                 helperText={
-                                    errors
-                                        .description
+                                    errors.description
                                         ?.message
                                 }
                             />
                         </Box>
 
                         {/* CATEGORY */}
-
                         <Box className="complaintForm_field">
                             <Typography className="complaintForm_label">
                                 <CategoryOutlined />
@@ -426,19 +414,14 @@ const ComplaintForm = ({
                             </Typography>
 
                             <TextField
-                                select
                                 fullWidth
-                                defaultValue={
-                                    initialData?.category ||
-                                    ""
+                                value={selectedCategoryName}
+                                placeholder="Select complaint category"
+                                onClick={() =>
+                                    setIsCategoryModalOpen(
+                                        true
+                                    )
                                 }
-                                {...register(
-                                    "category",
-                                    {
-                                        required:
-                                            "Complaint category is required",
-                                    }
-                                )}
                                 error={
                                     !!errors.category
                                 }
@@ -446,28 +429,57 @@ const ComplaintForm = ({
                                     errors.category
                                         ?.message
                                 }
-                            >
-                                <MenuItem value="">
-                                    Select complaint
-                                    category
-                                </MenuItem>
+                                slotProps={{
+                                    input: {
+                                        readOnly: true,
+                                        className:
+                                            "complaintForm_categoryInput",
+                                    },
+                                    htmlInput: {
+                                        "aria-label":
+                                            "Select complaint category",
+                                    },
+                                }}
+                            />
 
-                                <MenuItem value="road_damage">
-                                    🚧 Road Damage
-                                </MenuItem>
+                            <input
+                                type="hidden"
+                                {...register(
+                                    "category",
+                                    {
+                                        required:
+                                            "Complaint category is required",
+                                    }
+                                )}
+                            />
 
-                                <MenuItem value="street_light">
-                                    💡 Street Light Issue
-                                </MenuItem>
+                            <CategoryModal
+                                open={
+                                    isCategoryModalOpen
+                                }
+                                selectedCategory={
+                                    selectedCategory
+                                }
+                                onClose={() =>
+                                    setIsCategoryModalOpen(
+                                        false
+                                    )
+                                }
+                                onSelect={(category) => {
+                                    setSelectedCategory(category.value);
+                                    setSelectedCategoryName(category.name);
 
-                                <MenuItem value="garbage_collection">
-                                    🗑️ Garbage Collection
-                                </MenuItem>
-                            </TextField>
+                                    setValue("category", category.value, {
+                                        shouldValidate: true,
+                                        shouldDirty: true,
+                                    });
+
+                                    setIsCategoryModalOpen(false);
+                                }}
+                            />
                         </Box>
 
                         {/* ADDRESS */}
-
                         <Box className="complaintForm_field">
                             <Typography className="complaintForm_label">
                                 <LocationOnOutlined />
@@ -490,8 +502,7 @@ const ComplaintForm = ({
                                         !!errors.address
                                     }
                                     helperText={
-                                        errors
-                                            .address
+                                        errors.address
                                             ?.message
                                     }
                                 />
@@ -526,8 +537,6 @@ const ComplaintForm = ({
                             </Box>
                         </Box>
 
-                        {/* LEFT COLUMN HELPER */}
-
                         <Box className="complaintForm_leftHelper">
                             <CheckCircleOutlineRounded />
 
@@ -539,13 +548,9 @@ const ComplaintForm = ({
                         </Box>
                     </Box>
 
-                    {/* =================================
-                        RIGHT COLUMN — 40%
-                    ================================== */}
-
                     <Box className="complaintForm_right">
-                        {/* MAP */}
 
+                        {/* MAP */}
                         <Box className="complaintForm_mapCard">
                             <Box className="complaintForm_mapHeader">
                                 <Box>
@@ -603,7 +608,6 @@ const ComplaintForm = ({
                         </Box>
 
                         {/* IMAGE UPLOAD */}
-
                         <Box className="complaintForm_imageCard">
                             <Box className="complaintForm_imageHeader">
                                 <Box>
@@ -729,59 +733,56 @@ const ComplaintForm = ({
                             </Box>
 
                             {/* EXISTING IMAGES */}
-
                             {existingImages.length >
                                 0 && (
-                                <Box className="complaintForm_previewSection">
-                                    <Typography className="complaintForm_previewTitle">
-                                        Existing Images
-                                    </Typography>
+                                    <Box className="complaintForm_previewSection">
+                                        <Typography className="complaintForm_previewTitle">
+                                            Existing Images
+                                        </Typography>
 
-                                    <Box className="complaintForm_imageGrid">
-                                        {existingImages.map(
-                                            (
-                                                image,
-                                                index
-                                            ) => (
-                                                <Box
-                                                    key={`${image}-${index}`}
-                                                    className="complaintForm_preview"
-                                                >
+                                        <Box className="complaintForm_imageGrid">
+                                            {existingImages.map(
+                                                (
+                                                    image,
+                                                    index
+                                                ) => (
                                                     <Box
-                                                        component="img"
-                                                        src={
-                                                            image
-                                                        }
-                                                        alt={`Existing complaint image ${
-                                                            index +
-                                                            1
-                                                        }`}
-                                                    />
-
-                                                    <IconButton
-                                                        type="button"
-                                                        className="complaintForm_deleteButton"
-                                                        onClick={() =>
-                                                            handleRemoveExistingImage(
-                                                                image
-                                                            )
-                                                        }
+                                                        key={`${image}-${index}`}
+                                                        className="complaintForm_preview"
                                                     >
-                                                        <DeleteOutlineSharp />
-                                                    </IconButton>
+                                                        <Box
+                                                            component="img"
+                                                            src={
+                                                                image
+                                                            }
+                                                            alt={`Existing complaint image ${index +
+                                                                1
+                                                                }`}
+                                                        />
 
-                                                    <span>
-                                                        Existing
-                                                    </span>
-                                                </Box>
-                                            )
-                                        )}
+                                                        <IconButton
+                                                            type="button"
+                                                            className="complaintForm_deleteButton"
+                                                            onClick={() =>
+                                                                handleRemoveExistingImage(
+                                                                    image
+                                                                )
+                                                            }
+                                                        >
+                                                            <DeleteOutlineSharp />
+                                                        </IconButton>
+
+                                                        <span>
+                                                            Existing
+                                                        </span>
+                                                    </Box>
+                                                )
+                                            )}
+                                        </Box>
                                     </Box>
-                                </Box>
-                            )}
+                                )}
 
                             {/* NEW IMAGES */}
-
                             {images.length > 0 && (
                                 <Box className="complaintForm_previewSection">
                                     <Typography className="complaintForm_previewTitle">
@@ -803,10 +804,9 @@ const ComplaintForm = ({
                                                         src={URL.createObjectURL(
                                                             image
                                                         )}
-                                                        alt={`Selected complaint image ${
-                                                            index +
+                                                        alt={`Selected complaint image ${index +
                                                             1
-                                                        }`}
+                                                            }`}
                                                     />
 
                                                     <IconButton
@@ -835,10 +835,7 @@ const ComplaintForm = ({
                     </Box>
                 </Box>
 
-                {/* =================================
-                    FORM FOOTER
-                ================================== */}
-
+                {/* FOOTER */}
                 <Box className="complaintForm_footer">
                     <Box className="complaintForm_footerInfo">
                         <CheckCircleOutlineRounded />

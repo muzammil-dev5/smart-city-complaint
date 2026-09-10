@@ -10,6 +10,7 @@ const complaintRoutes = require("./src/routes/complaintRoutes");
 const userRoutes = require("./src/routes/userRoutes");
 const departmentRoutes = require("./src/routes/departmentRoutes");
 const notificationRoutes = require("./src/routes/notificationRoutes");
+const categoryRoutes = require("./src/routes/categoryRoutes");
 const feedbackRoutes = require("./src/routes/feedbackRoutes");
 const app = express();
 
@@ -24,7 +25,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/departments", departmentRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/feedback", feedbackRoutes);
-
+app.use("/api/categories", categoryRoutes);
 app.get("/", (req, res) => {
     res.send("Smart City API Running");
 });

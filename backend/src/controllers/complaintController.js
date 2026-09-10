@@ -4,7 +4,7 @@ const Department = require("../models/Department");
 const ComplaintActivity = require("../models/ComplaintActivity");
 const Notification = require("../models/Notification");
 const cloudinary = require("../../src/config/cloudinary");
-
+const Category = require("../models/Category");
 
 const getPublicIdFromUrl = (url) => {
     try {
@@ -52,6 +52,16 @@ const createComplaint = async (req, res) => {
         if (!title || !description || !category || !location?.address) {
             return res.status(400).json({
                 message: "Please provide all required complaint details"
+            });
+        }
+        const categoryExists = await Category.findOne({
+            value: category,
+            isActive: true
+        });
+
+        if (!categoryExists) {
+            return res.status(400).json({
+                message: "Invalid or inactive complaint category"
             });
         }
 
@@ -179,6 +189,18 @@ const updateComplaint = async (req, res) => {
             category,
             address
         } = req.body;
+        if (category) {
+            const categoryExists = await Category.findOne({
+                value: category,
+                isActive: true
+            });
+
+            if (!categoryExists) {
+                return res.status(400).json({
+                    message: "Invalid or inactive complaint category"
+                });
+            }
+        }
 
         let existingImages = [];
 
