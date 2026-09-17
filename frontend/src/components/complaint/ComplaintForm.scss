@@ -1,15 +1,22 @@
-/* Complaint Form */
+/* =========================================
+   Complaint Form
+========================================= */
+
 .complaintForm {
     width: 100%;
     max-width: 1400px;
-    margin: 0 auto
+    margin: 0 auto;
 }
+
+/* =========================================
+   Heading
+========================================= */
 
 .complaintForm_heading {
     display: flex;
     align-items: center;
     gap: 14px;
-    margin-bottom: 22px
+    margin-bottom: 22px;
 }
 
 .complaintForm_headingIcon {
@@ -20,12 +27,12 @@
     justify-content: center;
     flex: 0 0 48px;
     border-radius: 12px;
-    background: rgba(16, 185, 129, .1);
-    color: #10b981
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
 }
 
 .complaintForm_headingIcon svg {
-    font-size: 25px
+    font-size: 25px;
 }
 
 .complaintForm_headingTitle,
@@ -34,12 +41,12 @@
 .complaintForm_imageTitle,
 .complaintForm_previewTitle {
     font-weight: 700 !important;
-    color: #172033
+    color: #172033;
 }
 
 .complaintForm_headingTitle {
     font-size: 22px !important;
-    line-height: 1.35 !important
+    line-height: 1.35 !important;
 }
 
 .complaintForm_headingText,
@@ -47,20 +54,24 @@
 .complaintForm_mapSubtitle,
 .complaintForm_imageSubtitle,
 .complaintForm_uploadText {
-    color: #718096
+    color: #718096;
 }
 
 .complaintForm_headingText {
     margin-top: 3px !important;
-    font-size: 14px !important
+    font-size: 14px !important;
 }
+
+/* =========================================
+   Main Card
+========================================= */
 
 .complaintForm_card {
     overflow: hidden;
     border: 1px solid #e8edf3;
     border-radius: 18px;
     background: #fff;
-    box-shadow: 0 8px 30px rgba(15, 23, 42, .05)
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
 }
 
 .complaintForm_cardHeader {
@@ -69,55 +80,63 @@
     justify-content: space-between;
     gap: 20px;
     padding: 24px 28px;
-    border-bottom: 1px solid #edf1f5
+    border-bottom: 1px solid #edf1f5;
 }
 
 .complaintForm_cardTitle {
-    font-size: 18px !important
+    font-size: 18px !important;
 }
 
 .complaintForm_cardSubtitle {
     margin-top: 4px !important;
-    font-size: 13px !important
+    font-size: 13px !important;
 }
 
 .complaintForm_required {
     white-space: nowrap;
     font-size: 12px;
-    color: #718096
+    color: #718096;
 }
 
 .complaintForm_required span,
 .complaintForm_label span {
-    color: #ef4444
+    color: #ef4444;
 }
+
+/* =========================================
+   Form Content
+========================================= */
 
 .complaintForm_content {
     display: grid;
-    grid-template-columns: minmax(0, 1.5fr) minmax(340px, 1fr);
+    grid-template-columns: minmax(0, 1.5fr) minmax(320px, 1fr);
     gap: 28px;
-    padding: 28px
+    padding: 28px;
 }
 
 .complaintForm_left,
 .complaintForm_right {
-    min-width: 0
+    min-width: 0;
 }
 
 .complaintForm_left {
     display: flex;
     flex-direction: column;
-    gap: 22px
+    gap: 22px;
 }
 
 .complaintForm_right {
     display: flex;
     flex-direction: column;
-    gap: 20px
+    gap: 20px;
 }
 
+/* =========================================
+   Fields
+========================================= */
+
 .complaintForm_field {
-    width: 100%
+    width: 100%;
 }
 
 .complaintForm_label {
@@ -127,68 +146,74 @@
     margin-bottom: 8px !important;
     font-size: 13px !important;
     font-weight: 600 !important;
-    color: #344054
+    color: #344054;
 }
 
 .complaintForm_label svg {
     font-size: 18px;
-    color: #667085
+    color: #667085;
 }
 
 .complaintForm_field .MuiTextField-root {
-    width: 100%
+    width: 100%;
 }
 
 .complaintForm_field .MuiOutlinedInput-root {
     min-height: 46px;
     border-radius: 10px;
-    background: #fff
+    background: #fff;
 }
 
 .complaintForm_field .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
-    border-color: #aab4c2
+    border-color: #aab4c2;
 }
 
 .complaintForm_field .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-width: 1px
+    border-width: 1px;
 }
 
 .complaintForm_field .MuiInputBase-input {
-    font-size: 14px
+    font-size: 14px;
 }
 
 .complaintForm_field textarea.MuiInputBase-input {
-    line-height: 1.55
+    line-height: 1.55;
 }
 
 .complaintForm_field .MuiFormHelperText-root {
     margin-left: 2px;
-    font-size: 12px
+    font-size: 12px;
 }
 
-/* Category selector */
+/* =========================================
+   Category
+========================================= */
+
 .complaintForm_categoryInput {
-    cursor: pointer !important
+    cursor: pointer !important;
 }
 
 .complaintForm_categoryInput .MuiInputBase-input {
-    cursor: pointer
+    cursor: pointer;
 }
 
 .complaintForm_categoryInput .MuiInputBase-input:placeholder-shown {
-    color: #98a2b3
+    color: #98a2b3;
 }
 
 .complaintForm_categoryInput:hover {
-    background: #fafbfc
+    background: #fafbfc;
 }
 
-/* Address */
+/* =========================================
+   Address
+========================================= */
+
 .complaintForm_address {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 10px;
-    align-items: start
+    align-items: start;
 }
 
 .complaintForm_searchButton {
@@ -198,7 +223,8 @@
     text-transform: none !important;
     font-size: 13px !important;
     font-weight: 600 !important;
-    box-shadow: none !important
+    white-space: nowrap;
+    box-shadow: none !important;
 }
 
 .complaintForm_leftHelper,
@@ -206,33 +232,36 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    color: #667085
+    color: #667085;
 }
 
 .complaintForm_leftHelper {
     padding: 12px 14px;
     border-radius: 10px;
-    background: #f8fafc
+    background: #f8fafc;
 }
 
 .complaintForm_leftHelper svg,
 .complaintForm_footerInfo svg {
     flex: 0 0 auto;
     color: #10b981;
-    font-size: 18px
+    font-size: 18px;
 }
 
 .complaintForm_leftHelper .MuiTypography-root,
 .complaintForm_footerInfo .MuiTypography-root {
-    font-size: 12px !important
+    font-size: 12px !important;
 }
 
-/* Map */
+/* =========================================
+   Map
+========================================= */
+
 .complaintForm_mapCard,
 .complaintForm_imageCard {
     border: 1px solid #e8edf3;
     border-radius: 14px;
-    background: #fff
+    background: #fff;
 }
 
 .complaintForm_mapHeader,
@@ -241,18 +270,18 @@
     align-items: center;
     justify-content: space-between;
     gap: 14px;
-    padding: 18px
+    padding: 18px;
 }
 
 .complaintForm_mapTitle,
 .complaintForm_imageTitle {
-    font-size: 15px !important
+    font-size: 15px !important;
 }
 
 .complaintForm_mapSubtitle,
 .complaintForm_imageSubtitle {
     margin-top: 3px !important;
-    font-size: 12px !important
+    font-size: 12px !important;
 }
 
 .complaintForm_mapBadge {
@@ -262,32 +291,32 @@
     flex-shrink: 0;
     padding: 6px 9px;
     border-radius: 999px;
-    background: rgba(16, 185, 129, .09);
+    background: rgba(16, 185, 129, 0.09);
     color: #059669;
     font-size: 11px;
-    font-weight: 600
+    font-weight: 600;
 }
 
 .complaintForm_mapBadge svg {
-    font-size: 15px
+    font-size: 15px;
 }
 
 .complaintForm_map {
     overflow: hidden;
     height: 280px;
     border-top: 1px solid #edf1f5;
-    border-bottom: 1px solid #edf1f5
+    border-bottom: 1px solid #edf1f5;
 }
 
 .complaintForm_map>* {
-    height: 100%
+    height: 100%;
 }
 
 .complaintForm_coordinates {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1px;
-    background: #edf1f5
+    background: #edf1f5;
 }
 
 .complaintForm_coordinates>div {
@@ -295,23 +324,26 @@
     flex-direction: column;
     gap: 3px;
     padding: 11px 14px;
-    background: #fff
+    background: #fff;
 }
 
 .complaintForm_coordinates span {
     color: #98a2b3;
     font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: .04em
+    letter-spacing: 0.04em;
 }
 
 .complaintForm_coordinates strong {
     color: #344054;
     font-size: 12px;
-    font-weight: 600
+    font-weight: 600;
 }
 
-/* Images */
+/* =========================================
+   Images
+========================================= */
+
 .complaintForm_imageCount {
     min-width: 38px;
     padding: 5px 9px;
@@ -320,7 +352,7 @@
     color: #475467;
     text-align: center;
     font-size: 11px;
-    font-weight: 700
+    font-weight: 700;
 }
 
 .complaintForm_upload {
@@ -332,7 +364,7 @@
     border: 1.5px dashed #d0d5dd;
     border-radius: 12px;
     background: #fafbfc;
-    text-align: center
+    text-align: center;
 }
 
 .complaintForm_uploadIcon {
@@ -343,29 +375,29 @@
     justify-content: center;
     margin-bottom: 9px;
     border-radius: 10px;
-    background: rgba(16, 185, 129, .09);
-    color: #10b981
+    background: rgba(16, 185, 129, 0.09);
+    color: #10b981;
 }
 
 .complaintForm_uploadIcon svg {
-    font-size: 22px
+    font-size: 22px;
 }
 
 .complaintForm_uploadTitle {
     font-size: 14px !important;
     font-weight: 700 !important;
-    color: #344054
+    color: #344054;
 }
 
 .complaintForm_uploadText {
     margin-top: 3px !important;
-    font-size: 12px !important
+    font-size: 12px !important;
 }
 
 .complaintForm_uploadButtons {
     display: flex;
     gap: 8px;
-    margin-top: 14px
+    margin-top: 14px;
 }
 
 .complaintForm_cameraButton,
@@ -376,28 +408,29 @@
     text-transform: none !important;
     font-size: 12px !important;
     font-weight: 600 !important;
-    box-shadow: none !important
+    white-space: nowrap;
+    box-shadow: none !important;
 }
 
 .complaintForm_uploadHint {
     margin-top: 12px !important;
     color: #98a2b3;
-    font-size: 10px !important
+    font-size: 10px !important;
 }
 
 .complaintForm_previewSection {
-    padding: 0 18px 18px
+    padding: 0 18px 18px;
 }
 
 .complaintForm_previewTitle {
     margin-bottom: 10px !important;
-    font-size: 12px !important
+    font-size: 12px !important;
 }
 
 .complaintForm_imageGrid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 9px
+    gap: 9px;
 }
 
 .complaintForm_preview {
@@ -406,14 +439,14 @@
     aspect-ratio: 1;
     border: 1px solid #e4e7ec;
     border-radius: 10px;
-    background: #f8fafc
+    background: #f8fafc;
 }
 
 .complaintForm_preview>img {
     width: 100%;
     height: 100%;
     display: block;
-    object-fit: cover
+    object-fit: cover;
 }
 
 .complaintForm_deleteButton {
@@ -423,13 +456,13 @@
     width: 30px;
     height: 30px;
     padding: 0 !important;
-    background: rgba(255, 255, 255, .94) !important;
+    background: rgba(255, 255, 255, 0.94) !important;
     color: #ef4444 !important;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, .12)
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
 }
 
 .complaintForm_deleteButton svg {
-    font-size: 17px
+    font-size: 17px;
 }
 
 .complaintForm_preview>span {
@@ -438,13 +471,16 @@
     bottom: 7px;
     padding: 3px 6px;
     border-radius: 5px;
-    background: rgba(15, 23, 42, .68);
+    background: rgba(15, 23, 42, 0.68);
     color: #fff;
     font-size: 9px;
-    line-height: 1.2
+    line-height: 1.2;
 }
 
-/* Footer */
+/* =========================================
+   Footer
+========================================= */
+
 .complaintForm_footer {
     display: flex;
     align-items: center;
@@ -452,13 +488,13 @@
     gap: 20px;
     padding: 18px 28px;
     border-top: 1px solid #edf1f5;
-    background: #fcfcfd
+    background: #fcfcfd;
 }
 
 .complaintForm_actions {
     display: flex;
     align-items: center;
-    gap: 10px
+    gap: 10px;
 }
 
 .complaintForm_cancelButton,
@@ -469,5 +505,407 @@
     text-transform: none !important;
     font-size: 13px !important;
     font-weight: 600 !important;
-    box-shadow: none !important
+    white-space: nowrap;
+    box-shadow: none !important;
+}
+
+
+/* =========================================
+   LARGE TABLET / SMALL DESKTOP
+   1200px
+========================================= */
+
+@media (max-width: 1200px) {
+    .complaintForm_content {
+        grid-template-columns: minmax(0, 1.25fr) minmax(300px, 1fr);
+        gap: 22px;
+        padding: 24px;
+    }
+
+    .complaintForm_cardHeader {
+        padding: 22px 24px;
+    }
+
+    .complaintForm_footer {
+        padding: 18px 24px;
+    }
+
+    .complaintForm_map {
+        height: 260px;
+    }
+}
+
+
+/* =========================================
+   TABLET
+   992px
+========================================= */
+
+@media (max-width: 992px) {
+    .complaintForm_content {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    /*
+       On tablet the map/images move below
+       the complaint details.
+    */
+
+    .complaintForm_right {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(280px, 1fr);
+        align-items: start;
+        gap: 20px;
+    }
+
+    .complaintForm_map {
+        height: 300px;
+    }
+
+    .complaintForm_imageGrid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+
+/* =========================================
+   SMALL TABLET
+   768px
+========================================= */
+
+@media (max-width: 768px) {
+    .complaintForm_heading {
+        gap: 11px;
+        margin-bottom: 18px;
+    }
+
+    .complaintForm_headingIcon {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+    }
+
+    .complaintForm_headingIcon svg {
+        font-size: 22px;
+    }
+
+    .complaintForm_headingTitle {
+        font-size: 19px !important;
+    }
+
+    .complaintForm_headingText {
+        font-size: 12px !important;
+    }
+
+    .complaintForm_card {
+        border-radius: 14px;
+    }
+
+    .complaintForm_cardHeader {
+        padding: 18px 20px;
+        gap: 12px;
+    }
+
+    .complaintForm_cardTitle {
+        font-size: 16px !important;
+    }
+
+    .complaintForm_cardSubtitle {
+        font-size: 12px !important;
+    }
+
+    .complaintForm_required {
+        font-size: 11px;
+    }
+
+    .complaintForm_content {
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .complaintForm_left {
+        gap: 19px;
+    }
+
+    .complaintForm_right {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .complaintForm_mapHeader,
+    .complaintForm_imageHeader {
+        padding: 15px;
+    }
+
+    .complaintForm_map {
+        height: 280px;
+    }
+
+    .complaintForm_upload {
+        margin: 0 15px 15px;
+        padding: 22px 14px;
+    }
+
+    .complaintForm_previewSection {
+        padding: 0 15px 15px;
+    }
+
+    .complaintForm_footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+        padding: 16px 20px;
+    }
+
+    .complaintForm_footerInfo {
+        width: 100%;
+    }
+
+    .complaintForm_actions {
+        width: 100%;
+    }
+
+    .complaintForm_cancelButton,
+    .complaintForm_submitButton {
+        flex: 1;
+    }
+}
+
+
+/* =========================================
+   MOBILE
+   600px
+========================================= */
+
+@media (max-width: 600px) {
+    .complaintForm {
+        width: 100%;
+    }
+
+    .complaintForm_heading {
+        align-items: flex-start;
+    }
+
+    .complaintForm_headingIcon {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+        border-radius: 10px;
+    }
+
+    .complaintForm_headingTitle {
+        font-size: 17px !important;
+    }
+
+    .complaintForm_headingText {
+        margin-top: 2px !important;
+        font-size: 11px !important;
+        line-height: 1.45 !important;
+    }
+
+    .complaintForm_card {
+        border-radius: 12px;
+    }
+
+    .complaintForm_cardHeader {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 16px;
+    }
+
+    .complaintForm_required {
+        align-self: flex-start;
+    }
+
+    .complaintForm_content {
+        padding: 16px;
+    }
+
+    .complaintForm_label {
+        font-size: 12px !important;
+    }
+
+    .complaintForm_label svg {
+        font-size: 16px;
+    }
+
+    .complaintForm_field .MuiInputBase-input {
+        font-size: 13px;
+    }
+
+    .complaintForm_field .MuiOutlinedInput-root {
+        min-height: 44px;
+    }
+
+    /* Address becomes vertical */
+    .complaintForm_address {
+        grid-template-columns: 1fr;
+        gap: 9px;
+    }
+
+    .complaintForm_searchButton {
+        width: 100%;
+        min-height: 44px !important;
+    }
+
+    /* Map */
+    .complaintForm_mapHeader,
+    .complaintForm_imageHeader {
+        align-items: flex-start;
+    }
+
+    .complaintForm_mapBadge {
+        font-size: 10px;
+        padding: 5px 8px;
+    }
+
+    .complaintForm_map {
+        height: 240px;
+    }
+
+    .complaintForm_coordinates>div {
+        padding: 10px 12px;
+    }
+
+    .complaintForm_coordinates strong {
+        font-size: 11px;
+    }
+
+    /* Upload */
+    .complaintForm_upload {
+        margin: 0 12px 12px;
+        padding: 20px 12px;
+    }
+
+    .complaintForm_uploadButtons {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .complaintForm_cameraButton,
+    .complaintForm_galleryButton {
+        width: 100%;
+    }
+
+    .complaintForm_uploadHint {
+        line-height: 1.5;
+    }
+
+    /* Images */
+    .complaintForm_previewSection {
+        padding: 0 12px 12px;
+    }
+
+    .complaintForm_imageGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .complaintForm_deleteButton {
+        width: 28px;
+        height: 28px;
+        top: 5px;
+        right: 5px;
+    }
+
+    .complaintForm_deleteButton svg {
+        font-size: 16px;
+    }
+
+    /* Footer */
+    .complaintForm_footer {
+        padding: 14px 16px;
+    }
+
+    .complaintForm_footerInfo {
+        align-items: flex-start;
+    }
+
+    .complaintForm_footerInfo .MuiTypography-root {
+        line-height: 1.45;
+    }
+
+    .complaintForm_actions {
+        flex-direction: column-reverse;
+        gap: 8px;
+    }
+
+    .complaintForm_cancelButton,
+    .complaintForm_submitButton {
+        width: 100%;
+        min-height: 42px !important;
+    }
+}
+
+
+/* =========================================
+   VERY SMALL MOBILE
+   400px
+========================================= */
+
+@media (max-width: 400px) {
+    .complaintForm_heading {
+        gap: 9px;
+    }
+
+    .complaintForm_headingIcon {
+        width: 36px;
+        height: 36px;
+        flex-basis: 36px;
+    }
+
+    .complaintForm_headingIcon svg {
+        font-size: 20px;
+    }
+
+    .complaintForm_headingTitle {
+        font-size: 16px !important;
+    }
+
+    .complaintForm_headingText {
+        font-size: 10px !important;
+    }
+
+    .complaintForm_content {
+        padding: 12px;
+    }
+
+    .complaintForm_cardHeader {
+        padding: 14px 12px;
+    }
+
+    .complaintForm_mapHeader,
+    .complaintForm_imageHeader {
+        padding: 13px 12px;
+    }
+
+    .complaintForm_map {
+        height: 220px;
+    }
+
+    .complaintForm_mapBadge {
+        display: none;
+    }
+
+    .complaintForm_coordinates span {
+        font-size: 9px;
+    }
+
+    .complaintForm_coordinates strong {
+        font-size: 10px;
+    }
+
+    .complaintForm_upload {
+        margin: 0 10px 10px;
+    }
+
+    .complaintForm_previewSection {
+        padding: 0 10px 10px;
+    }
+
+    .complaintForm_footer {
+        padding: 12px;
+    }
 }
