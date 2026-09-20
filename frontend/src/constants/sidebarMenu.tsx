@@ -47,11 +47,11 @@ export const adminMenu: MenuItem[] = [
         path: "/admin/complaints",
         icon: <NoteAltIcon />
     },
-    {
-        label: "Users",
-        path: "/admin/users",
-        icon: <GroupIcon />
-    },
+    // {
+    //     label: "Users",
+    //     path: "/admin/users",
+    //     icon: <GroupIcon />
+    // },
     {
         label: "Departments",
         path: "/admin/departments",

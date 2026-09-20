@@ -308,7 +308,7 @@ const ComplaintForm = ({
                 handleFormSubmit
             )}
         >
-            <Box className="complaintForm_heading">
+            {/* <Box className="complaintForm_heading">
                 <Box className="complaintForm_headingIcon">
                     <DescriptionOutlined />
                 </Box>
@@ -324,7 +324,7 @@ const ComplaintForm = ({
                         quickly.
                     </Typography>
                 </Box>
-            </Box>
+            </Box> */}
 
             <Box className="complaintForm_card">
                 <Box className="complaintForm_cardHeader">

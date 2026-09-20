@@ -1,16 +1,26 @@
 import { Avatar, Badge, Box, Button, Divider, IconButton, Menu, MenuItem, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./Navbar.scss";
-import { getMyNotifications, getUnreadNotificationCount, markAllNotificationsAsRead, markNotificationAsRead } from "../../services/notificationService";
+
+import {
+    getMyNotifications,
+    getUnreadNotificationCount,
+    markAllNotificationsAsRead,
+    markNotificationAsRead,
+    deleteNotification,
+    clearAllNotifications,
+} from "../../services/notificationService";
+
 import type { Notification } from "../../services/notificationService";
+
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
 import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-// import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/Logout";
 import LocationCityOutlinedIcon from "@mui/icons-material/LocationCityOutlined";
 
@@ -21,33 +31,72 @@ interface User {
 
 const Navbar = () => {
     const navigate = useNavigate();
+
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
-    const [notificationAnchor, setNotificationAnchor] = useState<null | HTMLElement>(null);
+    const [notificationAnchor, setNotificationAnchor] =
+        useState<null | HTMLElement>(null);
+
     const notificationOpen = Boolean(notificationAnchor);
+
     const storedUser = localStorage.getItem("user");
-    const user: User | null = storedUser ? JSON.parse(storedUser) : null;
+
+    const user: User | null = storedUser
+        ? JSON.parse(storedUser)
+        : null;
+
+    /* =========================================
+       LOGOUT
+    ========================================= */
+
     const logout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+
         navigate("/login");
     };
+
+    /* =========================================
+       FETCH NOTIFICATIONS
+    ========================================= */
 
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const [notificationsResponse, unreadResponse] = await Promise.all([getMyNotifications(), getUnreadNotificationCount()]);
-                setNotifications(notificationsResponse.notifications);
+                const [
+                    notificationsResponse,
+                    unreadResponse,
+                ] = await Promise.all([
+                    getMyNotifications(),
+                    getUnreadNotificationCount(),
+                ]);
+
+                setNotifications(
+                    notificationsResponse.notifications
+                );
+
                 setUnreadCount(unreadResponse.count);
             } catch (error) {
-                console.error("Failed to fetch notifications:", error);
+                console.error(
+                    "Failed to fetch notifications:",
+                    error
+                );
             }
         };
 
         fetchNotifications();
-        const interval = setInterval( fetchNotifications, 10000);
+
+        const interval = setInterval(
+            fetchNotifications,
+            10000
+        );
+
         return () => clearInterval(interval);
     }, []);
+
+    /* =========================================
+       NOTIFICATION MENU
+    ========================================= */
 
     const handleNotificationOpen = (
         event: React.MouseEvent<HTMLElement>
@@ -58,6 +107,10 @@ const Navbar = () => {
     const handleNotificationClose = () => {
         setNotificationAnchor(null);
     };
+
+    /* =========================================
+       NOTIFICATION ICON
+    ========================================= */
 
     const getNotificationIcon = (
         type: Notification["type"]
@@ -85,9 +138,7 @@ const Navbar = () => {
 
             case "complaint_resolved":
                 return (
-                    // <CheckCircleOutlineIcon fontSize="small" />
                     <EngineeringOutlinedIcon fontSize="small" />
-
                 );
 
             case "feedback_requested":
@@ -101,6 +152,10 @@ const Navbar = () => {
                 );
         }
     };
+
+    /* =========================================
+       NOTIFICATION CLICK
+    ========================================= */
 
     const handleNotificationClick = async (
         notification: Notification
@@ -116,7 +171,7 @@ const Navbar = () => {
                         item._id === notification._id
                             ? {
                                 ...item,
-                                isRead: true
+                                isRead: true,
                             }
                             : item
                     )
@@ -138,13 +193,6 @@ const Navbar = () => {
                 return;
             }
 
-            const storedUser =
-                localStorage.getItem("user");
-
-            const user = storedUser
-                ? JSON.parse(storedUser)
-                : null;
-
             if (user?.role === "citizen") {
                 navigate(
                     `/citizen/complaints/${complaintId}`
@@ -160,7 +208,6 @@ const Navbar = () => {
             } else if (user?.role === "admin") {
                 navigate("/admin/complaints");
             }
-
         } catch (error) {
             console.error(
                 "Failed to handle notification:",
@@ -169,6 +216,52 @@ const Navbar = () => {
         }
     };
 
+    /* =========================================
+       DELETE NOTIFICATION
+    ========================================= */
+
+    const handleDeleteNotification = async (
+        event: React.MouseEvent,
+        notificationId: string
+    ) => {
+        event.stopPropagation();
+
+        try {
+            const deletedNotification =
+                notifications.find(
+                    (notification) =>
+                        notification._id === notificationId
+                );
+
+            await deleteNotification(notificationId);
+
+            setNotifications((prev) =>
+                prev.filter(
+                    (notification) =>
+                        notification._id !== notificationId
+                )
+            );
+
+            if (
+                deletedNotification &&
+                !deletedNotification.isRead
+            ) {
+                setUnreadCount((prev) =>
+                    Math.max(prev - 1, 0)
+                );
+            }
+        } catch (error) {
+            console.error(
+                "Failed to delete notification:",
+                error
+            );
+        }
+    };
+
+    /* =========================================
+       MARK ALL AS READ
+    ========================================= */
+
     const handleMarkAllAsRead = async () => {
         try {
             await markAllNotificationsAsRead();
@@ -176,12 +269,11 @@ const Navbar = () => {
             setNotifications((prev) =>
                 prev.map((notification) => ({
                     ...notification,
-                    isRead: true
+                    isRead: true,
                 }))
             );
 
             setUnreadCount(0);
-
         } catch (error) {
             console.error(
                 "Failed to mark all notifications:",
@@ -190,12 +282,34 @@ const Navbar = () => {
         }
     };
 
+    /* =========================================
+       CLEAR ALL NOTIFICATIONS
+    ========================================= */
+
+    const handleClearAllNotifications = async () => {
+        try {
+            await clearAllNotifications();
+
+            setNotifications([]);
+            setUnreadCount(0);
+        } catch (error) {
+            console.error(
+                "Failed to clear notifications:",
+                error
+            );
+        }
+    };
+
+    /* =========================================
+       RENDER
+    ========================================= */
+
     return (
         <Box className="Navbar">
 
-            {/* ================= BRAND ================= */}
-            <Box className="navbar-brand">
+            {/* BRAND */}
 
+            <Box className="navbar-brand">
                 <Box className="brand-icon">
                     <LocationCityOutlinedIcon />
                 </Box>
@@ -209,14 +323,14 @@ const Navbar = () => {
                         Complaint Management
                     </Typography>
                 </Box>
-
             </Box>
 
+            {/* RIGHT SECTION */}
 
-            {/* ================= RIGHT SECTION ================= */}
             <Box className="navbar-user">
 
-                {/* Notification */}
+                {/* NOTIFICATIONS */}
+
                 <IconButton
                     className="notification-btn"
                     onClick={handleNotificationOpen}
@@ -233,20 +347,20 @@ const Navbar = () => {
                     </Badge>
                 </IconButton>
 
+                {/* DIVIDER */}
 
-                {/* Divider */}
                 <Divider
                     orientation="vertical"
                     flexItem
                     className="navbar-divider"
                 />
 
+                {/* USER PROFILE */}
 
-                {/* User Profile */}
                 <Box
                     className="user-profile"
-                    onClick={() => navigate("/profile")}>
-
+                    onClick={() => navigate("/profile")}
+                >
                     <Avatar className="user-avatar">
                         {user?.name
                             ?.charAt(0)
@@ -254,7 +368,6 @@ const Navbar = () => {
                     </Avatar>
 
                     <Box className="user-info">
-
                         <Typography className="user-name">
                             {user?.name ?? "Guest"}
                         </Typography>
@@ -262,62 +375,34 @@ const Navbar = () => {
                         <Typography className="user-role">
                             {user?.role ?? "Guest"}
                         </Typography>
-
                     </Box>
-
                 </Box>
 
+                {/* LOGOUT */}
 
-                {/* Logout */}
                 <Button
                     className="logout-btn"
                     variant="outlined"
                     onClick={logout}
-                    startIcon={
-                        <LogoutOutlinedIcon />
-                    }
+                    startIcon={<LogoutOutlinedIcon />}
                 >
                     <span className="logout-text">
                         Logout
                     </span>
                 </Button>
-
             </Box>
 
+            {/* NOTIFICATION MENU */}
 
-            {/* ================= NOTIFICATIONS MENU ================= */}
             <Menu
                 anchorEl={notificationAnchor}
                 open={notificationOpen}
                 onClose={handleNotificationClose}
                 className="notification-menu"
-                slotProps={{
-                    paper: {
-                        sx: {
-                            width: {
-                                xs: "calc(100vw - 24px)",
-                                sm: 390
-                            },
-                            maxWidth:
-                                "calc(100vw - 24px)",
-                            maxHeight: {
-                                xs: "70vh",
-                                sm: 500
-                            },
-                            mt: 1,
-                            overflowY: "auto",
-                            borderRadius: "14px",
-                            border: "1px solid #e2e8f0",
-                            boxShadow:
-                                "0 15px 40px rgba(15, 23, 42, 0.16)"
-                        }
-                    }
-                }}
             >
+                {/* HEADER */}
 
-                {/* Notification Header */}
                 <Box className="notification-header">
-
                     <Box>
                         <Typography className="notification-title">
                             Notifications
@@ -328,28 +413,131 @@ const Navbar = () => {
                         </Typography>
                     </Box>
 
-                    {unreadCount > 0 && (
-                        <Button
-                            size="small"
-                            onClick={
-                                handleMarkAllAsRead
-                            }
-                            className="mark-read-btn"
-                        >
-                            Mark all read
-                        </Button>
-                    )}
+                    <Box className="notification-header-actions">
+                        {unreadCount > 0 && (
+                            <Button
+                                size="small"
+                                onClick={handleMarkAllAsRead}
+                                className="mark-read-btn"
+                            >
+                                Mark all read
+                            </Button>
+                        )}
 
+                        {notifications.length > 0 && (
+                            <Button
+                                size="small"
+                                onClick={
+                                    handleClearAllNotifications
+                                }
+                                className="clear-all-btn"
+                            >
+                                Clear all
+                            </Button>
+                        )}
+                    </Box>
                 </Box>
 
                 <Divider />
 
+                {/* NOTIFICATION LIST */}
 
-                {/* Empty State */}
-                {notifications.length === 0 ? (
+                {notifications.length > 0 ? (
+                    <>
+                        {notifications.map(
+                            (notification) => (
+                                <MenuItem
+                                    key={notification._id}
+                                    onClick={() =>
+                                        handleNotificationClick(
+                                            notification
+                                        )
+                                    }
+                                    className={
+                                        notification.isRead
+                                            ? "notification-item read"
+                                            : "notification-item unread"
+                                    }
+                                >
+                                    <Box className="notification-item-content">
+
+                                        <Box
+                                            className={
+                                                notification.isRead
+                                                    ? "notification-icon read"
+                                                    : "notification-icon unread"
+                                            }
+                                        >
+                                            {getNotificationIcon(
+                                                notification.type
+                                            )}
+                                        </Box>
+
+                                        <Box className="notification-message">
+                                            <Typography
+                                                className={
+                                                    notification.isRead
+                                                        ? "notification-message-text read"
+                                                        : "notification-message-text"
+                                                }
+                                            >
+                                                {
+                                                    notification.message
+                                                }
+                                            </Typography>
+
+                                            <Typography className="notification-time">
+                                                {new Date(
+                                                    notification.createdAt
+                                                ).toLocaleString()}
+                                            </Typography>
+                                        </Box>
+
+                                        <Box className="notification-item-actions">
+
+                                            {!notification.isRead && (
+                                                <Box className="unread-dot" />
+                                            )}
+
+                                            <IconButton
+                                                className="notification-delete-btn"
+                                                size="small"
+                                                onClick={(event) =>
+                                                    handleDeleteNotification(
+                                                        event,
+                                                        notification._id
+                                                    )
+                                                }
+                                                aria-label="Remove notification"
+                                            >
+                                                <DeleteOutlineOutlinedIcon />
+                                            </IconButton>
+
+                                        </Box>
+                                    </Box>
+                                </MenuItem>
+                            )
+                        )}
+
+                        {/* HIDE PANEL */}
+
+                        <Divider />
+
+                        <Box className="notification-hide-container">
+                            <Button
+                                className="notification-hide-btn"
+                                onClick={
+                                    handleNotificationClose
+                                }
+                            >
+                                Hide Panel
+                            </Button>
+                        </Box>
+                    </>
+                ) : (
+                    /* EMPTY STATE */
 
                     <Box className="notification-empty">
-
                         <Box className="empty-icon">
                             <NotificationsNoneOutlinedIcon />
                         </Box>
@@ -361,81 +549,9 @@ const Navbar = () => {
                         <Typography className="empty-text">
                             You're all caught up!
                         </Typography>
-
                     </Box>
-
-                ) : (
-
-                    /* Notification List */
-                    notifications.map(
-                        (notification) => (
-
-                            <MenuItem
-                                key={
-                                    notification._id
-                                }
-                                onClick={() =>
-                                    handleNotificationClick(
-                                        notification
-                                    )
-                                }
-                                className={
-                                    notification.isRead
-                                        ? "notification-item read"
-                                        : "notification-item unread"
-                                }
-                            >
-
-                                <Box className="notification-item-content">
-
-                                    <Box
-                                        className={
-                                            notification.isRead
-                                                ? "notification-icon read"
-                                                : "notification-icon unread"
-                                        }
-                                    >
-                                        {getNotificationIcon(
-                                            notification.type
-                                        )}
-                                    </Box>
-
-                                    <Box className="notification-message">
-
-                                        <Typography
-                                            className={
-                                                notification.isRead
-                                                    ? "notification-message-text read"
-                                                    : "notification-message-text"
-                                            }
-                                        >
-                                            {
-                                                notification.message
-                                            }
-                                        </Typography>
-
-                                        <Typography className="notification-time">
-                                            {new Date(
-                                                notification.createdAt
-                                            ).toLocaleString()}
-                                        </Typography>
-
-                                    </Box>
-
-                                    {!notification.isRead && (
-                                        <Box className="unread-dot" />
-                                    )}
-
-                                </Box>
-
-                            </MenuItem>
-
-                        )
-                    )
                 )}
-
             </Menu>
-
         </Box>
     );
 };

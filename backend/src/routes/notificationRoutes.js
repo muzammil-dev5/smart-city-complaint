@@ -7,7 +7,9 @@ const {
     getMyNotifications,
     markNotificationAsRead,
     markAllNotificationsAsRead,
-    getUnreadNotificationCount
+    getUnreadNotificationCount,
+    deleteNotification,
+    clearAllNotifications
 } = require("../controllers/notificationController");
 
 // router.post(
@@ -34,10 +36,22 @@ router.patch(
     markAllNotificationsAsRead
 );
 
+router.delete(
+    "/clear-all",
+    authMiddleware,
+    clearAllNotifications
+);
+
 router.patch(
     "/:id/read",
     authMiddleware,
     markNotificationAsRead
+);
+
+router.delete(
+    "/:id",
+    authMiddleware,
+    deleteNotification
 );
 
 

@@ -70,11 +70,11 @@ const getMyNotifications = async (req, res) => {
 
 const markNotificationAsRead = async (req, res) => {
     try {
-        const notification = 
-        await Notification.findOne({
-            _id: req.params.id,
-            recipient: req.user.id
-        });
+        const notification =
+            await Notification.findOne({
+                _id: req.params.id,
+                recipient: req.user.id
+            });
 
         if (!notification) {
             return res.status(404).json({
@@ -157,11 +157,65 @@ const getUnreadNotificationCount = async (req, res) => {
     }
 };
 
+const deleteNotification = async (req, res) => {
+    try {
+        const notification = await Notification.findOneAndDelete({
+            _id: req.params.id,
+            recipient: req.user.id
+        });
+
+        if (!notification) {
+            return res.status(404).json({
+                message: "Notification not found"
+            });
+        }
+
+        return res.status(200).json({
+            message: "Notification deleted successfully"
+        });
+
+    } catch (error) {
+        console.error(
+            "Delete notification error:",
+            error
+        );
+
+        return res.status(500).json({
+            message: "Server error while deleting notification"
+        });
+    }
+};
+
+
+const clearAllNotifications = async (req, res) => {
+    try {
+        await Notification.deleteMany({
+            recipient: req.user.id
+        });
+
+        return res.status(200).json({
+            message: "All notifications cleared successfully"
+        });
+
+    } catch (error) {
+        console.error(
+            "Clear all notifications error:",
+            error
+        );
+
+        return res.status(500).json({
+            message: "Server error while clearing notifications"
+        });
+    }
+};
+
 
 module.exports = {
     createNotification,
     getMyNotifications,
     markNotificationAsRead,
     markAllNotificationsAsRead,
-    getUnreadNotificationCount
+    getUnreadNotificationCount,
+    deleteNotification,
+    clearAllNotifications
 };
