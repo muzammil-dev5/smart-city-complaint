@@ -4,6 +4,12 @@ export type User = {
     email: string;
     phone?: string;
     role: "citizen" | "officer" | "worker" | "admin";
+    department?: {
+        _id: string;
+        name: string;
+        description?: string;
+        isActive?: boolean;
+    } | null;
     createdAt: string;
     isActive: boolean;
 };

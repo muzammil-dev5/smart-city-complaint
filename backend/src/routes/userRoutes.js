@@ -1,10 +1,18 @@
 const express = require("express");
+
 const router = express.Router();
 
 const authMiddleware = require("../middleware/authMiddleware");
 const roleMiddleware = require("../middleware/roleMiddleware");
 
-const { getOfficers, getAllUsers, updateUserRole, updateUserStatus, getWorkers } = require("../controllers/userController.js");
+const {
+    getOfficers,
+    getAllUsers,
+    updateUserRole,
+    updateUserStatus,
+    updateUserDepartment,
+    getWorkers
+} = require("../controllers/userController.js");
 
 
 router.get(
@@ -12,14 +20,16 @@ router.get(
     authMiddleware,
     roleMiddleware("admin"),
     getAllUsers
-)
+);
+
 
 router.get(
     "/officers",
     authMiddleware,
     roleMiddleware("admin"),
     getOfficers
-)
+);
+
 
 router.get(
     "/workers",
@@ -28,21 +38,29 @@ router.get(
     getWorkers
 );
 
+
 router.put(
     "/:id/role",
     authMiddleware,
     roleMiddleware("admin"),
     updateUserRole
-)
+);
+
 
 router.put(
     "/:id/status",
     authMiddleware,
     roleMiddleware("admin"),
     updateUserStatus
-)
+);
 
 
+router.put(
+    "/:id/department",
+    authMiddleware,
+    roleMiddleware("admin"),
+    updateUserDepartment
+);
 
 
 module.exports = router;

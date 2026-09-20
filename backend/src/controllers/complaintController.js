@@ -372,12 +372,14 @@ const assignComplaint = async (req, res) => {
         // Check officer
         const officer = await User.findOne({
             _id: officerId,
-            role: "officer"
+            role: "officer",
+            isActive: true,
+            department: departmentId
         });
 
         if (!officer) {
             return res.status(400).json({
-                message: "Officer not found"
+                message: "Officer does not belong to the selected department"
             });
         }
 
@@ -597,22 +599,30 @@ const assignWorker = async (req, res) => {
         const { id } = req.params;
         const { workerId } = req.body;
 
-        const worker = await User.findOne({
-            _id: workerId,
-            role: "worker"
-        });
-
-        if (!worker) {
-            return res.status(404).json({
-                message: "Worker not found"
-            });
-        }
-
         const complaint = await Complaint.findById(id);
 
         if (!complaint) {
             return res.status(404).json({
                 message: "Complaint not found"
+            });
+        }
+
+        if (!complaint.department) {
+            return res.status(400).json({
+                message: "Complaint does not have a department assigned"
+            });
+        }
+
+        const worker = await User.findOne({
+            _id: workerId,
+            role: "worker",
+            isActive: true,
+            department: complaint.department
+        });
+
+        if (!worker) {
+            return res.status(400).json({
+                message: "Worker does not belong to the complaint department"
             });
         }
 

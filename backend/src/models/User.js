@@ -28,14 +28,16 @@ const userSchema = new mongoose.Schema(
 
         role: {
             type: String,
-            enum: [
-                "citizen",
-                "officer",
-                "worker",
-                "admin"
-            ],
-            default: "officer"
+            enum: ["citizen", "officer", "worker", "admin"],
+            default: "citizen"
         },
+
+        department: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Department",
+            default: null
+        },
+
         isActive: {
             type: Boolean,
             default: true

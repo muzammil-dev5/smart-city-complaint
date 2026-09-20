@@ -78,7 +78,31 @@ const AdminDashboard = () => {
         setUsers((currentUsers) =>
             currentUsers.map((user) =>
                 user._id === userId
-                    ? { ...user, role }
+                    ? {
+                        ...user,
+                        role,
+                        department:
+                            role === "citizen" ||
+                                role === "admin"
+                                ? null
+                                : user.department,
+                    }
+                    : user
+            )
+        );
+    };
+
+    const handleDepartmentUpdated = (
+        userId: string,
+        department: User["department"]
+    ) => {
+        setUsers((currentUsers) =>
+            currentUsers.map((user) =>
+                user._id === userId
+                    ? {
+                        ...user,
+                        department,
+                    }
                     : user
             )
         );
@@ -391,6 +415,7 @@ const AdminDashboard = () => {
                             users={filteredUsers}
                             onRoleUpdated={handleRoleUpdated}
                             onStatusUpdated={handleStatusUpdated}
+                            onDepartmentUpdated={handleDepartmentUpdated}
                             currentUserId={
                                 currentUser?._id ??
                                 currentUser?.id
