@@ -346,11 +346,20 @@ const assignComplaint = async (req, res) => {
         const { id } = req.params;
         const { departmentId, officerId } = req.body;
 
+        // =====================================================
+        // REQUIRED DATA
+        // =====================================================
+
         if (!departmentId || !officerId) {
             return res.status(400).json({
                 message: "Department and officer are required"
             });
         }
+
+
+        // =====================================================
+        // FIND COMPLAINT
+        // =====================================================
 
         const complaint = await Complaint.findById(id);
 
@@ -360,46 +369,102 @@ const assignComplaint = async (req, res) => {
             });
         }
 
-        // Check department
-        const department = await Department.findById(departmentId);
+
+        // =====================================================
+        // CHECK DEPARTMENT
+        // =====================================================
+
+        const department = await Department.findOne({
+            _id: departmentId,
+            isActive: true
+        });
 
         if (!department) {
             return res.status(400).json({
-                message: "Department not found"
+                message: "Department not found or inactive"
             });
         }
 
-        // Check officer
+
+        // =====================================================
+        // CHECK OFFICER
+        // =====================================================
+
         const officer = await User.findOne({
             _id: officerId,
             role: "officer",
-            isActive: true,
-            department: departmentId
+            isActive: true
         });
 
         if (!officer) {
             return res.status(400).json({
-                message: "Officer does not belong to the selected department"
+                message: "Officer not found or inactive"
             });
         }
 
-        // Assign department and officer
-        complaint.department = departmentId;
-        complaint.assignedOfficer = officerId;
-        complaint.officer = officerId;
 
-        // Update status
-        if (complaint.status === "pending") {
-            complaint.status = "assigned";
+        // =====================================================
+        // IMPORTANT SECURITY CHECK
+        //
+        // Officer must belong to selected department
+        // =====================================================
+
+        if (
+            !officer.department ||
+            officer.department.toString() !==
+            departmentId.toString()
+        ) {
+            return res.status(400).json({
+                message:
+                    "Selected officer does not belong to the selected department"
+            });
         }
 
-        // Add status history
-        complaint.statusHistory.push({
-            status: "assigned",
-            changedAt: new Date()
-        });
+
+        // =====================================================
+        // ASSIGN DEPARTMENT + OFFICER
+        // =====================================================
+
+        complaint.department = departmentId;
+
+        complaint.assignedOfficer = officerId;
+
+        // Keep existing field in sync
+        complaint.officer = officerId;
+
+
+        // =====================================================
+        // STATUS
+        // =====================================================
+
+        if (complaint.status === "pending") {
+
+            complaint.status = "assigned";
+
+            complaint.statusHistory.push({
+                status: "assigned",
+                changedAt: new Date()
+            });
+
+        } else if (
+            complaint.status !== "assigned" &&
+            complaint.status !== "in_progress"
+        ) {
+
+            return res.status(400).json({
+                message:
+                    `Complaint cannot be assigned in ${complaint.status} status`
+            });
+
+        }
+
 
         await complaint.save();
+
+
+        // =====================================================
+        // ACTIVITY
+        // =====================================================
 
         await ComplaintActivity.create({
             complaint: complaint._id,
@@ -408,17 +473,39 @@ const assignComplaint = async (req, res) => {
             role: req.user.role
         });
 
+
+        // =====================================================
+        // NOTIFICATION
+        // =====================================================
+
         await Notification.create({
             recipient: officerId,
             complaint: complaint._id,
             type: "complaint_assigned",
-            message: `Complaint "${complaint.title}" has been assigned to you.`
+            message:
+                `Complaint "${complaint.title}" has been assigned to you.`
         });
 
-        const updatedComplaint = await Complaint.findById(id)
-            .populate("department", "name description")
-            .populate("assignedOfficer", "name email")
-            .populate("worker", "name email");
+
+        // =====================================================
+        // RETURN UPDATED COMPLAINT
+        // =====================================================
+
+        const updatedComplaint =
+            await Complaint.findById(id)
+                .populate(
+                    "department",
+                    "name description"
+                )
+                .populate(
+                    "assignedOfficer",
+                    "name email"
+                )
+                .populate(
+                    "worker",
+                    "name email"
+                );
+
 
         return res.status(200).json({
             message: "Complaint assigned successfully",
@@ -426,10 +513,15 @@ const assignComplaint = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Assign complaint error:", error);
+
+        console.error(
+            "Assign complaint error:",
+            error
+        );
 
         return res.status(500).json({
-            message: "Server error while assigning complaint"
+            message:
+                "Server error while assigning complaint"
         });
     }
 };
@@ -599,6 +691,22 @@ const assignWorker = async (req, res) => {
         const { id } = req.params;
         const { workerId } = req.body;
 
+
+        // =====================================================
+        // WORKER ID REQUIRED
+        // =====================================================
+
+        if (!workerId) {
+            return res.status(400).json({
+                message: "Worker is required"
+            });
+        }
+
+
+        // =====================================================
+        // FIND COMPLAINT
+        // =====================================================
+
         const complaint = await Complaint.findById(id);
 
         if (!complaint) {
@@ -607,28 +715,82 @@ const assignWorker = async (req, res) => {
             });
         }
 
-        if (!complaint.department) {
+
+        // =====================================================
+        // IMPORTANT:
+        // Worker can ONLY be assigned after officer
+        // has started the complaint.
+        // =====================================================
+
+        if (complaint.status !== "in_progress") {
             return res.status(400).json({
-                message: "Complaint does not have a department assigned"
+                message:
+                    "Worker can only be assigned to complaints that are in progress"
             });
         }
+
+
+        // =====================================================
+        // COMPLAINT MUST HAVE DEPARTMENT
+        // =====================================================
+
+        if (!complaint.department) {
+            return res.status(400).json({
+                message:
+                    "Complaint must have a department before assigning a worker"
+            });
+        }
+
+
+        // =====================================================
+        // FIND WORKER
+        // =====================================================
 
         const worker = await User.findOne({
             _id: workerId,
             role: "worker",
-            isActive: true,
-            department: complaint.department
+            isActive: true
         });
 
         if (!worker) {
-            return res.status(400).json({
-                message: "Worker does not belong to the complaint department"
+            return res.status(404).json({
+                message:
+                    "Worker not found or inactive"
             });
         }
+
+
+        // =====================================================
+        // IMPORTANT SECURITY CHECK
+        //
+        // Worker must belong to same department
+        // as the complaint.
+        // =====================================================
+
+        if (
+            !worker.department ||
+            worker.department.toString() !==
+            complaint.department.toString()
+        ) {
+            return res.status(400).json({
+                message:
+                    "Selected worker does not belong to the complaint department"
+            });
+        }
+
+
+        // =====================================================
+        // ASSIGN WORKER
+        // =====================================================
 
         complaint.worker = workerId;
 
         await complaint.save();
+
+
+        // =====================================================
+        // ACTIVITY
+        // =====================================================
 
         await ComplaintActivity.create({
             complaint: complaint._id,
@@ -637,23 +799,56 @@ const assignWorker = async (req, res) => {
             role: req.user.role
         });
 
+
+        // =====================================================
+        // WORKER NOTIFICATION
+        // =====================================================
+
         await Notification.create({
             recipient: workerId,
             complaint: complaint._id,
             type: "worker_assigned",
-            message: `Complaint "${complaint.title}" has been assigned to you.`
+            message:
+                `Complaint "${complaint.title}" has been assigned to you.`
         });
 
+
+        // =====================================================
+        // RETURN UPDATED COMPLAINT
+        // =====================================================
+
+        const updatedComplaint =
+            await Complaint.findById(id)
+                .populate(
+                    "department",
+                    "name description"
+                )
+                .populate(
+                    "assignedOfficer",
+                    "name email"
+                )
+                .populate(
+                    "worker",
+                    "name email"
+                );
+
+
         return res.status(200).json({
-            message: "Worker assigned successfully",
-            complaint
+            message:
+                "Worker assigned successfully",
+            complaint: updatedComplaint
         });
 
     } catch (error) {
-        console.error("Assign worker error:", error);
+
+        console.error(
+            "Assign worker error:",
+            error
+        );
 
         return res.status(500).json({
-            message: "Server error while assigning worker"
+            message:
+                "Server error while assigning worker"
         });
     }
 };

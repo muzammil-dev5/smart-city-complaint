@@ -16,7 +16,21 @@ import {
     Divider,
 } from "@mui/material";
 
-import { useEffect, useState } from "react";
+import {
+    AssignmentOutlined,
+    PendingActionsOutlined,
+    FactCheckOutlined,
+    EngineeringOutlined,
+    CheckCircle,
+    CancelOutlined,
+    FilterAltOutlined,
+    Person2Outlined,
+    BusinessOutlined,
+    BadgeOutlined,
+    HandymanOutlined,
+} from "@mui/icons-material";
+
+import { useEffect, useMemo, useState } from "react";
 
 import {
     getAllComplaints,
@@ -40,7 +54,6 @@ import type {
 
 import "./AdminComplaints.scss";
 
-
 const formatText = (value?: string) => {
     if (!value) return "Not Available";
 
@@ -49,55 +62,84 @@ const formatText = (value?: string) => {
         .replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
+type StatusFilter =
+    | "all"
+    | "pending"
+    | "assigned"
+    | "in_progress"
+    | "resolved"
+    | "rejected";
+
+const statusCards: {
+    key: StatusFilter;
+    label: string;
+    icon: React.ReactNode;
+}[] = [
+        {
+            key: "all",
+            label: "All Complaints",
+            icon: <AssignmentOutlined />,
+        },
+        {
+            key: "pending",
+            label: "Pending",
+            icon: <PendingActionsOutlined />,
+        },
+        {
+            key: "assigned",
+            label: "Assigned",
+            icon: <FactCheckOutlined />,
+        },
+        {
+            key: "in_progress",
+            label: "In Progress",
+            icon: <EngineeringOutlined />,
+        },
+        {
+            key: "resolved",
+            label: "Resolved",
+            icon: <CheckCircle />,
+        },
+        {
+            key: "rejected",
+            label: "Rejected",
+            icon: <CancelOutlined />,
+        },
+    ];
 
 const AdminComplaints = () => {
+    const [complaints, setComplaints] = useState<Complaint[]>([]);
+    const [departments, setDepartments] = useState<Department[]>([]);
+    const [officers, setOfficers] = useState<Officer[]>([]);
+    const [workers, setWorkers] = useState<Worker[]>([]);
 
-    // ================= DATA =================
+    const [statusFilter, setStatusFilter] =
+        useState<StatusFilter>("all");
 
-    const [complaints, setComplaints] =
-        useState<Complaint[]>([]);
+    const [departmentFilter, setDepartmentFilter] =
+        useState("all");
 
-    const [departments, setDepartments] =
-        useState<Department[]>([]);
-
-    const [officers, setOfficers] =
-        useState<Officer[]>([]);
-
-    const [workers, setWorkers] =
-        useState<Worker[]>([]);
-
-
-    // ================= LOADING =================
-
-    const [loading, setLoading] =
-        useState(true);
-
+    const [loading, setLoading] = useState(true);
     const [loadingOfficers, setLoadingOfficers] =
         useState(false);
-
     const [loadingWorkers, setLoadingWorkers] =
         useState(false);
 
     const [assigningOfficer, setAssigningOfficer] =
         useState(false);
-
     const [assigningWorker, setAssigningWorker] =
         useState(false);
 
-
-    // ================= DIALOGS =================
-
-    const [openDialog, setOpenDialog] =
+    const [openOfficerDialog, setOpenOfficerDialog] =
         useState(false);
-
     const [openWorkerDialog, setOpenWorkerDialog] =
         useState(false);
 
-
-    // ================= SELECTED DATA =================
-
     const [selectedComplaint, setSelectedComplaint] =
         useState<Complaint | null>(null);
+
+    const [selectedDepartment, setSelectedDepartment] =
+        useState("");
 
     const [selectedOfficer, setSelectedOfficer] =
         useState("");
@@ -105,18 +147,8 @@ const AdminComplaints = () => {
     const [selectedWorker, setSelectedWorker] =
         useState("");
 
-    const [selectedDepartment, setSelectedDepartment] =
-        useState("");
-
-
-    // =====================================================
-    // LOAD COMPLAINTS + DEPARTMENTS
-    // =====================================================
-
     const fetchInitialData = async () => {
-
         try {
-
             setLoading(true);
 
             const [
@@ -134,44 +166,89 @@ const AdminComplaints = () => {
             setDepartments(
                 departmentsResponse.departments || []
             );
-
         } catch (error) {
-
             console.error(
-                "Failed to fetch admin data:",
+                "Failed to fetch admin complaints data:",
                 error
             );
-
         } finally {
-
             setLoading(false);
-
         }
     };
-
 
     useEffect(() => {
         fetchInitialData();
     }, []);
 
+    const statusCounts = useMemo(() => {
+        return {
+            all: complaints.length,
+            pending: complaints.filter(
+                (complaint) =>
+                    complaint.status === "pending"
+            ).length,
+            assigned: complaints.filter(
+                (complaint) =>
+                    complaint.status === "assigned"
+            ).length,
+            in_progress: complaints.filter(
+                (complaint) =>
+                    complaint.status === "in_progress"
+            ).length,
+            resolved: complaints.filter(
+                (complaint) =>
+                    complaint.status === "resolved"
+            ).length,
+            rejected: complaints.filter(
+                (complaint) =>
+                    complaint.status === "rejected"
+            ).length,
+        };
+    }, [complaints]);
 
-    // =====================================================
-    // LOAD OFFICERS BY DEPARTMENT
-    // =====================================================
+    const filteredComplaints = useMemo(() => {
+        return [...complaints]
+            .sort((a, b) => {
+                const dateA = new Date(
+                    a.createdAt || 0
+                ).getTime();
+
+                const dateB = new Date(
+                    b.createdAt || 0
+                ).getTime();
+
+                return dateB - dateA;
+            })
+            .filter((complaint) => {
+                const statusMatches =
+                    statusFilter === "all" ||
+                    complaint.status === statusFilter;
+
+                const departmentMatches =
+                    departmentFilter === "all" ||
+                    complaint.department?._id ===
+                    departmentFilter;
+
+                return (
+                    statusMatches &&
+                    departmentMatches
+                );
+            });
+    }, [
+        complaints,
+        statusFilter,
+        departmentFilter,
+    ]);
 
     const loadOfficers = async (
         departmentId: string
     ) => {
-
         if (!departmentId) {
-
             setOfficers([]);
-
             return;
         }
 
         try {
-
             setLoadingOfficers(true);
 
             const response =
@@ -180,41 +257,27 @@ const AdminComplaints = () => {
             setOfficers(
                 response.officers || []
             );
-
         } catch (error) {
-
             console.error(
                 "Failed to fetch officers:",
                 error
             );
 
             setOfficers([]);
-
         } finally {
-
             setLoadingOfficers(false);
-
         }
     };
-
-
-    // =====================================================
-    // LOAD WORKERS BY DEPARTMENT
-    // =====================================================
 
     const loadWorkers = async (
         departmentId: string
     ) => {
-
         if (!departmentId) {
-
             setWorkers([]);
-
             return;
         }
 
         try {
-
             setLoadingWorkers(true);
 
             const response =
@@ -223,32 +286,21 @@ const AdminComplaints = () => {
             setWorkers(
                 response.workers || []
             );
-
         } catch (error) {
-
             console.error(
                 "Failed to fetch workers:",
                 error
             );
 
             setWorkers([]);
-
         } finally {
-
             setLoadingWorkers(false);
-
         }
     };
-
-
-    // =====================================================
-    // OPEN OFFICER DIALOG
-    // =====================================================
 
     const handleOpenOfficerDialog = (
         complaint: Complaint
     ) => {
-
         setSelectedComplaint(complaint);
 
         const departmentId =
@@ -266,85 +318,33 @@ const AdminComplaints = () => {
         );
 
         setOfficers([]);
+        setOpenOfficerDialog(true);
 
-        setWorkers([]);
-
-        setOpenDialog(true);
-
-        // Existing complaint already has department
         if (departmentId) {
             loadOfficers(departmentId);
         }
-
     };
-
-
-    // =====================================================
-    // DEPARTMENT CHANGE
-    // =====================================================
 
     const handleDepartmentChange = async (
         departmentId: string
     ) => {
-
         setSelectedDepartment(
             departmentId
         );
 
-        // Important:
-        // Department change means old officer
-        // is no longer valid.
         setSelectedOfficer("");
-
-        // Reset workers too.
-        setWorkers([]);
+        setOfficers([]);
 
         if (!departmentId) {
-
-            setOfficers([]);
-
             return;
         }
 
         await loadOfficers(
             departmentId
         );
-
-        // Also load workers for selected department.
-        await loadWorkers(
-            departmentId
-        );
     };
-
-
-    // =====================================================
-    // OFFICER CHANGE
-    // =====================================================
-
-    const handleOfficerChange = (
-        officerId: string
-    ) => {
-
-        setSelectedOfficer(
-            officerId
-        );
-
-        /*
-         * Workers are already filtered
-         * by the selected department.
-         *
-         * So selecting an officer does not
-         * need another API request.
-         */
-    };
-
-
-    // =====================================================
-    // ASSIGN OFFICER
-    // =====================================================
 
     const handleAssignOfficer = async () => {
-
         if (
             !selectedComplaint ||
             !selectedDepartment ||
@@ -354,7 +354,6 @@ const AdminComplaints = () => {
         }
 
         try {
-
             setAssigningOfficer(true);
 
             await assignComplaint(
@@ -363,42 +362,28 @@ const AdminComplaints = () => {
                 selectedOfficer
             );
 
-            setOpenDialog(false);
+            handleCloseOfficerDialog();
 
             await fetchInitialData();
-
-            setSelectedComplaint(null);
-
-            setSelectedDepartment("");
-
-            setSelectedOfficer("");
-
-            setOfficers([]);
-
-            setWorkers([]);
-
         } catch (error) {
-
             console.error(
                 "Failed to assign complaint:",
                 error
             );
-
         } finally {
-
             setAssigningOfficer(false);
-
         }
     };
-
-
-    // =====================================================
-    // OPEN WORKER DIALOG
-    // =====================================================
 
     const handleOpenWorkerDialog = async (
         complaint: Complaint
     ) => {
+        if (
+            complaint.status !==
+            "in_progress"
+        ) {
+            return;
+        }
 
         setSelectedComplaint(
             complaint
@@ -409,29 +394,19 @@ const AdminComplaints = () => {
         );
 
         setWorkers([]);
-
         setOpenWorkerDialog(true);
 
         const departmentId =
             complaint.department?._id;
 
         if (departmentId) {
-
             await loadWorkers(
                 departmentId
             );
-
         }
-
     };
 
-
-    // =====================================================
-    // ASSIGN WORKER
-    // =====================================================
-
     const handleAssignWorker = async () => {
-
         if (
             !selectedComplaint ||
             !selectedWorker
@@ -440,7 +415,6 @@ const AdminComplaints = () => {
         }
 
         try {
-
             setAssigningWorker(true);
 
             await assignWorker(
@@ -448,186 +422,259 @@ const AdminComplaints = () => {
                 selectedWorker
             );
 
-            setOpenWorkerDialog(false);
+            handleCloseWorkerDialog();
 
             await fetchInitialData();
-
-            setSelectedComplaint(null);
-
-            setSelectedWorker("");
-
-            setWorkers([]);
-
         } catch (error) {
-
             console.error(
                 "Failed to assign worker:",
                 error
             );
-
         } finally {
-
             setAssigningWorker(false);
-
         }
     };
 
-
-    // =====================================================
-    // CLOSE OFFICER DIALOG
-    // =====================================================
-
     const handleCloseOfficerDialog = () => {
-
         if (assigningOfficer) {
             return;
         }
 
-        setOpenDialog(false);
-
+        setOpenOfficerDialog(false);
         setSelectedComplaint(null);
-
         setSelectedDepartment("");
-
         setSelectedOfficer("");
-
         setOfficers([]);
-
-        setWorkers([]);
     };
 
-
-    // =====================================================
-    // CLOSE WORKER DIALOG
-    // =====================================================
-
     const handleCloseWorkerDialog = () => {
-
         if (assigningWorker) {
             return;
         }
 
         setOpenWorkerDialog(false);
-
         setSelectedComplaint(null);
-
         setSelectedWorker("");
-
         setWorkers([]);
     };
 
-
-    // =====================================================
-    // LOADING
-    // =====================================================
-
     if (loading) {
-
         return (
             <Box className="adminComplaints-loading">
-
                 <CircularProgress />
 
                 <Typography>
                     Loading complaints...
                 </Typography>
-
             </Box>
         );
     }
 
-
-    // =====================================================
-    // UI
-    // =====================================================
-
     return (
-
         <Box className="adminComplaints">
 
-            {/* ================= HEADER ================= */}
+            {/* HEADER */}
 
             <Box className="adminComplaints-header">
-
                 <Box>
+                    <Box className="page-heading-row">
+                        <Box className="page-heading-icon">
+                            <AssignmentOutlined />
+                        </Box>
 
-                    <Typography
-                        className="adminComplaints-title"
-                    >
-                        All Complaints
-                    </Typography>
+                        <Box>
+                            <Typography className="adminComplaints-title">
+                                All Complaints
+                            </Typography>
 
-                    <Typography
-                        className="adminComplaints-subtitle"
-                    >
-                        Review complaints and manage officer
-                        and worker assignments.
-                    </Typography>
-
+                            <Typography className="adminComplaints-subtitle">
+                                Review complaints and manage
+                                officer and worker assignments.
+                            </Typography>
+                        </Box>
+                    </Box>
                 </Box>
 
-
-                <Box className="adminComplaints-count">
-
-                    <Typography className="count-number">
+                <Box className="adminComplaints-total">
+                    <Typography className="total-number">
                         {complaints.length}
                     </Typography>
 
-                    <Typography className="count-label">
+                    <Typography className="total-label">
                         Total Complaints
                     </Typography>
-
                 </Box>
-
             </Box>
 
+            {/* STATUS CARDS */}
 
-            {/* ================= EMPTY ================= */}
+            <Box className="status-summary">
+                {statusCards.map((status) => (
+                    <Box
+                        key={status.key}
+                        className={`status-summary-card ${statusFilter === status.key
+                            ? "active"
+                            : ""
+                            } status-card-${status.key}`}
+                        onClick={() =>
+                            setStatusFilter(
+                                status.key
+                            )
+                        }
+                    >
+                        <Box className="status-summary-top">
+                            <Box className="status-summary-icon">
+                                {status.icon}
+                            </Box>
 
-            {complaints.length === 0 ? (
+                            <Typography className="status-summary-count">
+                                {
+                                    statusCounts[
+                                    status.key
+                                    ]
+                                }
+                            </Typography>
+                        </Box>
 
-                <Paper className="emptyComplaints">
+                        <Typography className="status-summary-label">
+                            {status.label}
+                        </Typography>
 
+                        <Box className="status-summary-line" />
+                    </Box>
+                ))}
+            </Box>
+
+            {/* FILTER BAR */}
+
+            <Paper
+                className="complaint-filter-bar"
+                elevation={0}
+            >
+                <Box className="filter-heading">
+                    <Box className="filter-heading-icon">
+                        <FilterAltOutlined />
+                    </Box>
+
+                    <Box>
+                        <Typography className="filter-title">
+                            Filter Complaints
+                        </Typography>
+
+                        <Typography className="filter-subtitle">
+                            Narrow results by department
+                        </Typography>
+                    </Box>
+                </Box>
+
+                <FormControl className="department-filter">
+                    <InputLabel>
+                        Department
+                    </InputLabel>
+
+                    <Select
+                        value={
+                            departmentFilter
+                        }
+                        label="Department"
+                        onChange={(e) =>
+                            setDepartmentFilter(
+                                e.target.value
+                            )
+                        }
+                    >
+                        <MenuItem value="all">
+                            All Departments
+                        </MenuItem>
+
+                        {departments.map(
+                            (department) => (
+                                <MenuItem
+                                    key={
+                                        department._id
+                                    }
+                                    value={
+                                        department._id
+                                    }
+                                >
+                                    {
+                                        department.name
+                                    }
+                                </MenuItem>
+                            )
+                        )}
+                    </Select>
+                </FormControl>
+
+                <Box className="results-info">
                     <Typography>
-                        No complaints found.
+                        Showing
                     </Typography>
 
+                    <strong>
+                        {filteredComplaints.length}
+                    </strong>
+
+                    <Typography>
+                        complaints
+                    </Typography>
+                </Box>
+            </Paper>
+
+            {/* EMPTY STATE */}
+
+            {filteredComplaints.length === 0 ? (
+                <Paper
+                    className="emptyComplaints"
+                    elevation={0}
+                >
+                    <Box className="empty-icon">
+                        <AssignmentOutlined />
+                    </Box>
+
+                    <Typography className="empty-title">
+                        No complaints found
+                    </Typography>
+
+                    <Typography className="empty-description">
+                        There are no complaints matching
+                        the selected filters.
+                    </Typography>
                 </Paper>
-
             ) : (
-
                 <Box className="complaints-grid">
-
-                    {complaints.map(
+                    {filteredComplaints.map(
                         (complaint) => (
-
                             <Paper
-                                key={complaint._id}
+                                key={
+                                    complaint._id
+                                }
                                 className="complaint-card"
                                 elevation={0}
                             >
-
-                                {/* ================= CARD HEADER ================= */}
+                                {/* CARD HEADER */}
 
                                 <Box className="complaint-card-header">
-
                                     <Box className="complaint-card-title-wrapper">
+                                        <Box className="complaint-title-row">
+                                            <Box className="complaint-title-dot" />
 
-                                        <Typography
-                                            className="complaint-card-title"
-                                        >
-                                            {complaint.title}
+                                            <Typography
+                                                className="complaint-card-title"
+                                            >
+                                                {
+                                                    complaint.title
+                                                }
+                                            </Typography>
+                                        </Box>
+
+                                        <Typography className="complaint-id">
+                                            ID:{" "}
+                                            {complaint._id.slice(
+                                                -8
+                                            )}
                                         </Typography>
-
-                                        <Typography
-                                            className="complaint-id"
-                                        >
-                                            Complaint ID:{" "}
-                                            {complaint._id.slice(-8)}
-                                        </Typography>
-
                                     </Box>
-
 
                                     <Chip
                                         label={formatText(
@@ -635,96 +682,118 @@ const AdminComplaints = () => {
                                         )}
                                         className={`status-chip status-${complaint.status}`}
                                     />
-
                                 </Box>
-
 
                                 <Divider />
 
-
-                                {/* ================= INFO ================= */}
+                                {/* COMPLAINT INFORMATION */}
 
                                 <Box className="complaint-info">
-
                                     <Box className="info-item">
+                                        <Box className="info-icon">
+                                            <BadgeOutlined />
+                                        </Box>
 
-                                        <Typography className="info-label">
-                                            Category
-                                        </Typography>
+                                        <Box className="info-content">
+                                            <Typography className="info-label">
+                                                Category
+                                            </Typography>
 
-                                        <Typography className="info-value">
-                                            {formatText(
-                                                complaint.category
-                                            )}
-                                        </Typography>
-
+                                            <Typography className="info-value">
+                                                {formatText(
+                                                    complaint.category
+                                                )}
+                                            </Typography>
+                                        </Box>
                                     </Box>
 
-
                                     <Box className="info-item">
+                                        <Box className="info-icon">
+                                            <Person2Outlined />
+                                        </Box>
 
-                                        <Typography className="info-label">
-                                            Citizen
-                                        </Typography>
+                                        <Box className="info-content">
+                                            <Typography className="info-label">
+                                                Citizen
+                                            </Typography>
 
-                                        <Typography className="info-value">
-                                            {complaint.citizen?.name ||
-                                                "Unknown"}
-                                        </Typography>
-
+                                            <Typography className="info-value">
+                                                {
+                                                    complaint
+                                                        .citizen
+                                                        ?.name
+                                                }
+                                            </Typography>
+                                        </Box>
                                     </Box>
 
-
                                     <Box className="info-item">
+                                        <Box className="info-icon">
+                                            <BusinessOutlined />
+                                        </Box>
 
-                                        <Typography className="info-label">
-                                            Department
-                                        </Typography>
+                                        <Box className="info-content">
+                                            <Typography className="info-label">
+                                                Department
+                                            </Typography>
 
-                                        <Typography className="info-value">
-
-                                            {complaint.department?.name ||
-                                                "Not Assigned"}
-
-                                        </Typography>
-
+                                            <Typography className="info-value">
+                                                {
+                                                    complaint
+                                                        .department
+                                                        ?.name ||
+                                                    "Not Assigned"
+                                                }
+                                            </Typography>
+                                        </Box>
                                     </Box>
 
-
                                     <Box className="info-item">
+                                        <Box className="info-icon">
+                                            <Person2Outlined />
+                                        </Box>
 
-                                        <Typography className="info-label">
-                                            Officer
-                                        </Typography>
+                                        <Box className="info-content">
+                                            <Typography className="info-label">
+                                                Officer
+                                            </Typography>
 
-                                        <Typography className="info-value">
-                                            {complaint.assignedOfficer?.name ||
-                                                "Not Assigned"}
-                                        </Typography>
-
+                                            <Typography className="info-value">
+                                                {
+                                                    complaint
+                                                        .assignedOfficer
+                                                        ?.name ||
+                                                    "Not Assigned"
+                                                }
+                                            </Typography>
+                                        </Box>
                                     </Box>
 
-
                                     <Box className="info-item">
+                                        <Box className="info-icon">
+                                            <HandymanOutlined />
+                                        </Box>
 
-                                        <Typography className="info-label">
-                                            Worker
-                                        </Typography>
+                                        <Box className="info-content">
+                                            <Typography className="info-label">
+                                                Worker
+                                            </Typography>
 
-                                        <Typography className="info-value">
-                                            {complaint.worker?.name ||
-                                                "Not Assigned"}
-                                        </Typography>
-
+                                            <Typography className="info-value">
+                                                {
+                                                    complaint
+                                                        .worker
+                                                        ?.name ||
+                                                    "Not Assigned"
+                                                }
+                                            </Typography>
+                                        </Box>
                                     </Box>
-
                                 </Box>
 
-
-                                {/* ================= ACTIONS ================= */}
+                                {/* ACTIONS */}
 
                                 <Box className="complaint-actions">
-
                                     <Button
                                         variant="outlined"
                                         className="assign-officer-btn"
@@ -733,48 +802,49 @@ const AdminComplaints = () => {
                                                 complaint
                                             )
                                         }
+                                        disabled={
+                                            complaint.status ===
+                                            "resolved"
+                                        }
+                                        startIcon={
+                                            <Person2Outlined />
+                                        }
                                     >
                                         {complaint.assignedOfficer
                                             ? "Reassign Officer"
                                             : "Assign Officer"}
                                     </Button>
 
-
-                                    <Button
-                                        variant="contained"
-                                        className="assign-worker-btn"
-                                        disabled={
-                                            !complaint.department
-                                        }
-                                        onClick={() =>
-                                            handleOpenWorkerDialog(
-                                                complaint
-                                            )
-                                        }
-                                    >
-                                        {complaint.worker
-                                            ? "Reassign Worker"
-                                            : "Assign Worker"}
-                                    </Button>
-
+                                    {complaint.status ===
+                                        "in_progress" && (
+                                            <Button
+                                                variant="contained"
+                                                className="assign-worker-btn"
+                                                onClick={() =>
+                                                    handleOpenWorkerDialog(
+                                                        complaint
+                                                    )
+                                                }
+                                                startIcon={
+                                                    <HandymanOutlined />
+                                                }
+                                            >
+                                                {complaint.worker
+                                                    ? "Reassign Worker"
+                                                    : "Assign Worker"}
+                                            </Button>
+                                        )}
                                 </Box>
-
                             </Paper>
-
                         )
                     )}
-
                 </Box>
-
             )}
 
-
-            {/* =====================================================
-                OFFICER ASSIGNMENT DIALOG
-            ===================================================== */}
+            {/* OFFICER DIALOG */}
 
             <Dialog
-                open={openDialog}
+                open={openOfficerDialog}
                 onClose={
                     handleCloseOfficerDialog
                 }
@@ -782,33 +852,50 @@ const AdminComplaints = () => {
                 maxWidth="sm"
                 className="assignment-dialog"
             >
-
                 <DialogTitle>
-                    {selectedComplaint?.assignedOfficer
-                        ? "Reassign Officer"
-                        : "Assign Officer"}
+                    <Box className="dialog-title-wrapper">
+                        <Box className="dialog-title-icon officer">
+                            <Person2Outlined />
+                        </Box>
+
+                        <Box>
+                            <Typography className="dialog-title">
+                                {selectedComplaint?.assignedOfficer
+                                    ? "Reassign Officer"
+                                    : "Assign Officer"}
+                            </Typography>
+
+                            <Typography className="dialog-subtitle">
+                                Select the department and
+                                officer responsible for
+                                this complaint.
+                            </Typography>
+                        </Box>
+                    </Box>
                 </DialogTitle>
 
-
                 <DialogContent>
+                    <Box className="dialog-complaint-card">
+                        <Typography className="dialog-complaint-label">
+                            Complaint
+                        </Typography>
 
-                    <Typography
-                        className="dialog-complaint"
-                    >
-                        Complaint:{" "}
-                        <strong>
+                        <Typography className="dialog-complaint-title">
                             {selectedComplaint?.title}
-                        </strong>
-                    </Typography>
+                        </Typography>
 
-
-                    {/* ================= DEPARTMENT ================= */}
+                        <Typography className="dialog-complaint-id">
+                            ID:{" "}
+                            {selectedComplaint?._id.slice(
+                                -8
+                            )}
+                        </Typography>
+                    </Box>
 
                     <FormControl
                         fullWidth
-                        sx={{ mb: 2 }}
+                        className="dialog-field"
                     >
-
                         <InputLabel>
                             Department
                         </InputLabel>
@@ -824,10 +911,8 @@ const AdminComplaints = () => {
                                 )
                             }
                         >
-
                             {departments.map(
                                 (department) => (
-
                                     <MenuItem
                                         key={
                                             department._id
@@ -836,28 +921,23 @@ const AdminComplaints = () => {
                                             department._id
                                         }
                                     >
-                                        {department.name}
+                                        {
+                                            department.name
+                                        }
                                     </MenuItem>
-
                                 )
                             )}
-
                         </Select>
-
                     </FormControl>
-
-
-                    {/* ================= OFFICER ================= */}
 
                     <FormControl
                         fullWidth
-                        sx={{ mb: 2 }}
+                        className="dialog-field"
                         disabled={
                             !selectedDepartment ||
                             loadingOfficers
                         }
                     >
-
                         <InputLabel>
                             Officer
                         </InputLabel>
@@ -868,29 +948,23 @@ const AdminComplaints = () => {
                             }
                             label="Officer"
                             onChange={(e) =>
-                                handleOfficerChange(
+                                setSelectedOfficer(
                                     e.target.value
                                 )
                             }
                         >
-
                             {loadingOfficers ? (
-
                                 <MenuItem disabled>
                                     Loading officers...
                                 </MenuItem>
-
-                            ) : officers.length === 0 ? (
-
+                            ) : officers.length ===
+                                0 ? (
                                 <MenuItem disabled>
                                     No officers available
                                 </MenuItem>
-
                             ) : (
-
                                 officers.map(
                                     (officer) => (
-
                                         <MenuItem
                                             key={
                                                 officer._id
@@ -899,90 +973,25 @@ const AdminComplaints = () => {
                                                 officer._id
                                             }
                                         >
-                                            {officer.name}{" "}
-                                            ({officer.email})
+                                            {
+                                                officer.name
+                                            }{" "}
+                                            (
+                                            {
+                                                officer.email
+                                            }
+                                            )
                                         </MenuItem>
-
                                     )
                                 )
-
                             )}
-
                         </Select>
-
                     </FormControl>
-
-
-                    {/* ================= WORKER ================= */}
-
-                    <FormControl
-                        fullWidth
-                        disabled={
-                            !selectedDepartment ||
-                            loadingWorkers
-                        }
-                    >
-
-                        <InputLabel>
-                            Worker
-                        </InputLabel>
-
-                        <Select
-                            value={
-                                selectedWorker
-                            }
-                            label="Worker"
-                            onChange={(e) =>
-                                setSelectedWorker(
-                                    e.target.value
-                                )
-                            }
-                        >
-
-                            {loadingWorkers ? (
-
-                                <MenuItem disabled>
-                                    Loading workers...
-                                </MenuItem>
-
-                            ) : workers.length === 0 ? (
-
-                                <MenuItem disabled>
-                                    No workers available
-                                </MenuItem>
-
-                            ) : (
-
-                                workers.map(
-                                    (worker) => (
-
-                                        <MenuItem
-                                            key={
-                                                worker._id
-                                            }
-                                            value={
-                                                worker._id
-                                            }
-                                        >
-                                            {worker.name}{" "}
-                                            ({worker.email})
-                                        </MenuItem>
-
-                                    )
-                                )
-
-                            )}
-
-                        </Select>
-
-                    </FormControl>
-
                 </DialogContent>
 
-
                 <DialogActions>
-
                     <Button
+                        className="dialog-cancel-btn"
                         onClick={
                             handleCloseOfficerDialog
                         }
@@ -993,9 +1002,9 @@ const AdminComplaints = () => {
                         Cancel
                     </Button>
 
-
                     <Button
                         variant="contained"
+                        className="dialog-confirm-btn"
                         disabled={
                             !selectedDepartment ||
                             !selectedOfficer ||
@@ -1007,17 +1016,14 @@ const AdminComplaints = () => {
                     >
                         {assigningOfficer
                             ? "Assigning..."
-                            : "Assign Officer"}
+                            : selectedComplaint?.assignedOfficer
+                                ? "Reassign Officer"
+                                : "Assign Officer"}
                     </Button>
-
                 </DialogActions>
-
             </Dialog>
 
-
-            {/* =====================================================
-                WORKER ASSIGNMENT DIALOG
-            ===================================================== */}
+            {/* WORKER DIALOG */}
 
             <Dialog
                 open={openWorkerDialog}
@@ -1028,31 +1034,67 @@ const AdminComplaints = () => {
                 maxWidth="sm"
                 className="assignment-dialog"
             >
-
                 <DialogTitle>
-                    {selectedComplaint?.worker
-                        ? "Reassign Worker"
-                        : "Assign Worker"}
+                    <Box className="dialog-title-wrapper">
+                        <Box className="dialog-title-icon worker">
+                            <HandymanOutlined />
+                        </Box>
+
+                        <Box>
+                            <Typography className="dialog-title">
+                                {selectedComplaint?.worker
+                                    ? "Reassign Worker"
+                                    : "Assign Worker"}
+                            </Typography>
+
+                            <Typography className="dialog-subtitle">
+                                Select a worker from the
+                                assigned department.
+                            </Typography>
+                        </Box>
+                    </Box>
                 </DialogTitle>
 
-
                 <DialogContent>
+                    <Box className="dialog-complaint-card">
+                        <Typography className="dialog-complaint-label">
+                            Complaint
+                        </Typography>
 
-                    <Typography
-                        className="dialog-complaint"
-                    >
-                        Complaint:{" "}
-                        <strong>
+                        <Typography className="dialog-complaint-title">
                             {selectedComplaint?.title}
-                        </strong>
-                    </Typography>
+                        </Typography>
 
+                        <Typography className="dialog-complaint-id">
+                            ID:{" "}
+                            {selectedComplaint?._id.slice(
+                                -8
+                            )}
+                        </Typography>
+                    </Box>
+
+                    <Box className="worker-department">
+                        <BusinessOutlined />
+
+                        <Box>
+                            <Typography>
+                                Department
+                            </Typography>
+
+                            <strong>
+                                {selectedComplaint
+                                    ?.department
+                                    ?.name ||
+                                    "Not Assigned"}
+                            </strong>
+                        </Box>
+                    </Box>
 
                     <FormControl
                         fullWidth
+                        className="dialog-field"
                         disabled={loadingWorkers}
                     >
-
                         <InputLabel>
                             Worker
                         </InputLabel>
@@ -1068,24 +1110,19 @@ const AdminComplaints = () => {
                                 )
                             }
                         >
-
                             {loadingWorkers ? (
-
                                 <MenuItem disabled>
                                     Loading workers...
                                 </MenuItem>
-
-                            ) : workers.length === 0 ? (
-
+                            ) : workers.length ===
+                                0 ? (
                                 <MenuItem disabled>
-                                    No workers available for this department
+                                    No workers available
+                                    for this department
                                 </MenuItem>
-
                             ) : (
-
                                 workers.map(
                                     (worker) => (
-
                                         <MenuItem
                                             key={
                                                 worker._id
@@ -1094,25 +1131,25 @@ const AdminComplaints = () => {
                                                 worker._id
                                             }
                                         >
-                                            {worker.name}{" "}
-                                            ({worker.email})
+                                            {
+                                                worker.name
+                                            }{" "}
+                                            (
+                                            {
+                                                worker.email
+                                            }
+                                            )
                                         </MenuItem>
-
                                     )
                                 )
-
                             )}
-
                         </Select>
-
                     </FormControl>
-
                 </DialogContent>
 
-
                 <DialogActions>
-
                     <Button
+                        className="dialog-cancel-btn"
                         onClick={
                             handleCloseWorkerDialog
                         }
@@ -1123,9 +1160,9 @@ const AdminComplaints = () => {
                         Cancel
                     </Button>
 
-
                     <Button
                         variant="contained"
+                        className="dialog-confirm-btn worker-confirm"
                         disabled={
                             !selectedWorker ||
                             assigningWorker
@@ -1136,16 +1173,14 @@ const AdminComplaints = () => {
                     >
                         {assigningWorker
                             ? "Assigning..."
-                            : "Assign Worker"}
+                            : selectedComplaint?.worker
+                                ? "Reassign Worker"
+                                : "Assign Worker"}
                     </Button>
-
                 </DialogActions>
-
             </Dialog>
-
         </Box>
     );
 };
-
 
 export default AdminComplaints;

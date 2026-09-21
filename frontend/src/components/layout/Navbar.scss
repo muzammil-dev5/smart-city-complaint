@@ -264,7 +264,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    color: var(--navbar-text);
+    color: var(--navbar-text) !important;
 
     font-size: 14px !important;
     font-weight: 600 !important;
