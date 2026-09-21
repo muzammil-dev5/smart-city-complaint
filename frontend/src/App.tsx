@@ -40,6 +40,7 @@ import Reports from "./pages/admin/Reports";
 
 // Profile
 import Profile from "./pages/Profile/Profile";
+import AdminUser from "./pages/admin/AdminUser";
 
 function App() {
   return (
@@ -190,6 +191,11 @@ function App() {
               <Route
                 path="/admin/complaints"
                 element={<AdminComplaints />}
+              />
+
+              <Route
+                path="/admin/users"
+                element={<AdminUser />}
               />
 
               <Route

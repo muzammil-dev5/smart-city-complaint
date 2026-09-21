@@ -11,9 +11,16 @@ const {
     updateUserRole,
     updateUserStatus,
     updateUserDepartment,
-    getWorkers
+    getWorkers,
+    getRecentUsers
 } = require("../controllers/userController.js");
 
+router.get(
+    "/recent",
+    authMiddleware,
+    roleMiddleware("admin"),
+    getRecentUsers
+);
 
 router.get(
     "/",

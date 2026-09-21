@@ -1,37 +1,14 @@
-
-import {
-    Box,
-    Paper,
-    Typography,
-    CircularProgress,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    TextField,
-} from "@mui/material";
-import {
-    useEffect,
-    useLayoutEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react";
+import { Box, Paper, Typography, CircularProgress, } from "@mui/material";
+import { useEffect, useLayoutEffect, useRef, useState, } from "react";
 import gsap from "gsap";
-
 import { getComplaintAnalytics } from "../../services/complaintService";
-import { getAllUsers } from "../../services/userService";
-import UserTable from "../../components/Table/UserTable";
-import type { User, RoleFilter } from "../../types/user";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { PieChart } from "@mui/x-charts/PieChart";
+import RecentUsers from "./RecentUsers";
 import "./AdminDashboard.scss";
 
 const AdminDashboard = () => {
-    const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
-    const [roleFilter, setRoleFilter] = useState<RoleFilter>("all");
-    const [search, setSearch] = useState("");
 
     const [analytics, setAnalytics] = useState({
         total: 0,
@@ -47,91 +24,29 @@ const AdminDashboard = () => {
         },
     });
 
-    const storedUser = localStorage.getItem("user");
-    const currentUser = storedUser ? JSON.parse(storedUser) : null;
-
     const dashboardRef = useRef<HTMLDivElement | null>(null);
+
     const headerRef = useRef<HTMLDivElement | null>(null);
+
     const chartsRef = useRef<HTMLDivElement | null>(null);
+
     const analyticsRef = useRef<HTMLDivElement | null>(null);
-    const tableRef = useRef<HTMLDivElement | null>(null);
 
-    const filteredUsers = useMemo(() => {
-        const searchValue = search.trim().toLowerCase();
+    const recentUsersRef = useRef<HTMLDivElement | null>(null);
 
-        return users.filter((user) => {
-            const matchesSearch =
-                user.name.toLowerCase().includes(searchValue) ||
-                user.email.toLowerCase().includes(searchValue);
-
-            const matchesRole =
-                roleFilter === "all" || user.role === roleFilter;
-
-            return matchesSearch && matchesRole;
-        });
-    }, [users, search, roleFilter]);
-
-    const handleRoleUpdated = (
-        userId: string,
-        role: User["role"]
-    ) => {
-        setUsers((currentUsers) =>
-            currentUsers.map((user) =>
-                user._id === userId
-                    ? {
-                        ...user,
-                        role,
-                        department:
-                            role === "citizen" ||
-                                role === "admin"
-                                ? null
-                                : user.department,
-                    }
-                    : user
-            )
-        );
-    };
-
-    const handleDepartmentUpdated = (
-        userId: string,
-        department: User["department"]
-    ) => {
-        setUsers((currentUsers) =>
-            currentUsers.map((user) =>
-                user._id === userId
-                    ? {
-                        ...user,
-                        department,
-                    }
-                    : user
-            )
-        );
-    };
-
-    const handleStatusUpdated = (
-        userId: string,
-        isActive: boolean
-    ) => {
-        setUsers((currentUsers) =>
-            currentUsers.map((user) =>
-                user._id === userId
-                    ? { ...user, isActive }
-                    : user
-            )
-        );
-    };
+    // ================= FETCH DASHBOARD DATA =================
 
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                const [usersResponse, analyticsResponse] =
-                    await Promise.all([
-                        getAllUsers(),
-                        getComplaintAnalytics(),
-                    ]);
+                setLoading(true);
 
-                setUsers(usersResponse.users);
-                setAnalytics(analyticsResponse.analytics);
+                const analyticsResponse =
+                    await getComplaintAnalytics();
+
+                setAnalytics(
+                    analyticsResponse.analytics
+                );
             } catch (error) {
                 console.error(
                     "Failed to fetch admin dashboard data:",
@@ -145,6 +60,8 @@ const AdminDashboard = () => {
         fetchDashboardData();
     }, []);
 
+    // ================= GSAP ANIMATION =================
+
     useLayoutEffect(() => {
         if (loading) return;
 
@@ -153,7 +70,7 @@ const AdminDashboard = () => {
             !headerRef.current ||
             !chartsRef.current ||
             !analyticsRef.current ||
-            !tableRef.current
+            !recentUsersRef.current
         ) {
             return;
         }
@@ -175,32 +92,38 @@ const AdminDashboard = () => {
                 },
             });
 
+            // Header
             gsap.set(headerRef.current, {
                 opacity: 0,
                 y: 25,
             });
 
+            // Analytics Cards
             gsap.set(analyticsCards, {
                 opacity: 0,
                 y: 25,
             });
 
+            // Charts
             gsap.set(chartCards, {
                 opacity: 0,
                 x: 25,
             });
 
-            gsap.set(tableRef.current, {
+            // Recent Users
+            gsap.set(recentUsersRef.current, {
                 opacity: 0,
                 y: 25,
             });
 
+            // Header animation
             timeline.to(headerRef.current, {
                 opacity: 1,
                 y: 0,
                 duration: 0.45,
             });
 
+            // Analytics animation
             timeline.to(
                 analyticsCards,
                 {
@@ -212,6 +135,7 @@ const AdminDashboard = () => {
                 "-=0.2"
             );
 
+            // Charts animation
             timeline.to(
                 chartCards,
                 {
@@ -223,8 +147,9 @@ const AdminDashboard = () => {
                 "-=0.35"
             );
 
+            // Recent users animation
             timeline.to(
-                tableRef.current,
+                recentUsersRef.current,
                 {
                     opacity: 1,
                     y: 0,
@@ -239,16 +164,21 @@ const AdminDashboard = () => {
         };
     }, [loading]);
 
+    // ================= LOADING =================
+
     if (loading) {
         return (
             <Box className="adminDashboard-loading">
                 <CircularProgress />
+
                 <Typography>
                     Loading dashboard...
                 </Typography>
             </Box>
         );
     }
+
+    // ================= ANALYTICS CARDS =================
 
     const analyticsCards = [
         {
@@ -278,6 +208,8 @@ const AdminDashboard = () => {
         },
     ];
 
+    // ================= UI =================
+
     return (
         <Box
             ref={dashboardRef}
@@ -285,16 +217,20 @@ const AdminDashboard = () => {
         >
             <Box className="adminDashboard-mainGrid">
 
-                {/* ================= LEFT SIDE ================= */}
+                {/* ================================================= */}
+                {/* LEFT SIDE */}
+                {/* ================================================= */}
 
                 <Box className="adminDashboard-left">
 
-                    {/* Dashboard Header */}
+                    {/* ================= DASHBOARD HEADER ================= */}
+
                     <Box
                         ref={headerRef}
                         className="adminDashboard"
                     >
                         <Box className="adminDashboard-content">
+
                             <Typography className="adminDashboard-header">
                                 Admin Dashboard
                             </Typography>
@@ -303,9 +239,11 @@ const AdminDashboard = () => {
                                 Manage and monitor the Smart City
                                 Complaint Management System.
                             </Typography>
+
                         </Box>
 
                         <Box className="adminComplaints-count">
+
                             <Typography className="count-label">
                                 Total Complaints
                             </Typography>
@@ -313,10 +251,12 @@ const AdminDashboard = () => {
                             <Typography className="count-number">
                                 {analytics.total}
                             </Typography>
+
                         </Box>
                     </Box>
 
-                    {/* Analytics Cards */}
+                    {/* ================= ANALYTICS CARDS ================= */}
+
                     <Box
                         ref={analyticsRef}
                         className="Analytics-dashboard-card"
@@ -328,6 +268,7 @@ const AdminDashboard = () => {
                                 className={`Analytics-card ${card.className}`}
                             >
                                 <Box className="Analytics-card-content">
+
                                     <Typography className="Analytics-title">
                                         {card.title}
                                     </Typography>
@@ -335,108 +276,47 @@ const AdminDashboard = () => {
                                     <Typography className="Analytics-description">
                                         Complaint overview
                                     </Typography>
+
                                 </Box>
 
                                 <Box className="Analytics-count">
                                     {card.value}
                                 </Box>
+
                             </Paper>
                         ))}
                     </Box>
 
-                    {/* User Management */}
-                    <Paper
-                        ref={tableRef}
-                        className="adminDataTable"
-                        elevation={0}
+                    {/* ================= RECENT USERS ================= */}
+
+                    <Box
+                        ref={recentUsersRef}
+                        className="adminDashboard-recentUsers"
                     >
-                        <Box className="adminDataTable-Header">
-                            <Box className="adminDataTable-Info">
-                                <Typography className="adminDataTable-Heading">
-                                    User Management
-                                </Typography>
+                        <RecentUsers />
+                    </Box>
 
-                                <Typography className="adminDataTable-Subtitle">
-                                    Manage registered users and their access
-                                </Typography>
-                            </Box>
-
-                            <Box className="adminDataTable-filters">
-                                <TextField
-                                    className="dataTableSearchFilter"
-                                    value={search}
-                                    label="Search Users"
-                                    placeholder="Search by name or email..."
-                                    onChange={(e) =>
-                                        setSearch(e.target.value)
-                                    }
-                                />
-
-                                <FormControl className="roleFilter">
-                                    <InputLabel id="role-filter-label">
-                                        Role
-                                    </InputLabel>
-
-                                    <Select
-                                        labelId="role-filter-label"
-                                        value={roleFilter}
-                                        label="Role"
-                                        onChange={(e) =>
-                                            setRoleFilter(
-                                                e.target.value as RoleFilter
-                                            )
-                                        }
-                                    >
-                                        <MenuItem value="all">
-                                            All Roles
-                                        </MenuItem>
-
-                                        <MenuItem value="citizen">
-                                            Citizen
-                                        </MenuItem>
-
-                                        <MenuItem value="officer">
-                                            Officer
-                                        </MenuItem>
-
-                                        <MenuItem value="worker">
-                                            Worker
-                                        </MenuItem>
-
-                                        <MenuItem value="admin">
-                                            Admin
-                                        </MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </Box>
-                        </Box>
-
-                        <UserTable
-                            users={filteredUsers}
-                            onRoleUpdated={handleRoleUpdated}
-                            onStatusUpdated={handleStatusUpdated}
-                            onDepartmentUpdated={handleDepartmentUpdated}
-                            currentUserId={
-                                currentUser?._id ??
-                                currentUser?.id
-                            }
-                        />
-                    </Paper>
                 </Box>
 
-                {/* ================= RIGHT SIDE ================= */}
+                {/* ================================================= */}
+                {/* RIGHT SIDE */}
+                {/* ================================================= */}
 
                 <Box
                     ref={chartsRef}
                     className="adminDashboard-right"
                 >
-                    {/* Bar Chart */}
+
+                    {/* ================= CATEGORY BAR CHART ================= */}
+
                     <Paper
                         elevation={0}
                         className="chart-card bar-chart-card"
                     >
                         <Box className="chart-card-header">
+
                             <Box>
+
                                 <Typography className="chart-heading">
                                     Complaints by Category
                                 </Typography>
@@ -444,10 +324,13 @@ const AdminDashboard = () => {
                                 <Typography className="chart-title">
                                     Distribution across complaint categories
                                 </Typography>
+
                             </Box>
+
                         </Box>
 
                         <Box className="chart-wrapper">
+
                             <BarChart
                                 xAxis={[
                                     {
@@ -462,9 +345,14 @@ const AdminDashboard = () => {
                                 series={[
                                     {
                                         data: [
-                                            analytics.categories.roadDamage,
-                                            analytics.categories.streetLight,
-                                            analytics.categories.garbageCollection,
+                                            analytics.categories
+                                                .roadDamage,
+
+                                            analytics.categories
+                                                .streetLight,
+
+                                            analytics.categories
+                                                .garbageCollection,
                                         ],
                                         label: "Complaints",
                                     },
@@ -474,16 +362,20 @@ const AdminDashboard = () => {
                                     width: "100%",
                                 }}
                             />
+
                         </Box>
                     </Paper>
 
-                    {/* Pie Chart */}
+                    {/* ================= STATUS PIE CHART ================= */}
+
                     <Paper
                         elevation={0}
                         className="chart-card pie-chart-card"
                     >
                         <Box className="chart-card-header">
+
                             <Box>
+
                                 <Typography className="chart-heading">
                                     Complaints by Status
                                 </Typography>
@@ -491,40 +383,49 @@ const AdminDashboard = () => {
                                 <Typography className="chart-title">
                                     Current complaint status distribution
                                 </Typography>
+
                             </Box>
+
                         </Box>
 
                         <Box className="chart-wrapper pie-wrapper">
+
                             <PieChart
                                 series={[
                                     {
                                         data: [
                                             {
                                                 id: 0,
-                                                value: analytics.pending,
+                                                value:
+                                                    analytics.pending,
                                                 label: "Pending",
                                             },
                                             {
                                                 id: 1,
-                                                value: analytics.assigned,
+                                                value:
+                                                    analytics.assigned,
                                                 label: "Assigned",
                                             },
                                             {
                                                 id: 2,
-                                                value: analytics.inProgress,
+                                                value:
+                                                    analytics.inProgress,
                                                 label: "In Progress",
                                             },
                                             {
                                                 id: 3,
-                                                value: analytics.resolved,
+                                                value:
+                                                    analytics.resolved,
                                                 label: "Resolved",
                                             },
                                             {
                                                 id: 4,
-                                                value: analytics.rejected,
+                                                value:
+                                                    analytics.rejected,
                                                 label: "Rejected",
                                             },
                                         ],
+
                                         outerRadius: 92,
                                         innerRadius: 54,
                                         paddingAngle: 2,
@@ -536,8 +437,10 @@ const AdminDashboard = () => {
                                     maxWidth: 450,
                                 }}
                             />
+
                         </Box>
                     </Paper>
+
                 </Box>
             </Box>
         </Box>

@@ -26,6 +26,16 @@ export const getAllUsers = async () => {
     return response.data;
 };
 
+export const getRecentUsers = async (limit = 6) => {
+    const response = await api.get("/users/recent", {
+        params: {
+            limit,
+        },
+    });
+
+    return response.data;
+};
+
 export const updateUserRole = async (
     userId: string,
     role: string

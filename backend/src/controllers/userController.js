@@ -90,6 +90,37 @@ const getAllUsers = async (req, res) => {
 };
 
 
+const getRecentUsers = async (req, res) => {
+    try {
+        const limit = Math.min(
+            Number(req.query.limit) || 6,
+            10
+        );
+
+        const users = await User.find()
+            .select("-password")
+            .populate(
+                "department",
+                "name"
+            )
+            .sort({ createdAt: -1 })
+            .limit(limit);
+
+        return res.status(200).json({
+            users,
+        });
+    } catch (error) {
+        console.error(
+            "Get recent users error:",
+            error
+        );
+
+        return res.status(500).json({
+            message: "Failed to fetch recent users",
+        });
+    }
+};
+
 const updateUserRole = async (req, res) => {
     try {
         const { id } = req.params;
@@ -252,5 +283,6 @@ module.exports = {
     getAllUsers,
     updateUserRole,
     updateUserStatus,
-    updateUserDepartment
+    updateUserDepartment,
+    getRecentUsers
 };
