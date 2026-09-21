@@ -2,106 +2,359 @@
     width: 100%;
     min-height: 100%;
     padding: 24px;
-    font-family: "Poppins", sans-serif;
-    background: #f8fafc;
     box-sizing: border-box;
+
+    font-family: "Poppins", sans-serif;
+
+    background: #f8fafc;
 }
 
-/* ================= HEADER ================= */
+/* =========================================================
+   PAGE HEADER
+========================================================= */
 
 .adminUser-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    justify-content: space-between;
+
+    gap: 24px;
     margin-bottom: 24px;
 }
 
+.adminUser-headerContent {
+    min-width: 0;
+}
+
+.adminUser-titleRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.adminUser-titleIcon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #6366f1;
+    background: #eef2ff;
+
+    border: 1px solid #e0e7ff;
+    border-radius: 10px;
+}
+
 .adminUser-heading {
+    margin: 0 !important;
+
     font-family: "Poppins", sans-serif !important;
-    font-size: 28px !important;
+    font-size: 26px !important;
+    line-height: 1.3 !important;
     font-weight: 600 !important;
+
     color: #111827 !important;
 }
 
 .adminUser-subtitle {
-    margin-top: 5px !important;
+    margin-top: 7px !important;
+    margin-left: 48px !important;
+
     font-family: "Poppins", sans-serif !important;
-    font-size: 14px !important;
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+
     color: #6b7280 !important;
 }
 
-/* ================= COUNT ================= */
+/* =========================================================
+   TOTAL USERS CARD
+========================================================= */
 
 .adminUser-count {
-    min-width: 120px;
-    padding: 12px 18px;
-    text-align: center;
-    background: #eef2ff;
-    border: 1px solid #c7d2fe;
-    border-radius: 10px;
+    min-width: 155px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 16px;
+
     box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    box-shadow:
+        0 1px 2px rgba(15, 23, 42, 0.03),
+        0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+.adminUser-countIcon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #6366f1;
+    background: #eef2ff;
+
+    border-radius: 9px;
 }
 
 .count-number {
+    margin: 0 !important;
+
     font-family: "Poppins", sans-serif !important;
-    font-size: 24px !important;
-    line-height: 1 !important;
+    font-size: 21px !important;
+    line-height: 1.1 !important;
     font-weight: 700 !important;
-    color: #4f46e5 !important;
+
+    color: #111827 !important;
 }
 
 .count-label {
-    margin-top: 5px !important;
+    margin-top: 3px !important;
+
     font-family: "Poppins", sans-serif !important;
     font-size: 11px !important;
+    line-height: 1.3 !important;
     font-weight: 500 !important;
-    color: #ffffff !important;
+
+    color: #6b7280 !important;
 }
 
-/* ================= FILTERS ================= */
+/* =========================================================
+   FILTER CARD
+========================================================= */
+
+.adminUser-filterCard {
+    margin-bottom: 20px;
+
+    padding: 18px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    box-shadow:
+        0 1px 2px rgba(15, 23, 42, 0.03),
+        0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.adminUser-filterHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.adminUser-filterTitleRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-width: 0;
+}
+
+.adminUser-filterIcon {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #6366f1;
+    background: #eef2ff;
+
+    border-radius: 8px;
+}
+
+.filter-title {
+    font-family: "Poppins", sans-serif !important;
+    font-size: 13px !important;
+    line-height: 1.3 !important;
+    font-weight: 600 !important;
+
+    color: #1f2937 !important;
+}
+
+.filter-subtitle {
+    margin-top: 2px !important;
+
+    font-family: "Poppins", sans-serif !important;
+    font-size: 11px !important;
+    line-height: 1.4 !important;
+
+    color: #9ca3af !important;
+}
+
+.filter-active {
+    padding: 5px 9px !important;
+
+    flex-shrink: 0;
+
+    font-family: "Poppins", sans-serif !important;
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    font-weight: 500 !important;
+
+    color: #6366f1 !important;
+    background: #eef2ff;
+
+    border: 1px solid #e0e7ff;
+    border-radius: 6px;
+}
+
+/* =========================================================
+   FILTER CONTROLS
+========================================================= */
 
 .adminUser-filters {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 20px;
+
+    gap: 12px;
 }
 
 .adminUser-search {
-    width: 360px;
+    flex: 1;
+    min-width: 0;
 }
 
 .adminUser-roleFilter {
-    width: 180px;
+    width: 190px;
+    flex-shrink: 0;
 }
 
-/* ================= TABLE ================= */
+/* MUI INPUTS */
+
+.adminUser-filterCard .MuiOutlinedInput-root {
+    min-height: 42px;
+
+    font-family: "Poppins", sans-serif !important;
+    font-size: 12px !important;
+
+    border-radius: 8px;
+    background: #ffffff;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.adminUser-filterCard .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #a5b4fc;
+}
+
+.adminUser-filterCard .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #6366f1 !important;
+    border-width: 1px !important;
+}
+
+.adminUser-filterCard .MuiOutlinedInput-root.Mui-focused {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
+}
+
+.adminUser-filterCard .MuiInputLabel-root {
+    font-family: "Poppins", sans-serif !important;
+    font-size: 12px !important;
+}
+
+.adminUser-filterCard .MuiInputLabel-root.Mui-focused {
+    color: #6366f1 !important;
+}
+
+.adminUser-filterCard .MuiInputAdornment-root {
+    color: #9ca3af;
+}
+
+.adminUser-filterCard .MuiInputBase-input {
+    font-family: "Poppins", sans-serif !important;
+    font-size: 12px !important;
+}
+
+/* =========================================================
+   TABLE CARD
+========================================================= */
 
 .adminUser-table {
+    width: 100%;
+
     overflow: hidden;
+
     background: #ffffff;
+
     border: 1px solid #e5e7eb;
     border-radius: 12px;
+
     box-shadow:
-        0 2px 5px rgba(15, 23, 42, 0.04),
-        0 8px 20px rgba(15, 23, 42, 0.04);
+        0 1px 2px rgba(15, 23, 42, 0.03),
+        0 5px 16px rgba(15, 23, 42, 0.035);
 }
 
 .adminUser-tableHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    min-height: 68px;
 
-    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 14px 18px;
+
+    box-sizing: border-box;
 
     border-bottom: 1px solid #eef2f7;
 }
 
+.adminUser-tableTitleWrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-width: 0;
+}
+
+.adminUser-tableIcon {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #6366f1;
+    background: #eef2ff;
+
+    border-radius: 8px;
+}
+
 .table-title {
     font-family: "Poppins", sans-serif !important;
-    font-size: 17px !important;
+    font-size: 14px !important;
+    line-height: 1.3 !important;
     font-weight: 600 !important;
+
     color: #111827 !important;
 }
 
@@ -109,30 +362,130 @@
     margin-top: 3px !important;
 
     font-family: "Poppins", sans-serif !important;
-    font-size: 12px !important;
+    font-size: 10px !important;
+    line-height: 1.4 !important;
+
     color: #9ca3af !important;
 }
 
-/* ================= LOADING ================= */
+.table-subtitle strong {
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.adminUser-resultBadge {
+    padding: 6px 10px;
+
+    flex-shrink: 0;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 500;
+
+    color: #6366f1;
+
+    background: #eef2ff;
+
+    border: 1px solid #e0e7ff;
+    border-radius: 6px;
+}
+
+.adminUser-tableContent {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
 
 .adminUser-loading {
     min-height: 400px;
 
     display: flex;
     flex-direction: column;
-
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
-    gap: 12px;
+    gap: 6px;
+
+    padding: 24px;
 
     font-family: "Poppins", sans-serif;
-    color: #6b7280;
+
+    background: #f8fafc;
 }
 
-/* ================= RESPONSIVE ================= */
+.adminUser-loadingIcon {
+    width: 52px;
+    height: 52px;
 
-@media (max-width: 800px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 6px;
+
+    color: #6366f1;
+    background: #eef2ff;
+
+    border-radius: 12px;
+}
+
+.adminUser-loadingIcon .MuiCircularProgress-root {
+    color: #6366f1;
+}
+
+.adminUser-loadingTitle {
+    font-family: "Poppins", sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+
+    color: #374151 !important;
+}
+
+.adminUser-loadingText {
+    font-family: "Poppins", sans-serif !important;
+    font-size: 11px !important;
+
+    color: #9ca3af !important;
+}
+
+/* =========================================================
+   LARGE TABLET / SMALL DESKTOP
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .adminUser-page {
+        padding: 20px;
+    }
+
+    .adminUser-heading {
+        font-size: 24px !important;
+    }
+
+    .adminUser-subtitle {
+        margin-left: 48px !important;
+    }
+
+    .adminUser-count {
+        min-width: 140px;
+    }
+
+    .adminUser-roleFilter {
+        width: 170px;
+    }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 700px) {
+
     .adminUser-page {
         padding: 16px;
     }
@@ -142,26 +495,143 @@
     }
 
     .adminUser-heading {
-        font-size: 23px !important;
+        font-size: 22px !important;
+    }
+
+    .adminUser-subtitle {
+        margin-left: 0 !important;
+        margin-top: 6px !important;
+    }
+
+    .adminUser-titleIcon {
+        width: 34px;
+        height: 34px;
     }
 
     .adminUser-filters {
-        flex-direction: column;
         align-items: stretch;
+        flex-direction: column;
     }
 
     .adminUser-search,
     .adminUser-roleFilter {
         width: 100%;
     }
+
+    .adminUser-roleFilter {
+        flex-shrink: initial;
+    }
+
+    .adminUser-tableHeader {
+        padding: 13px 14px;
+    }
 }
 
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media (max-width: 500px) {
+
+    .adminUser-page {
+        padding: 12px;
+    }
+
     .adminUser-header {
         flex-direction: column;
+        align-items: stretch;
+
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+
+    .adminUser-titleRow {
+        gap: 8px;
+    }
+
+    .adminUser-heading {
+        font-size: 20px !important;
+    }
+
+    .adminUser-subtitle {
+        font-size: 11px !important;
     }
 
     .adminUser-count {
-        width: fit-content;
+        width: 100%;
+        min-width: 0;
+
+        padding: 10px 13px;
+    }
+
+    .adminUser-countIcon {
+        width: 34px;
+        height: 34px;
+    }
+
+    .count-number {
+        font-size: 19px !important;
+    }
+
+    .adminUser-filterCard {
+        padding: 13px;
+        margin-bottom: 14px;
+    }
+
+    .adminUser-filterHeader {
+        align-items: flex-start;
+    }
+
+    .filter-subtitle {
+        max-width: 220px;
+    }
+
+    .filter-active {
+        display: none;
+    }
+
+    .adminUser-tableHeader {
+        min-height: auto;
+
+        align-items: flex-start;
+        flex-direction: column;
+
+        padding: 13px;
+    }
+
+    .adminUser-resultBadge {
+        align-self: flex-start;
+    }
+}
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .adminUser-page {
+        padding: 10px;
+    }
+
+    .adminUser-heading {
+        font-size: 18px !important;
+    }
+
+    .adminUser-titleIcon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .adminUser-subtitle {
+        font-size: 10px !important;
+    }
+
+    .adminUser-filterCard {
+        padding: 11px;
+    }
+
+    .adminUser-tableHeader {
+        padding: 11px;
     }
 }

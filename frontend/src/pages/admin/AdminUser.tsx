@@ -1,13 +1,18 @@
+
 import {
     Box,
     CircularProgress,
     FormControl,
+    InputAdornment,
     InputLabel,
     MenuItem,
     Select,
     TextField,
     Typography,
 } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import PeopleOutlineIcon from "@mui/icons-material/PeopleAltOutlined";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import { useEffect, useMemo, useState } from "react";
 
 import { getAllUsers } from "../../services/userService";
@@ -143,10 +148,16 @@ const AdminUser = () => {
     if (loading) {
         return (
             <Box className="adminUser-loading">
-                <CircularProgress />
+                <Box className="adminUser-loadingIcon">
+                    <CircularProgress size={28} />
+                </Box>
 
-                <Typography>
-                    Loading users...
+                <Typography className="adminUser-loadingTitle">
+                    Loading users
+                </Typography>
+
+                <Typography className="adminUser-loadingText">
+                    Please wait while we load user information.
                 </Typography>
             </Box>
         );
@@ -155,120 +166,202 @@ const AdminUser = () => {
     return (
         <Box className="adminUser-page">
 
-            {/* ================= HEADER ================= */}
+            {/* ================= PAGE HEADER ================= */}
 
             <Box className="adminUser-header">
 
-                <Box>
-                    <Typography className="adminUser-heading">
-                        User Management
-                    </Typography>
+                <Box className="adminUser-headerContent">
+
+                    <Box className="adminUser-titleRow">
+                        <Box className="adminUser-titleIcon">
+                            <PeopleOutlineIcon fontSize="small" />
+                        </Box>
+
+                        <Typography className="adminUser-heading">
+                            User Management
+                        </Typography>
+                    </Box>
 
                     <Typography className="adminUser-subtitle">
                         Manage users, roles, departments and
-                        account access.
+                        account access from one place.
                     </Typography>
+
                 </Box>
+
+                {/* ================= USER STAT ================= */}
 
                 <Box className="adminUser-count">
 
-                    <Typography className="count-number">
-                        {users.length}
-                    </Typography>
-
-                    <Typography className="count-label">
-                        Total Users
-                    </Typography>
-
-                </Box>
-
-            </Box>
-
-            {/* ================= FILTERS ================= */}
-
-            <Box className="adminUser-filters">
-
-                <TextField
-                    className="adminUser-search"
-                    value={search}
-                    label="Search Users"
-                    placeholder="Search by name, email or phone..."
-                    onChange={(event) =>
-                        setSearch(event.target.value)
-                    }
-                />
-
-                <FormControl className="adminUser-roleFilter">
-
-                    <InputLabel id="admin-user-role-filter">
-                        Role
-                    </InputLabel>
-
-                    <Select
-                        labelId="admin-user-role-filter"
-                        value={roleFilter}
-                        label="Role"
-                        onChange={(event) =>
-                            setRoleFilter(
-                                event.target.value as RoleFilter
-                            )
-                        }
-                    >
-                        <MenuItem value="all">
-                            All Roles
-                        </MenuItem>
-
-                        <MenuItem value="citizen">
-                            Citizen
-                        </MenuItem>
-
-                        <MenuItem value="officer">
-                            Officer
-                        </MenuItem>
-
-                        <MenuItem value="worker">
-                            Worker
-                        </MenuItem>
-
-                        <MenuItem value="admin">
-                            Admin
-                        </MenuItem>
-                    </Select>
-
-                </FormControl>
-
-            </Box>
-
-            {/* ================= USER TABLE ================= */}
-
-            <Box className="adminUser-table">
-
-                <Box className="adminUser-tableHeader">
+                    <Box className="adminUser-countIcon">
+                        <PeopleOutlineIcon fontSize="small" />
+                    </Box>
 
                     <Box>
-                        <Typography className="table-title">
-                            All Users
+                        <Typography className="count-number">
+                            {users.length}
                         </Typography>
 
-                        <Typography className="table-subtitle">
-                            {filteredUsers.length} users found
+                        <Typography className="count-label">
+                            Total Users
                         </Typography>
                     </Box>
 
                 </Box>
 
-                <UserTable
-                    users={filteredUsers}
-                    onRoleUpdated={handleRoleUpdated}
-                    onStatusUpdated={handleStatusUpdated}
-                    onDepartmentUpdated={
-                        handleDepartmentUpdated
-                    }
-                    currentUserId={
-                        currentUser?._id ??
-                        currentUser?.id
-                    }
-                />
+            </Box>
+
+            {/* ================= FILTER CARD ================= */}
+
+            <Box className="adminUser-filterCard">
+
+                <Box className="adminUser-filterHeader">
+
+                    <Box className="adminUser-filterTitleRow">
+
+                        <Box className="adminUser-filterIcon">
+                            <SearchIcon fontSize="small" />
+                        </Box>
+
+                        <Box>
+                            <Typography className="filter-title">
+                                Search & Filter
+                            </Typography>
+
+                            <Typography className="filter-subtitle">
+                                Find users quickly using name, email,
+                                phone or role.
+                            </Typography>
+                        </Box>
+
+                    </Box>
+
+                    {(search || roleFilter !== "all") && (
+                        <Typography className="filter-active">
+                            Filters applied
+                        </Typography>
+                    )}
+
+                </Box>
+
+                <Box className="adminUser-filters">
+
+                    <TextField
+                        className="adminUser-search"
+                        value={search}
+                        label="Search Users"
+                        placeholder="Name, email or phone..."
+                        onChange={(event) =>
+                            setSearch(event.target.value)
+                        }
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon fontSize="small" />
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
+                    />
+
+                    <FormControl className="adminUser-roleFilter">
+
+                        <InputLabel id="admin-user-role-filter">
+                            Role
+                        </InputLabel>
+
+                        <Select
+                            labelId="admin-user-role-filter"
+                            value={roleFilter}
+                            label="Role"
+                            onChange={(event) =>
+                                setRoleFilter(
+                                    event.target.value as RoleFilter
+                                )
+                            }
+                        >
+                            <MenuItem value="all">
+                                All Roles
+                            </MenuItem>
+
+                            <MenuItem value="citizen">
+                                Citizen
+                            </MenuItem>
+
+                            <MenuItem value="officer">
+                                Officer
+                            </MenuItem>
+
+                            <MenuItem value="worker">
+                                Worker
+                            </MenuItem>
+
+                            <MenuItem value="admin">
+                                Admin
+                            </MenuItem>
+                        </Select>
+
+                    </FormControl>
+
+                </Box>
+
+            </Box>
+
+            {/* ================= USERS TABLE ================= */}
+
+            <Box className="adminUser-table">
+
+                <Box className="adminUser-tableHeader">
+
+                    <Box className="adminUser-tableTitleWrapper">
+
+                        <Box className="adminUser-tableIcon">
+                            <AdminPanelSettingsOutlinedIcon fontSize="small" />
+                        </Box>
+
+                        <Box>
+                            <Typography className="table-title">
+                                User Accounts
+                            </Typography>
+
+                            <Typography className="table-subtitle">
+                                Showing{" "}
+                                <strong>
+                                    {filteredUsers.length}
+                                </strong>{" "}
+                                of{" "}
+                                <strong>
+                                    {users.length}
+                                </strong>{" "}
+                                users
+                            </Typography>
+                        </Box>
+
+                    </Box>
+
+                    <Box className="adminUser-resultBadge">
+                        {filteredUsers.length} Results
+                    </Box>
+
+                </Box>
+
+                <Box className="adminUser-tableContent">
+
+                    <UserTable
+                        users={filteredUsers}
+                        onRoleUpdated={handleRoleUpdated}
+                        onStatusUpdated={handleStatusUpdated}
+                        onDepartmentUpdated={
+                            handleDepartmentUpdated
+                        }
+                        currentUserId={
+                            currentUser?._id ??
+                            currentUser?.id
+                        }
+                    />
+
+                </Box>
 
             </Box>
 
