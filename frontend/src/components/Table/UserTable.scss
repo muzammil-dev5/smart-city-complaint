@@ -1,0 +1,612 @@
+.user-table-wrapper {
+    width: 100%;
+    font-family: "Poppins", sans-serif !important;
+}
+
+/* =========================================================
+   TABLE CONTAINER
+========================================================= */
+
+.user-table-container {
+    width: 100%;
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    overflow-x: auto;
+
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+
+    font-family: "Poppins", sans-serif !important;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.user-table {
+    min-width: 1200px;
+
+    font-family: "Poppins", sans-serif !important;
+
+    .MuiTableCell-root {
+        font-family: "Poppins", sans-serif !important;
+    }
+}
+
+/* =========================================================
+   TABLE HEADER
+========================================================= */
+
+.user-table-header {
+    background: #f8f8ff;
+
+    .MuiTableCell-root {
+        padding: 12px 16px;
+
+        border-bottom: 1px solid #e5e7eb;
+
+        color: #4b5563;
+
+        font-family: "Poppins", sans-serif !important;
+        font-size: 12px;
+        font-weight: 600;
+
+        letter-spacing: 0.2px;
+
+        white-space: nowrap;
+    }
+}
+
+/* =========================================================
+   TABLE ROW
+========================================================= */
+
+.user-table-row {
+    transition: background-color 0.15s ease;
+
+    &:hover {
+        background-color: #fafaff;
+    }
+
+    &:last-child {
+
+        .MuiTableCell-root {
+            border-bottom: 0;
+        }
+    }
+
+    .MuiTableCell-root {
+        padding: 14px 16px;
+
+        border-bottom: 1px solid #f0f1f3;
+
+        font-family: "Poppins", sans-serif !important;
+    }
+}
+
+/* =========================================================
+   TABLE TEXT
+========================================================= */
+
+.user-name {
+    color: #111827 !important;
+
+    font-size: 13px !important;
+    font-weight: 500 !important;
+
+    white-space: nowrap;
+}
+
+.user-email {
+    color: #4b5563 !important;
+
+    font-size: 13px !important;
+}
+
+.user-phone {
+    color: #4b5563 !important;
+
+    font-size: 13px !important;
+
+    white-space: nowrap;
+}
+
+.user-phone-empty {
+    color: #9ca3af !important;
+}
+
+.created-date {
+    color: #6b7280 !important;
+
+    font-size: 12px !important;
+
+    white-space: nowrap;
+}
+
+.table-na {
+    color: #9ca3af;
+
+    font-size: 13px;
+}
+
+/* =========================================================
+   ROLE CHIPS
+========================================================= */
+
+.role-chip {
+    height: 26px !important;
+
+    border-radius: 6px !important;
+
+    font-family: "Poppins", sans-serif !important;
+
+    font-size: 11px !important;
+    font-weight: 600 !important;
+
+    text-transform: capitalize;
+
+    .MuiChip-label {
+        padding: 0 10px;
+    }
+}
+
+.role-admin {
+    color: #4f46e5 !important;
+    background-color: #eef2ff !important;
+}
+
+.role-officer {
+    color: #2563eb !important;
+    background-color: #eff6ff !important;
+}
+
+.role-worker {
+    color: #ea580c !important;
+    background-color: #fff7ed !important;
+}
+
+.role-citizen {
+    color: #059669 !important;
+    background-color: #ecfdf5 !important;
+}
+
+/* =========================================================
+   DEPARTMENT
+========================================================= */
+
+.department-chip {
+    height: 26px !important;
+
+    max-width: 180px;
+
+    border-radius: 6px !important;
+
+    color: #6366f1 !important;
+    background-color: #eef2ff !important;
+
+    border: 1px solid #e0e7ff !important;
+
+    font-family: "Poppins", sans-serif !important;
+
+    font-size: 11px !important;
+    font-weight: 500 !important;
+
+    .MuiChip-label {
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+    }
+}
+
+.not-assigned-chip {
+    height: 26px !important;
+
+    border-radius: 6px !important;
+
+    color: #6b7280 !important;
+
+    border-color: #d1d5db !important;
+
+    font-family: "Poppins", sans-serif !important;
+
+    font-size: 11px !important;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-chip {
+    height: 26px !important;
+
+    border-radius: 6px !important;
+
+    font-family: "Poppins", sans-serif !important;
+
+    font-size: 11px !important;
+    font-weight: 600 !important;
+}
+
+.status-active {
+    color: #047857 !important;
+
+    background-color: #ecfdf5 !important;
+
+    border: 1px solid #d1fae5 !important;
+}
+
+.status-inactive {
+    color: #6b7280 !important;
+
+    background-color: #f3f4f6 !important;
+
+    border: 1px solid #e5e7eb !important;
+}
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.user-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    white-space: nowrap;
+}
+
+.table-action-button {
+    min-width: auto !important;
+
+    height: 30px !important;
+
+    padding: 0 10px !important;
+
+    border-radius: 6px !important;
+
+    border-color: #d1d5db !important;
+
+    color: #374151 !important;
+
+    font-family: "Poppins", sans-serif !important;
+
+    font-size: 11px !important;
+    font-weight: 500 !important;
+
+    text-transform: none !important;
+
+    &:hover {
+        border-color: #6366f1 !important;
+
+        color: #6366f1 !important;
+
+        background-color: #f5f5ff !important;
+    }
+
+    &.Mui-disabled {
+        opacity: 0.5;
+    }
+}
+
+/* =========================================================
+   DEACTIVATE / ACTIVATE
+========================================================= */
+
+.deactivate-button {
+
+    &:hover {
+        border-color: #dc2626 !important;
+
+        color: #dc2626 !important;
+
+        background-color: #fef2f2 !important;
+    }
+}
+
+.activate-button {
+
+    &:hover {
+        border-color: #16a34a !important;
+
+        color: #16a34a !important;
+
+        background-color: #f0fdf4 !important;
+    }
+}
+
+/* =========================================================
+   DIALOG
+========================================================= */
+
+.user-dialog {
+
+    .MuiPaper-root {
+        border-radius: 12px;
+
+        font-family: "Poppins", sans-serif !important;
+    }
+
+    .MuiMenuItem-root {
+        font-family: "Poppins", sans-serif !important;
+
+        font-size: 13px;
+
+        &:hover {
+            background-color: #f5f5ff;
+        }
+
+        &.Mui-selected {
+            background-color: #eef2ff;
+
+            &:hover {
+                background-color: #e8eaff;
+            }
+        }
+    }
+
+    .MuiInputLabel-root {
+        font-family: "Poppins", sans-serif !important;
+
+        font-size: 13px;
+    }
+}
+
+/* =========================================================
+   DIALOG TITLE
+========================================================= */
+
+.user-dialog-title {
+    padding: 24px 24px 8px !important;
+
+    color: #111827 !important;
+
+    font-family: "Poppins", sans-serif !important;
+
+    font-size: 18px !important;
+    font-weight: 600 !important;
+}
+
+/* =========================================================
+   DIALOG CONTENT
+========================================================= */
+
+.user-dialog-content {
+    padding: 16px 24px 8px !important;
+}
+
+.dialog-description {
+    margin-bottom: 16px !important;
+
+    color: #6b7280 !important;
+
+    font-family: "Poppins", sans-serif !important;
+
+    font-size: 13px !important;
+
+    line-height: 1.7 !important;
+
+    strong {
+        color: #374151;
+
+        font-weight: 600;
+    }
+}
+
+.danger-text {
+    color: #dc2626 !important;
+}
+
+.success-text {
+    color: #059669 !important;
+}
+
+/* =========================================================
+   SELECT
+========================================================= */
+
+.user-select {
+    border-radius: 7px !important;
+
+    font-family: "Poppins", sans-serif !important;
+
+    font-size: 13px !important;
+
+    .MuiOutlinedInput-notchedOutline {
+        border-color: #d1d5db;
+    }
+
+    &:hover {
+
+        .MuiOutlinedInput-notchedOutline {
+            border-color: #6366f1;
+        }
+    }
+
+    &.Mui-focused {
+
+        .MuiOutlinedInput-notchedOutline {
+            border-color: #6366f1;
+
+            border-width: 1px;
+        }
+    }
+}
+
+/* =========================================================
+   DIALOG ACTIONS
+========================================================= */
+
+.user-dialog-actions {
+    padding: 16px 24px 24px !important;
+
+    gap: 8px;
+}
+
+.dialog-cancel-button {
+    height: 36px !important;
+
+    padding: 0 16px !important;
+
+    border-radius: 7px !important;
+
+    color: #6b7280 !important;
+
+    font-family: "Poppins", sans-serif !important;
+
+    font-size: 12px !important;
+    font-weight: 500 !important;
+
+    text-transform: none !important;
+
+    &:hover {
+        background-color: #f9fafb !important;
+    }
+}
+
+.dialog-primary-button {
+    height: 36px !important;
+
+    padding: 0 16px !important;
+
+    border-radius: 7px !important;
+
+    background-color: #6366f1 !important;
+
+    font-family: "Poppins", sans-serif !important;
+
+    font-size: 12px !important;
+    font-weight: 500 !important;
+
+    text-transform: none !important;
+
+    box-shadow: none !important;
+
+    &:hover {
+        background-color: #5558d9 !important;
+
+        box-shadow: none !important;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+    }
+}
+
+.dialog-danger-button {
+    height: 36px !important;
+
+    padding: 0 16px !important;
+
+    border-radius: 7px !important;
+
+    background-color: #dc2626 !important;
+
+    font-family: "Poppins", sans-serif !important;
+
+    font-size: 12px !important;
+    font-weight: 500 !important;
+
+    text-transform: none !important;
+
+    box-shadow: none !important;
+
+    &:hover {
+        background-color: #b91c1c !important;
+
+        box-shadow: none !important;
+    }
+}
+
+.dialog-success-button {
+    height: 36px !important;
+
+    padding: 0 16px !important;
+
+    border-radius: 7px !important;
+
+    background-color: #059669 !important;
+
+    font-family: "Poppins", sans-serif !important;
+
+    font-size: 12px !important;
+    font-weight: 500 !important;
+
+    text-transform: none !important;
+
+    box-shadow: none !important;
+
+    &:hover {
+        background-color: #047857 !important;
+
+        box-shadow: none !important;
+    }
+}
+
+/* =========================================================
+   BUTTON LOADER
+========================================================= */
+
+.button-loader {
+    color: #ffffff !important;
+
+    margin-right: 8px;
+}
+
+/* =========================================================
+   DEPARTMENT LOADING
+========================================================= */
+
+.department-loading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #6b7280;
+
+    font-family: "Poppins", sans-serif !important;
+
+    font-size: 12px;
+
+    .MuiCircularProgress-root {
+        color: #6366f1;
+    }
+
+    .MuiTypography-root {
+        font-family: "Poppins", sans-serif !important;
+
+        font-size: 12px;
+    }
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .user-table {
+        min-width: 1100px;
+    }
+
+    .user-table-row {
+
+        .MuiTableCell-root {
+            padding: 12px;
+        }
+    }
+
+    .user-table-header {
+
+        .MuiTableCell-root {
+            padding: 11px 12px;
+        }
+    }
+}

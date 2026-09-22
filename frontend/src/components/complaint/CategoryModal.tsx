@@ -173,16 +173,16 @@ const CategoryModal = ({
 
                             return (
                                 <Box
-                                    key={category.value}
                                     component="button"
                                     type="button"
                                     className={`categoryModal_card ${isSelected
                                         ? "categoryModal_card--selected"
                                         : ""
                                         }`}
-                                    onClick={() =>
-                                        onSelect(category)
-                                    }>
+                                    onClick={() => onSelect(category)}
+                                    aria-pressed={isSelected}
+                                    aria-label={`Select ${category.name}`}
+                                >
                                     <Box className="categoryModal_icon">
                                         {category.icon}
                                     </Box>

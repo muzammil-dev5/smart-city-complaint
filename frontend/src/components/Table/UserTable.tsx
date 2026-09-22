@@ -17,6 +17,8 @@ import {
     DialogContentText,
     DialogActions,
     CircularProgress,
+    Box,
+    Typography,
 } from "@mui/material";
 
 import type { User, Department } from "../../types/user";
@@ -30,6 +32,8 @@ import {
 } from "../../services/userService";
 
 import { getActiveDepartments } from "../../services/departmentService";
+
+import "./UserTable.scss";
 
 type UserTableProps = {
     users: User[];
@@ -62,7 +66,8 @@ const UserTable = ({
 
     // ================= ROLE =================
 
-    const [openDialog, setOpenDialog] = useState(false);
+    const [openDialog, setOpenDialog] =
+        useState(false);
 
     const [selectedUser, setSelectedUser] =
         useState<User | null>(null);
@@ -159,7 +164,8 @@ const UserTable = ({
     };
 
 
-    // Load active departments when dialog opens
+    // ================= LOAD DEPARTMENTS =================
+
     useEffect(() => {
 
         if (!openDepartmentDialog) {
@@ -319,14 +325,17 @@ const UserTable = ({
 
 
     return (
-        <>
+        <Box className="user-table-wrapper">
 
             {/* ================= USER TABLE ================= */}
 
-            <TableContainer>
-                <Table>
+            <TableContainer className="user-table-container">
+
+                <Table className="user-table">
+
                     <TableHead>
-                        <TableRow>
+
+                        <TableRow className="user-table-header">
 
                             <TableCell>
                                 Name
@@ -361,7 +370,9 @@ const UserTable = ({
                             </TableCell>
 
                         </TableRow>
+
                     </TableHead>
+
 
                     <TableBody>
 
@@ -369,40 +380,68 @@ const UserTable = ({
 
                             <TableRow
                                 key={user._id}
+                                className="user-table-row"
                             >
 
-                                <TableCell>
+                                {/* NAME */}
+
+                                <TableCell className="user-name">
                                     {user.name}
                                 </TableCell>
 
-                                <TableCell>
+
+                                {/* EMAIL */}
+
+                                <TableCell className="user-email">
                                     {user.email}
                                 </TableCell>
 
-                                <TableCell>
+
+                                {/* PHONE */}
+
+                                <TableCell
+                                    className={
+                                        user.phone
+                                            ? "user-phone"
+                                            : "user-phone user-phone-empty"
+                                    }
+                                >
                                     {user.phone || "N/A"}
                                 </TableCell>
 
+
+                                {/* ROLE */}
+
                                 <TableCell>
+
                                     <Chip
                                         label={user.role}
                                         size="small"
+                                        className={`role-chip role-${user.role}`}
                                     />
+
                                 </TableCell>
+
+
+                                {/* DEPARTMENT */}
 
                                 <TableCell>
 
-                                    {user.role === "officer" ||
-                                    user.role === "worker" ? (
+                                    {user.role ===
+                                        "officer" ||
+                                        user.role ===
+                                        "worker" ? (
 
                                         user.department?.name ? (
 
                                             <Chip
                                                 label={
-                                                    user.department.name
+                                                    user
+                                                        .department
+                                                        .name
                                                 }
                                                 size="small"
-                                                color="primary"
+                                                className="department-chip"
                                             />
 
                                         ) : (
@@ -411,21 +450,35 @@ const UserTable = ({
                                                 label="Not Assigned"
                                                 size="small"
                                                 variant="outlined"
+                                                className="not-assigned-chip"
                                             />
 
                                         )
 
                                     ) : (
-                                        "N/A"
+
+                                        <Typography
+                                            component="span"
+                                            className="table-na"
+                                        >
+                                            N/A
+                                        </Typography>
+
                                     )}
 
                                 </TableCell>
 
-                                <TableCell>
+
+                                {/* CREATED AT */}
+
+                                <TableCell className="created-date">
                                     {new Date(
                                         user.createdAt
                                     ).toLocaleDateString()}
                                 </TableCell>
+
+
+                                {/* STATUS */}
 
                                 <TableCell>
 
@@ -435,89 +488,94 @@ const UserTable = ({
                                                 ? "Active"
                                                 : "Inactive"
                                         }
-                                        color={
-                                            user.isActive
-                                                ? "success"
-                                                : "default"
-                                        }
                                         size="small"
+                                        className={
+                                            user.isActive
+                                                ? "status-chip status-active"
+                                                : "status-chip status-inactive"
+                                        }
                                     />
 
                                 </TableCell>
 
+
+                                {/* ACTIONS */}
+
                                 <TableCell>
 
-                                    {/* Change Role */}
+                                    <Box className="user-actions">
 
-                                    <Button
-                                        variant="outlined"
-                                        size="small"
-                                        disabled={
-                                            user._id ===
-                                            currentUserId
-                                        }
-                                        onClick={() =>
-                                            handleOpenRoleDialog(
-                                                user
-                                            )
-                                        }
-                                    >
-                                        Change Role
-                                    </Button>
-
-
-                                    {/* Department */}
-
-                                    {(user.role === "officer" ||
-                                        user.role === "worker") && (
+                                        {/* CHANGE ROLE */}
 
                                         <Button
                                             variant="outlined"
                                             size="small"
-                                            sx={{
-                                                ml: 1,
-                                            }}
+                                            disabled={
+                                                user._id ===
+                                                currentUserId
+                                            }
                                             onClick={() =>
-                                                handleOpenDepartmentDialog(
+                                                handleOpenRoleDialog(
                                                     user
                                                 )
                                             }
+                                            className="table-action-button"
                                         >
-                                            {user.department
-                                                ? "Change Department"
-                                                : "Assign Department"}
+                                            Change Role
                                         </Button>
 
-                                    )}
+
+                                        {/* DEPARTMENT */}
+
+                                        {(user.role ===
+                                            "officer" ||
+                                            user.role ===
+                                            "worker") && (
+
+                                                <Button
+                                                    variant="outlined"
+                                                    size="small"
+                                                    onClick={() =>
+                                                        handleOpenDepartmentDialog(
+                                                            user
+                                                        )
+                                                    }
+                                                    className="table-action-button"
+                                                >
+                                                    {user.department
+                                                        ? "Change Department"
+                                                        : "Assign Department"}
+                                                </Button>
+
+                                            )}
 
 
-                                    {/* Status */}
+                                        {/* STATUS */}
 
-                                    <Button
-                                        variant="outlined"
-                                        size="small"
-                                        color={
-                                            user.isActive
-                                                ? "error"
-                                                : "success"
-                                        }
-                                        sx={{
-                                            ml: 1,
-                                        }}
-                                        disabled={
-                                            user._id ===
-                                            currentUserId
-                                        }
-                                        onClick={() =>
-                                            handleOpenStatusDialog(
-                                                user
-                                            )
-                                        }
-                                    >
-                                        {user.isActive
-                                            ? "Deactivate"
-                                            : "Activate"}
-                                    </Button>
+                                        <Button
+                                            variant="outlined"
+                                            size="small"
+                                            disabled={
+                                                user._id ===
+                                                currentUserId
+                                            }
+                                            onClick={() =>
+                                                handleOpenStatusDialog(
+                                                    user
+                                                )
+                                            }
+                                            className={
+                                                user.isActive
+                                                    ? "table-action-button deactivate-button"
+                                                    : "table-action-button activate-button"
+                                            }
+                                        >
+                                            {user.isActive
+                                                ? "Deactivate"
+                                                : "Activate"}
+                                        </Button>
+
+                                    </Box>
 
                                 </TableCell>
 
@@ -526,7 +584,9 @@ const UserTable = ({
                         ))}
 
                     </TableBody>
+
                 </Table>
+
             </TableContainer>
 
 
@@ -535,17 +595,27 @@ const UserTable = ({
             <Dialog
                 open={openDialog}
                 onClose={handleCloseRoleDialog}
+                fullWidth
+                maxWidth="xs"
+                className="user-dialog"
             >
 
-                <DialogTitle>
+                <DialogTitle className="user-dialog-title">
                     Change User Role
                 </DialogTitle>
 
-                <DialogContent>
+                <DialogContent className="user-dialog-content">
+
+                    <Typography className="dialog-description">
+                        Select a new role for{" "}
+                        <strong>
+                            {selectedUser?.name}
+                        </strong>
+                    </Typography>
 
                     <FormControl
                         fullWidth
-                        sx={{ mt: 1 }}
+                        size="small"
                     >
 
                         <InputLabel>
@@ -560,6 +630,7 @@ const UserTable = ({
                                     e.target.value as User["role"]
                                 )
                             }
+                            className="user-select"
                         >
 
                             <MenuItem value="citizen">
@@ -584,11 +655,12 @@ const UserTable = ({
 
                 </DialogContent>
 
-                <DialogActions>
+                <DialogActions className="user-dialog-actions">
 
                     <Button
                         onClick={handleCloseRoleDialog}
                         disabled={updatingRole}
+                        className="dialog-cancel-button"
                     >
                         Cancel
                     </Button>
@@ -599,12 +671,22 @@ const UserTable = ({
                         disabled={
                             updatingRole ||
                             selectedRole ===
-                                selectedUser?.role
+                            selectedUser?.role
                         }
+                        className="dialog-primary-button"
                     >
+
+                        {updatingRole && (
+                            <CircularProgress
+                                size={16}
+                                className="button-loader"
+                            />
+                        )}
+
                         {updatingRole
                             ? "Updating..."
                             : "Update Role"}
+
                     </Button>
 
                 </DialogActions>
@@ -617,58 +699,81 @@ const UserTable = ({
             <Dialog
                 open={openStatusDialog}
                 onClose={handleCloseStatusDialog}
+                fullWidth
+                maxWidth="xs"
+                className="user-dialog"
             >
 
-                <DialogTitle>
+                <DialogTitle className="user-dialog-title">
                     {statusUser?.isActive
                         ? "Deactivate User"
                         : "Activate User"}
                 </DialogTitle>
 
-                <DialogContent>
+                <DialogContent className="user-dialog-content">
 
-                    <DialogContentText>
+                    <DialogContentText className="dialog-description">
 
                         Are you sure you want to{" "}
-                        {statusUser?.isActive
-                            ? "deactivate"
-                            : "activate"}{" "}
+
+                        <strong
+                            className={
+                                statusUser?.isActive
+                                    ? "danger-text"
+                                    : "success-text"
+                            }
+                        >
+                            {statusUser?.isActive
+                                ? "deactivate"
+                                : "activate"}
+                        </strong>{" "}
+
                         {statusUser?.name}?
 
                     </DialogContentText>
 
                 </DialogContent>
 
-                <DialogActions>
+                <DialogActions className="user-dialog-actions">
 
                     <Button
                         onClick={
                             handleCloseStatusDialog
                         }
                         disabled={updatingStatus}
+                        className="dialog-cancel-button"
                     >
                         Cancel
                     </Button>
 
                     <Button
                         variant="contained"
-                        color={
-                            statusUser?.isActive
-                                ? "error"
-                                : "success"
-                        }
                         onClick={
                             handleUpdateStatus
                         }
                         disabled={
                             updatingStatus
                         }
+                        className={
+                            statusUser?.isActive
+                                ? "dialog-danger-button"
+                                : "dialog-success-button"
+                        }
                     >
+
+                        {updatingStatus && (
+                            <CircularProgress
+                                size={16}
+                                className="button-loader"
+                            />
+                        )}
+
                         {updatingStatus
                             ? "Updating..."
                             : statusUser?.isActive
-                            ? "Deactivate"
-                            : "Activate"}
+                                ? "Deactivate"
+                                : "Activate"}
+
                     </Button>
 
                 </DialogActions>
@@ -685,27 +790,32 @@ const UserTable = ({
                 }
                 fullWidth
                 maxWidth="sm"
+                className="user-dialog"
             >
 
-                <DialogTitle>
+                <DialogTitle className="user-dialog-title">
+
                     {departmentUser?.department
                         ? "Change Department"
                         : "Assign Department"}
+
                 </DialogTitle>
 
-                <DialogContent>
+                <DialogContent className="user-dialog-content">
 
-                    <DialogContentText
-                        sx={{ mb: 2 }}
-                    >
-                        User:{" "}
+                    <DialogContentText className="dialog-description">
+
+                        Select the department for{" "}
+
                         <strong>
                             {departmentUser?.name}
                         </strong>
+
                     </DialogContentText>
 
                     <FormControl
                         fullWidth
+                        size="small"
                     >
 
                         <InputLabel>
@@ -724,14 +834,25 @@ const UserTable = ({
                                     e.target.value
                                 )
                             }
+                            className="user-select"
                         >
 
                             {loadingDepartments ? (
 
                                 <MenuItem disabled>
-                                    <CircularProgress
-                                        size={20}
-                                    />
+
+                                    <Box className="department-loading">
+
+                                        <CircularProgress
+                                            size={18}
+                                        />
+
+                                        <Typography>
+                                            Loading departments...
+                                        </Typography>
+
+                                    </Box>
+
                                 </MenuItem>
 
                             ) : (
@@ -763,7 +884,7 @@ const UserTable = ({
 
                 </DialogContent>
 
-                <DialogActions>
+                <DialogActions className="user-dialog-actions">
 
                     <Button
                         onClick={
@@ -772,6 +893,7 @@ const UserTable = ({
                         disabled={
                             updatingDepartment
                         }
+                        className="dialog-cancel-button"
                     >
                         Cancel
                     </Button>
@@ -785,17 +907,27 @@ const UserTable = ({
                             !selectedDepartment ||
                             updatingDepartment
                         }
+                        className="dialog-primary-button"
                     >
+
+                        {updatingDepartment && (
+                            <CircularProgress
+                                size={16}
+                                className="button-loader"
+                            />
+                        )}
+
                         {updatingDepartment
-                            ? "Updating..."
+                            ? "Saving..."
                             : "Save Department"}
+
                     </Button>
 
                 </DialogActions>
 
             </Dialog>
 
-        </>
+        </Box>
     );
 };
 

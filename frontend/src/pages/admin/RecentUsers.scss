@@ -21,9 +21,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    width: 100%;
     padding: 18px 20px;
-
     border-bottom: 1px solid #eef2f7;
 }
 
@@ -36,7 +35,6 @@
 
 .recentUsers-subtitle {
     margin-top: 3px !important;
-
     font-family: "Poppins", sans-serif !important;
     font-size: 12px !important;
     color: #9ca3af !important;
@@ -44,17 +42,12 @@
 
 .recentUsers-viewAll {
     min-width: auto !important;
-
     padding: 6px 10px !important;
-
     font-family: "Poppins", sans-serif !important;
     font-size: 12px !important;
     font-weight: 600 !important;
-
     color: #4f46e5 !important;
-
     text-transform: none !important;
-
     border-radius: 6px !important;
 }
 
