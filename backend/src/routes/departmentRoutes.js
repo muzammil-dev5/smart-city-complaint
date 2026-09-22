@@ -9,7 +9,8 @@ const {
     createDepartment,
     getAllDepartments,
     updateDepartment,
-    getActiveDepartments
+    getActiveDepartments,
+    deleteDepartment
 } = require("../controllers/departmentController");
 
 
@@ -39,6 +40,13 @@ router.put(
     authMiddleware,
     roleMiddleware("admin"),
     updateDepartment
+);
+
+router.delete(
+    "/:id",
+    authMiddleware,
+    roleMiddleware("admin"),
+    deleteDepartment
 );
 
 

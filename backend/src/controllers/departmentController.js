@@ -1,4 +1,5 @@
 const Department = require("../models/Department");
+const Complaint = require("../models/Complaint");
 
 const createDepartment = async (req, res) => {
     try {
@@ -100,6 +101,44 @@ const updateDepartment = async (req, res) => {
     }
 };
 
+const deleteDepartment = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const department = await Department.findById(id);
+
+        if (!department) {
+            return res.status(404).json({
+                message: "Department not found"
+            });
+        }
+
+        const complaintCount = await Complaint.countDocuments({
+            department: id
+        });
+
+        if (complaintCount > 0) {
+            return res.status(400).json({
+                message:
+                    "This department cannot be deleted because it has assigned complaints."
+            });
+        }
+
+        await Department.findByIdAndDelete(id);
+
+        return res.status(200).json({
+            message: "Department deleted successfully"
+        });
+
+    } catch (error) {
+        console.error("Delete department error:", error);
+
+        return res.status(500).json({
+            message: "Server error while deleting department"
+        });
+    }
+};
+
 const getActiveDepartments = async (req, res) => {
     try {
         const departments = await Department.find({
@@ -128,5 +167,6 @@ module.exports = {
     createDepartment,
     getAllDepartments,
     updateDepartment,
-    getActiveDepartments
+    getActiveDepartments,
+    deleteDepartment
 };

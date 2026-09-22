@@ -43,3 +43,11 @@ export const updateDepartment = async (
 
     return response.data;
 };
+
+export const deleteDepartment = async (id: string) => {
+    const response = await api.delete(
+        `/departments/${id}`
+    );
+
+    return response.data;
+};
