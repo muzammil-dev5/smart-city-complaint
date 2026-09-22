@@ -104,7 +104,7 @@ const ComplaintDetails = () => {
                     const feedbackResponse = await getComplaintFeedback(id);
 
                     if (feedbackResponse.feedback) {
-                        setFeedback(feedbackResponse.feedback); 
+                        setFeedback(feedbackResponse.feedback);
                         setFeedbackSubmitted(true);
                     } else {
                         setFeedbackSubmitted(false);
@@ -405,15 +405,17 @@ const ComplaintDetails = () => {
 
                 {role === "citizen" && (
                     <Box className="complaintDetails_actions">
-
                         <Button
                             variant="contained"
                             startIcon={<EditOutlined />}
                             className="complaintDetails_editButton"
+                            disabled={complaint.status === "resolved"}
                             onClick={() =>
                                 navigate(
                                     `/citizen/complaints/${complaint._id}/edit`
-                                )}>
+                                )
+                            }
+                        >
                             Edit Complaint
                         </Button>
 

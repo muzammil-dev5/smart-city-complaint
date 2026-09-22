@@ -186,8 +186,16 @@
 
     &_editButton {
         background: #047857 !important;
+        color: #ffffff !important;
         font: 500 13px "Poppins", sans-serif !important;
         box-shadow: none !important;
+
+        &:disabled {
+            background: #d1fae5 !important;
+            color: #6b7280 !important;
+            cursor: not-allowed !important;
+            box-shadow: none !important;
+        }
 
         &:hover {
             background: #065f46 !important;
