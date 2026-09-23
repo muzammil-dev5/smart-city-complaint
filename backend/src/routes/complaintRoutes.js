@@ -120,7 +120,7 @@ router.put(
 router.put(
     "/:id/assign-worker",
     authMiddleware,
-    roleMiddleware("admin"),
+    roleMiddleware("officer"),
     assignWorker
 );
 

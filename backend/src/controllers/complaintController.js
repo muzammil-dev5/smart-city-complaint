@@ -641,7 +641,11 @@ const getAssignedComplaintById = async (req, res) => {
         const complaint = await Complaint.findOne({
             _id: req.params.id,
             assignedOfficer: req.user.id
-        }).populate("citizen", "name email");
+        })
+            .populate("citizen", "name email")
+            .populate("department", "name description")
+            .populate("assignedOfficer", "name email")
+            .populate("worker", "name email");
 
         if (!complaint) {
             return res.status(404).json({
@@ -692,20 +696,11 @@ const assignWorker = async (req, res) => {
         const { workerId } = req.body;
 
 
-        // =====================================================
-        // WORKER ID REQUIRED
-        // =====================================================
-
         if (!workerId) {
             return res.status(400).json({
                 message: "Worker is required"
             });
         }
-
-
-        // =====================================================
-        // FIND COMPLAINT
-        // =====================================================
 
         const complaint = await Complaint.findById(id);
 
@@ -715,12 +710,14 @@ const assignWorker = async (req, res) => {
             });
         }
 
-
-        // =====================================================
-        // IMPORTANT:
-        // Worker can ONLY be assigned after officer
-        // has started the complaint.
-        // =====================================================
+        if (
+            !complaint.assignedOfficer ||
+            complaint.assignedOfficer.toString() !== req.user.id
+        ) {
+            return res.status(403).json({
+                message: "You are not assigned to this complaint"
+            });
+        }
 
         if (complaint.status !== "in_progress") {
             return res.status(400).json({
@@ -728,7 +725,6 @@ const assignWorker = async (req, res) => {
                     "Worker can only be assigned to complaints that are in progress"
             });
         }
-
 
         // =====================================================
         // COMPLAINT MUST HAVE DEPARTMENT
@@ -740,7 +736,6 @@ const assignWorker = async (req, res) => {
                     "Complaint must have a department before assigning a worker"
             });
         }
-
 
         // =====================================================
         // FIND WORKER
@@ -754,18 +749,11 @@ const assignWorker = async (req, res) => {
 
         if (!worker) {
             return res.status(404).json({
-                message:
-                    "Worker not found or inactive"
+                message: "Worker not found or inactive"
             });
         }
 
 
-        // =====================================================
-        // IMPORTANT SECURITY CHECK
-        //
-        // Worker must belong to same department
-        // as the complaint.
-        // =====================================================
 
         if (
             !worker.department ||
@@ -778,7 +766,6 @@ const assignWorker = async (req, res) => {
             });
         }
 
-
         // =====================================================
         // ASSIGN WORKER
         // =====================================================
@@ -786,7 +773,6 @@ const assignWorker = async (req, res) => {
         complaint.worker = workerId;
 
         await complaint.save();
-
 
         // =====================================================
         // ACTIVITY
@@ -799,7 +785,6 @@ const assignWorker = async (req, res) => {
             role: req.user.role
         });
 
-
         // =====================================================
         // WORKER NOTIFICATION
         // =====================================================
@@ -811,7 +796,6 @@ const assignWorker = async (req, res) => {
             message:
                 `Complaint "${complaint.title}" has been assigned to you.`
         });
-
 
         // =====================================================
         // RETURN UPDATED COMPLAINT
@@ -830,17 +814,18 @@ const assignWorker = async (req, res) => {
                 .populate(
                     "worker",
                     "name email"
+                )
+                .populate(
+                    "citizen",
+                    "name email"
                 );
 
-
         return res.status(200).json({
-            message:
-                "Worker assigned successfully",
+            message: "Worker assigned successfully",
             complaint: updatedComplaint
         });
 
     } catch (error) {
-
         console.error(
             "Assign worker error:",
             error
