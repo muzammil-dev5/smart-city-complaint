@@ -35,21 +35,28 @@ const getOfficers = async (req, res) => {
 
 const getWorkers = async (req, res) => {
     try {
-        const { departmentId, officerId } = req.query;
+        const { departmentId } = req.query;
 
         const filter = {
             role: "worker",
             isActive: true
         };
 
-        if (departmentId) {
-            filter.department = departmentId;
+        if (req.user.role === "admin") {
+            if (departmentId) {
+                filter.department = departmentId;
+            }
         }
 
-        // Optional:
-        // Agar future mein worker ko specific officer ke under
-        // assign karna ho to yahan officerId use kar sakte hain.
-        // Abhi sirf department filtering hogi.
+        if (req.user.role === "officer") {
+            if (!req.user.department) {
+                return res.status(400).json({
+                    message: "Officer is not assigned to a department"
+                });
+            }
+
+            filter.department = req.user.department;
+        }
 
         const workers = await User.find(filter)
             .select("_id name email department")

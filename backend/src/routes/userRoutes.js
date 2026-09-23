@@ -41,7 +41,7 @@ router.get(
 router.get(
     "/workers",
     authMiddleware,
-    roleMiddleware("admin"),
+    roleMiddleware("admin", "officer"),
     getWorkers
 );
 
