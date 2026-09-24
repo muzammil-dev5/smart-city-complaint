@@ -66,6 +66,11 @@ export const adminMenu: MenuItem[] = [
         label: "Reports",
         path: "/admin/reports",
         icon: <AssessmentOutlined />
+    },
+    {
+        label: "Profile",
+        path: "/profile",
+        icon: <PersonIcon />
     }
 ];
 
@@ -76,24 +81,14 @@ export const officerMenu: MenuItem[] = [
         icon: <HomeIcon />
     },
     {
-        label: "Users",
-        path: "/users",
-        icon: <GroupIcon />
-    },
-    {
-        label: "Departments",
-        path: "/departments",
-        icon: <SettingsIcon />
-    },
-    {
         label: "Complaints",
         path: "/complaints",
         icon: <NoteAltIcon />
     },
     {
-        label: "Reports",
-        path: "/admin/reports",
-        icon: <AssessmentOutlined />
+        label: "Profile",
+        path: "/profile",
+        icon: <PersonIcon />
     }
 ];
 
@@ -104,23 +99,13 @@ export const workerMenu: MenuItem[] = [
         icon: <HomeIcon />
     },
     {
-        label: "Users",
-        path: "/users",
-        icon: <GroupIcon />
-    },
-    {
-        label: "Departments",
-        path: "/departments",
-        icon: <SettingsIcon />
-    },
-    {
         label: "Assigned Complaints",
         path: "/worker/complaints",
         icon: <NoteAltIcon />
     },
     {
-        label: "Reports",
-        path: "/admin/reports",
-        icon: <AssessmentOutlined />
+        label: "Profile",
+        path: "/profile",
+        icon: <PersonIcon />
     }
 ];

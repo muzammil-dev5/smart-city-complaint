@@ -368,7 +368,7 @@ const Navbar = () => {
                     </Avatar>
 
                     <Box className="user-info">
-                        <Typography className="user-name">
+                        <Typography className="usernav-name">
                             {user?.name ?? "Guest"}
                         </Typography>
 

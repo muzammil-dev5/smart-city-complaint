@@ -5,27 +5,34 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle,
+    IconButton,
     Paper,
     Typography,
 } from "@mui/material";
+
 import {
     ArrowBack,
     CalendarTodayOutlined,
     CameraAltOutlined,
     CategoryOutlined,
     CheckCircle,
+    Close,
     DescriptionOutlined,
+    ImageOutlined,
     LocationOnOutlined,
+    UploadFileOutlined,
     WorkOutlineOutlined,
 } from "@mui/icons-material";
+
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
 import {
     completeWorkerComplaint,
     getWorkerComplaintById,
 } from "../../services/complaintService";
+
 import "./WorkerComplaintDetails.scss";
 
 type StatusHistory = {
@@ -246,9 +253,8 @@ const WorkerComplaintDetails = () => {
     if (loading) {
         return (
             <Box className="workerComplaintDetails_loading">
-                <Typography>
-                    Loading complaint...
-                </Typography>
+                <Box className="workerComplaintDetails_loader" />
+                <Typography>Loading complaint...</Typography>
             </Box>
         );
     }
@@ -256,15 +262,35 @@ const WorkerComplaintDetails = () => {
     if (!complaint) {
         return (
             <Box className="workerComplaintDetails_empty">
-                <Typography>
-                    Complaint not found.
+                <Box className="workerComplaintDetails_emptyIcon">
+                    <DescriptionOutlined />
+                </Box>
+
+                <Typography className="workerComplaintDetails_emptyTitle">
+                    Complaint not found
                 </Typography>
+
+                <Typography className="workerComplaintDetails_emptyText">
+                    The complaint may have been removed or is no longer
+                    available.
+                </Typography>
+
+                <Button
+                    startIcon={<ArrowBack />}
+                    onClick={() => navigate("/worker/dashboard")}
+                    className="workerComplaintDetails_emptyButton"
+                >
+                    Back to Complaints
+                </Button>
             </Box>
         );
     }
 
+    const isCompleted = complaint.status === "resolved";
+
     return (
         <Box className="workerComplaintDetails">
+            {/* Header */}
             <Box className="workerComplaintDetails_header">
                 <Button
                     className="workerComplaintDetails_backButton"
@@ -274,27 +300,15 @@ const WorkerComplaintDetails = () => {
                     Back to Complaints
                 </Button>
 
-                <Typography className="workerComplaintDetails_title">
-                    Complaint Details
-                </Typography>
-
-                <Typography className="workerComplaintDetails_subtitle">
-                    Review the assigned complaint and complete the assigned work.
-                </Typography>
-            </Box>
-
-            <Paper
-                elevation={0}
-                className="workerComplaintDetails_card"
-            >
-                <Box className="workerComplaintDetails_cardHeader">
+                <Box className="workerComplaintDetails_pageHeading">
                     <Box>
-                        <Typography className="workerComplaintDetails_cardTitle">
-                            Complaint Information
+                        <Typography className="workerComplaintDetails_title">
+                            Complaint Details
                         </Typography>
 
-                        <Typography className="workerComplaintDetails_cardSubtitle">
-                            Details of the complaint assigned to you.
+                        <Typography className="workerComplaintDetails_subtitle">
+                            Review the assigned complaint and manage the
+                            assigned work.
                         </Typography>
                     </Box>
 
@@ -303,13 +317,37 @@ const WorkerComplaintDetails = () => {
                         className={`workerStatus workerStatus_${complaint.status}`}
                     />
                 </Box>
+            </Box>
 
-                <Box className="workerComplaintDetails_field">
+            {/* Complaint Information */}
+            <Paper
+                elevation={0}
+                className="workerComplaintDetails_card"
+            >
+                <Box className="workerComplaintDetails_cardHeader">
+                    <Box className="workerComplaintDetails_sectionHeading">
+                        <Box className="workerComplaintDetails_sectionIcon">
+                            <DescriptionOutlined />
+                        </Box>
+
+                        <Box>
+                            <Typography className="workerComplaintDetails_cardTitle">
+                                Complaint Information
+                            </Typography>
+
+                            <Typography className="workerComplaintDetails_cardSubtitle">
+                                Details of the complaint assigned to you.
+                            </Typography>
+                        </Box>
+                    </Box>
+                </Box>
+
+                <Box className="workerComplaintDetails_field workerComplaintDetails_titleField">
                     <Box className="workerComplaintDetails_icon">
                         <DescriptionOutlined />
                     </Box>
 
-                    <Box>
+                    <Box className="workerComplaintDetails_fieldContent">
                         <Typography className="workerComplaintDetails_label">
                             Complaint Title
                         </Typography>
@@ -325,7 +363,7 @@ const WorkerComplaintDetails = () => {
                         <DescriptionOutlined />
                     </Box>
 
-                    <Box>
+                    <Box className="workerComplaintDetails_fieldContent">
                         <Typography className="workerComplaintDetails_label">
                             Description
                         </Typography>
@@ -342,7 +380,7 @@ const WorkerComplaintDetails = () => {
                             <CategoryOutlined />
                         </Box>
 
-                        <Box>
+                        <Box className="workerComplaintDetails_fieldContent">
                             <Typography className="workerComplaintDetails_label">
                                 Category
                             </Typography>
@@ -358,7 +396,7 @@ const WorkerComplaintDetails = () => {
                             <CalendarTodayOutlined />
                         </Box>
 
-                        <Box>
+                        <Box className="workerComplaintDetails_fieldContent">
                             <Typography className="workerComplaintDetails_label">
                                 Submitted Date
                             </Typography>
@@ -377,7 +415,7 @@ const WorkerComplaintDetails = () => {
                         <LocationOnOutlined />
                     </Box>
 
-                    <Box>
+                    <Box className="workerComplaintDetails_fieldContent">
                         <Typography className="workerComplaintDetails_label">
                             Complaint Location
                         </Typography>
@@ -388,42 +426,79 @@ const WorkerComplaintDetails = () => {
                     </Box>
                 </Box>
 
+                {/* Action */}
                 {complaint.status === "in_progress" && (
-                    <>
-                        <Box className="workerComplaintDetails_actions">
-                            <Button
-                                variant="contained"
-                                startIcon={<CheckCircle />}
-                                className="workerComplaintDetails_completeButton"
-                                onClick={handleOpenCompletionDialog}
-                            >
-                                Mark Completed
-                            </Button>
+                    <Box className="workerComplaintDetails_actionArea">
+                        <Box className="workerComplaintDetails_workingMessage">
+                            <Box className="workerComplaintDetails_workingIcon">
+                                <WorkOutlineOutlined />
+                            </Box>
+
+                            <Box>
+                                <Typography className="workerComplaintDetails_workingTitle">
+                                    Work in progress
+                                </Typography>
+
+                                <Typography className="workerComplaintDetails_workingText">
+                                    Complete the assigned work and upload
+                                    photos as proof of completion.
+                                </Typography>
+                            </Box>
                         </Box>
 
-                        <Box className="workerComplaintDetails_infoMessage">
-                            <WorkOutlineOutlined />
+                        <Button
+                            variant="contained"
+                            startIcon={<CheckCircle />}
+                            className="workerComplaintDetails_completeButton"
+                            onClick={handleOpenCompletionDialog}
+                        >
+                            Mark as Completed
+                        </Button>
+                    </Box>
+                )}
 
-                            <Typography>
-                                You are currently working on this complaint.
-                                Mark it as completed once the work has been finished.
+                {isCompleted && (
+                    <Box className="workerComplaintDetails_completedBanner">
+                        <Box className="workerComplaintDetails_completedIcon">
+                            <CheckCircle />
+                        </Box>
+
+                        <Box>
+                            <Typography className="workerComplaintDetails_completedTitle">
+                                Complaint Completed
+                            </Typography>
+
+                            <Typography className="workerComplaintDetails_completedText">
+                                The complaint has been successfully resolved
+                                and completion proof has been submitted.
                             </Typography>
                         </Box>
-                    </>
+                    </Box>
                 )}
             </Paper>
 
+            {/* Workflow */}
             <Paper
                 elevation={0}
                 className="workerComplaintDetails_card"
             >
-                <Typography className="workerComplaintDetails_cardTitle">
-                    Complaint Workflow
-                </Typography>
+                <Box className="workerComplaintDetails_cardHeader">
+                    <Box className="workerComplaintDetails_sectionHeading">
+                        <Box className="workerComplaintDetails_sectionIcon">
+                            <WorkOutlineOutlined />
+                        </Box>
 
-                <Typography className="workerComplaintDetails_cardSubtitle">
-                    Current progress of this complaint.
-                </Typography>
+                        <Box>
+                            <Typography className="workerComplaintDetails_cardTitle">
+                                Complaint Workflow
+                            </Typography>
+
+                            <Typography className="workerComplaintDetails_cardSubtitle">
+                                Current progress of this complaint.
+                            </Typography>
+                        </Box>
+                    </Box>
+                </Box>
 
                 <Box className="workerComplaintDetails_workflow">
                     <Box
@@ -438,12 +513,16 @@ const WorkerComplaintDetails = () => {
                             1
                         </Box>
 
-                        <Typography>
-                            Assigned
-                        </Typography>
+                        <Typography>Assigned</Typography>
                     </Box>
 
-                    <Box className="workflowLine" />
+                    <Box
+                        className={`workflowLine ${complaint.status === "in_progress" ||
+                            complaint.status === "resolved"
+                            ? "workflowLine_active"
+                            : ""
+                            }`}
+                    />
 
                     <Box
                         className={`workflowStep ${complaint.status === "in_progress" ||
@@ -456,12 +535,15 @@ const WorkerComplaintDetails = () => {
                             2
                         </Box>
 
-                        <Typography>
-                            In Progress
-                        </Typography>
+                        <Typography>In Progress</Typography>
                     </Box>
 
-                    <Box className="workflowLine" />
+                    <Box
+                        className={`workflowLine ${complaint.status === "resolved"
+                            ? "workflowLine_active"
+                            : ""
+                            }`}
+                    />
 
                     <Box
                         className={`workflowStep ${complaint.status === "resolved"
@@ -473,24 +555,33 @@ const WorkerComplaintDetails = () => {
                             3
                         </Box>
 
-                        <Typography>
-                            Completed
-                        </Typography>
+                        <Typography>Completed</Typography>
                     </Box>
                 </Box>
             </Paper>
 
+            {/* Status History */}
             <Paper
                 elevation={0}
                 className="workerComplaintDetails_card"
             >
-                <Typography className="workerComplaintDetails_cardTitle">
-                    Status History
-                </Typography>
+                <Box className="workerComplaintDetails_cardHeader">
+                    <Box className="workerComplaintDetails_sectionHeading">
+                        <Box className="workerComplaintDetails_sectionIcon">
+                            <CalendarTodayOutlined />
+                        </Box>
 
-                <Typography className="workerComplaintDetails_cardSubtitle">
-                    Activity and status changes for this complaint.
-                </Typography>
+                        <Box>
+                            <Typography className="workerComplaintDetails_cardTitle">
+                                Status History
+                            </Typography>
+
+                            <Typography className="workerComplaintDetails_cardSubtitle">
+                                Activity and status changes for this complaint.
+                            </Typography>
+                        </Box>
+                    </Box>
+                </Box>
 
                 <Box className="workerComplaintDetails_history">
                     {complaint.statusHistory.length === 0 ? (
@@ -503,7 +594,9 @@ const WorkerComplaintDetails = () => {
                                 key={`${history.status}-${history.changedAt}`}
                                 className="historyItem"
                             >
-                                <Box className="historyIcon">
+                                <Box
+                                    className={`historyIcon historyIcon_${history.status}`}
+                                >
                                     <CheckCircle />
                                 </Box>
 
@@ -529,21 +622,55 @@ const WorkerComplaintDetails = () => {
                 </Box>
             </Paper>
 
+            {/* Completion Dialog */}
             <Dialog
                 open={openCompletionDialog}
                 onClose={handleCloseCompletionDialog}
                 fullWidth
                 maxWidth="sm"
+                className="workerComplaintDetails_completionDialog"
             >
-                <DialogTitle>
-                    Complete Complaint
+                <DialogTitle className="workerComplaintDetails_dialogHeader">
+                    <Box>
+                        <Box className="workerComplaintDetails_dialogIcon">
+                            <CheckCircle />
+                        </Box>
+
+                        <Box>
+                            <Typography className="workerComplaintDetails_dialogTitle">
+                                Complete Complaint
+                            </Typography>
+
+                            <Typography className="workerComplaintDetails_dialogSubtitle">
+                                Upload proof of the completed work
+                            </Typography>
+                        </Box>
+                    </Box>
+
+                    <IconButton
+                        onClick={handleCloseCompletionDialog}
+                        disabled={isCompleting}
+                        className="workerComplaintDetails_dialogClose"
+                    >
+                        <Close />
+                    </IconButton>
                 </DialogTitle>
 
-                <DialogContent>
-                    <DialogContentText sx={{ mb: 2 }}>
-                        Upload at least one photo showing the completed work.
-                        This proof will be shared with the citizen.
-                    </DialogContentText>
+                <DialogContent className="workerComplaintDetails_dialogContent">
+                    <Box className="workerComplaintDetails_uploadNotice">
+                        <ImageOutlined />
+
+                        <Box>
+                            <Typography>
+                                Completion photos are required
+                            </Typography>
+
+                            <span>
+                                Add at least 1 photo and up to 5 photos showing
+                                the completed work.
+                            </span>
+                        </Box>
+                    </Box>
 
                     <input
                         type="file"
@@ -563,120 +690,136 @@ const WorkerComplaintDetails = () => {
                         onChange={handleCompletionImageChange}
                     />
 
-                    <Box
-                        sx={{
-                            display: "flex",
-                            gap: 2,
-                            mb: 3,
-                        }}
-                    >
+                    <Box className="workerComplaintDetails_uploadOptions">
                         <Button
-                            variant="outlined"
-                            startIcon={<CameraAltOutlined />}
+                            className="workerComplaintDetails_uploadOption"
                             onClick={() =>
                                 cameraInputRef.current?.click()
                             }
                             disabled={isCompleting}
                         >
-                            Take Photo
+                            <Box className="uploadOptionIcon">
+                                <CameraAltOutlined />
+                            </Box>
+
+                            <Box>
+                                <Typography>Take Photo</Typography>
+                                <span>Use your camera</span>
+                            </Box>
                         </Button>
 
                         <Button
-                            variant="outlined"
-                            startIcon={<DescriptionOutlined />}
+                            className="workerComplaintDetails_uploadOption"
                             onClick={() =>
                                 uploadInputRef.current?.click()
                             }
                             disabled={isCompleting}
                         >
-                            Upload Files
+                            <Box className="uploadOptionIcon">
+                                <UploadFileOutlined />
+                            </Box>
+
+                            <Box>
+                                <Typography>Upload Files</Typography>
+                                <span>Choose from device</span>
+                            </Box>
                         </Button>
                     </Box>
 
                     {completionPreviews.length > 0 && (
-                        <Box
-                            sx={{
-                                display: "grid",
-                                gridTemplateColumns:
-                                    "repeat(2, minmax(0, 1fr))",
-                                gap: 2,
-                            }}
-                        >
-                            {completionPreviews.map(
-                                (preview, index) => (
-                                    <Box
-                                        key={preview}
-                                        sx={{
-                                            position: "relative",
-                                        }}
-                                    >
-                                        <Box
-                                            component="img"
-                                            src={preview}
-                                            alt={`Completion proof ${index + 1}`}
-                                            sx={{
-                                                width: "100%",
-                                                height: 180,
-                                                objectFit: "cover",
-                                                borderRadius: 2,
-                                                display: "block",
-                                            }}
-                                        />
+                        <Box className="workerComplaintDetails_previewSection">
+                            <Box className="workerComplaintDetails_previewHeader">
+                                <Typography>
+                                    Completion Photos
+                                </Typography>
 
-                                        <Button
-                                            size="small"
-                                            color="error"
-                                            variant="contained"
-                                            onClick={() =>
-                                                handleRemoveCompletionImage(
-                                                    index
-                                                )
-                                            }
-                                            disabled={isCompleting}
-                                            sx={{
-                                                position: "absolute",
-                                                top: 8,
-                                                right: 8,
-                                                minWidth: "auto",
-                                            }}
+                                <span>
+                                    {completionPreviews.length}/5
+                                </span>
+                            </Box>
+
+                            <Box className="workerComplaintDetails_previewGrid">
+                                {completionPreviews.map(
+                                    (preview, index) => (
+                                        <Box
+                                            key={preview}
+                                            className="workerComplaintDetails_previewItem"
                                         >
-                                            Remove
-                                        </Button>
-                                    </Box>
-                                )
-                            )}
+                                            <Box
+                                                component="img"
+                                                src={preview}
+                                                alt={`Completion proof ${index + 1
+                                                    }`}
+                                            />
+
+                                            <Box className="previewNumber">
+                                                {index + 1}
+                                            </Box>
+
+                                            <IconButton
+                                                onClick={() =>
+                                                    handleRemoveCompletionImage(
+                                                        index
+                                                    )
+                                                }
+                                                disabled={isCompleting}
+                                                className="previewRemoveButton"
+                                            >
+                                                <Close />
+                                            </IconButton>
+                                        </Box>
+                                    )
+                                )}
+                            </Box>
+                        </Box>
+                    )}
+
+                    {completionPreviews.length === 0 && (
+                        <Box className="workerComplaintDetails_emptyUpload">
+                            <ImageOutlined />
+
+                            <Typography>
+                                No photos selected yet
+                            </Typography>
+
+                            <span>
+                                Upload photos using one of the options above.
+                            </span>
                         </Box>
                     )}
 
                     {completionError && (
-                        <Typography
-                            color="error"
-                            sx={{ mt: 2 }}
-                        >
-                            {completionError}
-                        </Typography>
+                        <Box className="workerComplaintDetails_error">
+                            <Typography>
+                                {completionError}
+                            </Typography>
+                        </Box>
                     )}
                 </DialogContent>
 
-                <DialogActions>
+                <DialogActions className="workerComplaintDetails_dialogActions">
                     <Button
                         onClick={handleCloseCompletionDialog}
                         disabled={isCompleting}
+                        className="dialogCancelButton"
                     >
                         Cancel
                     </Button>
 
                     <Button
                         variant="contained"
-                        startIcon={<CheckCircle />}
+                        startIcon={
+                            isCompleting ? undefined : <CheckCircle />
+                        }
                         onClick={handleCompleteComplaint}
                         disabled={
                             completionImages.length === 0 ||
                             isCompleting
                         }
+                        className="dialogConfirmButton"
                     >
                         {isCompleting
-                            ? "Uploading..."
+                            ? "Submitting..."
                             : "Submit & Complete"}
                     </Button>
                 </DialogActions>

@@ -56,6 +56,11 @@ export type Complaint = {
         _id: string;
         name: string;
     } | null;
+    location: {
+        address: string;
+        latitude: number;
+        longitude: number;
+    };
 
 };
 

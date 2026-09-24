@@ -234,27 +234,21 @@
 
 .recentUsers-empty {
     min-height: 160px;
-
     display: flex;
-
     justify-content: center;
     align-items: center;
-
     font-family: "Poppins", sans-serif;
-
     color: #6b7280;
 }
-
-/* ================= RESPONSIVE ================= */
 
 @media (max-width: 900px) {
     .recentUsers {
         overflow-x: auto;
     }
 
-    .recentUsers-header {
-        min-width: 700px;
-    }
+    // .recentUsers-header {
+    //     min-width: 700px;
+    // }
 
     .recentUsers table {
         min-width: 850px;
